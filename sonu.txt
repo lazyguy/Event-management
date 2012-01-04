@@ -1,0 +1,77 @@
+create table school_master(
+school_id int(4) default null auto_increment ,
+school_name   char(100) not  NULL,
+s_address     char(100) default NULL,
+princ_name    char(60) default NULL,
+phone_number  int(12) default null,
+mail_id       char(60) default NULL,
+PRIMARY KEY (school_id)
+)
+
+
+
+create table event_master(
+event_id     int(4) default null auto_increment,
+event_name   char(100) default NULL,
+event_year   int(4),
+PRIMARY KEY  (event_id) )
+
+
+
+create table participant_master(
+regn_number  int(4) default null auto_increment,
+student_name char(100) not  NULL,
+age          int(3) not null,
+dob          date   not null,
+sex          char(1) not null,
+school_id    int(4)  not null,
+parent_name     char(100) default NULL,
+st_adress       char(100) default NULL,
+pa_mail_id      char(60) default NULL,
+pa_phone_number int(12),
+PRIMARY KEY  (regn_number));
+
+
+
+
+create table event_trans (
+regn_number    int(4),
+event_id       int(4),
+fee_paid       FLOAT,
+primary key (regn_number,event_id ));
+
+
+
+
+
+
+
+
+
+CREATE PROCEDURE p1 ()
+BEGIN
+  DECLARE fanta INT DEFAULT 55;
+  DROP TABLE t2;
+   LOOP
+    INSERT INTO t3 VALUES (fanta);
+   END LOOP;
+END//
+
+
+DROP PROCEDURE IF EXISTS add_tbl;
+DELIMITER //
+CREATE PROCEDURE add_tbl (IN in_name varchar(40))
+BEGIN
+  INSERT INTO
+    tbl
+  VALUES
+    (NULL, in_name, now());
+  CREATE TABLE
+    in_name
+    ( id int not null auto_increment primary key,
+      name varchar(40) not null default '',
+      ts datetime not null default '2004-01-01 00:00'
+    );
+END//
+DELIMITER ;
+
