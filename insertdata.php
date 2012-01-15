@@ -2,7 +2,6 @@
 
 include_once "include.php";
 
-
 function getEventType($eType) {
     if (strcmp($eType, "Junior") == 0)
         $eType = 1;
@@ -55,19 +54,63 @@ if (!$con) {
             } else {
                 echo "2";
             }
-        } else if (strcmp($insertType, "getEvent") == 0) {
+        } else if (strcmp($insertType, "getEvent") == 0 || strcmp($insertType, "NextEventPage") == 0 || strcmp($insertType, "PrevEventPage") == 0) {
             $ename = $_POST["eName"];
             $result = array();
             $year = getYear();
             $sType = $_POST["searchType"];
-            if(strcmp($sType, "exact") == 0)
-                $rsd = mysql_query("SELECT * FROM event_master where event_name='$ename' and event_year='$year' order by event_id");
+
+            if (strcmp($insertType, "NextEventPage") == 0) {
+                $current_page = $_POST["currentPage"];
+                $current_page = $current_page + 1;
+            } else if (strcmp($insertType, "PrevEventPage") == 0) {
+                $current_page = $_POST["currentPage"];
+                $current_page = $current_page - 1;
+            }
             else
-                $rsd = mysql_query("SELECT * FROM event_master where event_name LIKE '%$ename%' and event_year='$year' order by event_id");
+                $current_page = 1;
+            $offset = (($current_page - 1) * $resultPerPage);
+
+            if (strcmp($sType, "exact") == 0) {
+                $count = mysql_query("SELECT COUNT(*) FROM event_master WHERE event_name='$ename' and event_year='$year'");
+                $count = mysql_fetch_array($count);
+                $rsd = mysql_query("SELECT * FROM event_master where event_name='$ename' and event_year='$year' order by event_id  limit $offset,$resultPerPage");
+                $erroror = mysql_error();
+            } else {
+                $count = mysql_query("SELECT COUNT(*) FROM event_master WHERE event_name LIKE '%$ename%' and event_year='$year'");
+                $count = mysql_fetch_array($count);
+                $rsd = mysql_query("SELECT * FROM event_master where event_name LIKE '%$ename%' and event_year='$year' order by event_id  limit $offset,$resultPerPage");
+            }
+            array_push($result, array("totalcount" => $count[0]));
             while ($rs = mysql_fetch_array($rsd)) {
                 array_push($result, array("id" => $rs['event_id'], "value" => $rs['event_name'], "event_type" => $rs['event_type']));
             }
             echo array_to_json($result);
+        } else if (strcmp($insertType, "getEventbyId") == 0) {
+            $result = array();
+            $eid = $_POST["eid"];
+            $year = getYear();
+            $rsd = mysql_query("SELECT * FROM event_master WHERE event_id='$eid' and event_year='$year'");
+            $erroror = mysql_error();
+            if (!$rsd) {
+                echo "0";
+                break;
+            }
+            while ($rs = mysql_fetch_array($rsd)) {
+                array_push($result, array("id" => $rs['event_id'], "value" => $rs['event_name'], "event_type" => $rs['event_type']));
+            }
+            echo array_to_json($result);
+        } else if (strcmp($insertType, "eventModify") == 0) {
+            $eName = $_POST["eName"];
+            $eType = $_POST["eType"];
+            $eid = $_POST["eid"];
+            $year = getYear();
+            $etype = getEventType($eType);
+            if (!mysql_query("UPDATE event_master SET event_name='$eName',event_type='$eType' WHERE event_id='$eid'")) {
+                    echo "0";
+                } else {
+                    echo "1";
+                }
         }
     }
 }

@@ -17,7 +17,7 @@ if (!$con) {
     while ($rs = mysql_fetch_array($rsd)) {
         array_push($result, array("id" => $rs['event_name'], "label" => $rs['event_name'], "value" => strip_tags($rs['event_name'])));
 
-        if (count($result) > 11)
+        if (count($result) > 6)
             break;
     }
     echo array_to_json($result);

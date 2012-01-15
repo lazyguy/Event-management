@@ -1,7 +1,7 @@
 <?php
 define("Print", "echo");
-
-
+$current_page = 1;
+$resultPerPage = 6;
 function getYear() {
     $today = getdate(date("U"));
     $year = $today['year'];  //This is current year
