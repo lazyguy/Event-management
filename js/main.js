@@ -65,10 +65,7 @@ function deleteEvent(e) {
             $('#eventEditResult').show();
             $('#eventsTable').hide();
             $('#eventEditPages').hide();
-            //  $('#eventNameEdit').append("111111111111");
             $('#eventNameEdit').select();
-
-
         }else if(data == 2){
             $('#eventEditResult').append("Event Not Present");
             $('#eventEditResult').removeClass('error success').addClass('warning');
@@ -283,6 +280,23 @@ function editEventSave(e) {
         eName:eName
     },
     function(data){
-        alert(data);
+        // alert(data);
+         if(data == 1){  //return 1 = event added succesfully
+            $('#eventEditResult').append("Event Modified Succesfully");
+            $('#eventEditResult').removeClass('warning error').addClass('success');
+            $('#eventEditResult').show();
+            $('#eventsTable').hide();
+            $('#eventEditPages').hide();
+            $('#eventNameEdit').select();
+            $('#modal-editSave-event').modal('hide');
+        }else if(data == 2){
+            $('#eventEditSaveResult').append("Same event already exists");
+            $('#eventEditSaveResult').removeClass('error success').addClass('warning');
+            $('#eventEditSaveResult').show();
+        }else{
+            $('#eventEditSaveResult').append("Could not edit event");
+            $('#eventEditSaveResult').removeClass('error success').addClass('warning');
+            $('#eventEditSaveResult').show();
+        }
     });
 }

@@ -106,11 +106,17 @@ if (!$con) {
             $eid = $_POST["eid"];
             $year = getYear();
             $etype = getEventType($eType);
-            if (!mysql_query("UPDATE event_master SET event_name='$eName',event_type='$eType' WHERE event_id='$eid'")) {
+            $count = mysql_query("SELECT COUNT(*) FROM event_master WHERE event_name='$eName' and event_type='$eType'");
+            $count = mysql_fetch_array($count);
+            if ($count[0] < 1) {
+                if (!mysql_query("UPDATE event_master SET event_name='$eName',event_type='$eType' WHERE event_id='$eid'")) {
                     echo "0";
                 } else {
                     echo "1";
                 }
+            } else {
+                echo "2";
+            }
         }
     }
 }
