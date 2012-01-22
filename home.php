@@ -18,7 +18,7 @@
         <script src="js/jquery-ui-1.8.16.custom.min.js"></script>
         <script src="js/bootstrap-alerts.js"></script>
         <script src="js/table-sorter.js"></script>
-        <script src="js/main.js"></script>        
+        <script src="js/eventControl.js"></script>        
         <!--
         <script src="js/bootstrap-twipsy.js"></script>
         <script src="js/bootstrap-popover.js"></script>

@@ -74,12 +74,12 @@ if (!$con) {
             if (strcmp($sType, "exact") == 0) {
                 $count = mysql_query("SELECT COUNT(*) FROM event_master WHERE event_name='$ename' and event_year='$year'");
                 $count = mysql_fetch_array($count);
-                $rsd = mysql_query("SELECT * FROM event_master where event_name='$ename' and event_year='$year' order by event_id  limit $offset,$resultPerPage");
+                $rsd = mysql_query("SELECT * FROM event_master where event_name='$ename' and event_year='$year' order by event_name  limit $offset,$resultPerPage");
                 $erroror = mysql_error();
             } else {
                 $count = mysql_query("SELECT COUNT(*) FROM event_master WHERE event_name LIKE '%$ename%' and event_year='$year'");
                 $count = mysql_fetch_array($count);
-                $rsd = mysql_query("SELECT * FROM event_master where event_name LIKE '%$ename%' and event_year='$year' order by event_id  limit $offset,$resultPerPage");
+                $rsd = mysql_query("SELECT * FROM event_master where event_name LIKE '%$ename%' and event_year='$year' order by event_name  limit $offset,$resultPerPage");
             }
             array_push($result, array("totalcount" => $count[0]));
             while ($rs = mysql_fetch_array($rsd)) {

@@ -1,3 +1,5 @@
+var resultPerPage = 5;
+
 function saveEvent(e) {
     e.preventDefault();
     var ename = $('#eventName').val();
@@ -40,15 +42,17 @@ function saveEvent(e) {
     }
 }
 function getAction(e) {
-    if (e && e.srcElement.className == "deleteimage")
+    var event_element=e.target? e.target : e.srcElement;
+    if (e && event_element.className == "deleteimage")
         deleteEvent(e);
-    else if (e && e.srcElement.className == "editimage")
+    else if (e && event_element.className == "editimage")
         editEvent(e);
     else
         return;
 }
 function deleteEvent(e) {
-    var eid = e.srcElement.name;
+    var event_element=e.target? e.target : e.srcElement;
+    var eid = event_element.name;
     var del= confirm("Do you really want to delete the event?");
     if (del != true) {
         return;
@@ -100,7 +104,7 @@ function getEvents(e) {
             $('#eventsTable > tbody:last').empty();
             var obj = jQuery.parseJSON(data);
             var count = obj[0].totalcount;
-            var numofPages = Math.ceil(count/6);
+            var numofPages = Math.ceil(count/resultPerPage);
             $('#totalPages').html(numofPages);
             $('#eventEditResult').hide();
             $('#curPage').html('');
@@ -177,7 +181,7 @@ function getEventPage(e){
         $('#eventsTable > tbody:last').empty();
         var obj = jQuery.parseJSON(data);
         var count = obj[0].totalcount;
-        var numofPages = Math.ceil(count/6);
+        var numofPages = Math.ceil(count/resultPerPage);
         //                            $('#totalPages').html(numofPages);
         $('#eventEditResult').hide();
         if(e=="Next"){
@@ -245,7 +249,8 @@ function setpageEnableDisable(currentPage,numofPages){
 }
 
 function editEvent(e) {
-    var eid = e.srcElement.name;
+    var event_element=e.target? e.target : e.srcElement;
+    var eid =event_element.name;
     $.post("insertdata.php",{
         type:"getEventbyId",
         eid:eid
@@ -281,7 +286,7 @@ function editEventSave(e) {
     },
     function(data){
         // alert(data);
-         if(data == 1){  //return 1 = event added succesfully
+        if(data == 1){  //return 1 = event added succesfully
             $('#eventEditResult').append("Event Modified Succesfully");
             $('#eventEditResult').removeClass('warning error').addClass('success');
             $('#eventEditResult').show();
@@ -290,10 +295,12 @@ function editEventSave(e) {
             $('#eventNameEdit').select();
             $('#modal-editSave-event').modal('hide');
         }else if(data == 2){
+            $('#eventEditSaveResult').empty();
             $('#eventEditSaveResult').append("Same event already exists");
             $('#eventEditSaveResult').removeClass('error success').addClass('warning');
             $('#eventEditSaveResult').show();
         }else{
+            $('#eventEditSaveResult').empty();
             $('#eventEditSaveResult').append("Could not edit event");
             $('#eventEditSaveResult').removeClass('error success').addClass('warning');
             $('#eventEditSaveResult').show();
