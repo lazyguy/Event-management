@@ -19,6 +19,7 @@
         <script src="js/bootstrap-alerts.js"></script>
         <script src="js/table-sorter.js"></script>
         <script src="js/eventControl.js"></script>        
+        <script src="js/schoolControl.js"></script>
         <!--
         <script src="js/bootstrap-twipsy.js"></script>
         <script src="js/bootstrap-popover.js"></script>
@@ -109,157 +110,8 @@
                     <p>
                         Use this page to add or remove events and schools
                     </p>
-                    <div id="modal-add-event" class="modal hide fade">
-                        <div class="modal-header">
-                            <a href="#" class="close">&times;</a> <h3>Add Event</h3>
-                        </div>
-                        <div class="modal-body">
-                            <form id="saveEventForm">
-                                <fieldset>
-                                    <div class="clearfix">
-                                        <label for="eventName">
-                                            Event Name
-                                        </label>
-                                        <div class="input">
-                                            <input class="xlarge" id="eventName" name="eventName" size="30" type="text" />
-                                        </div>
-                                    </div><!-- /clearfix -->
-                                    <div class="clearfix">
-                                        <label for="eventType">
-                                            Event Type
-                                        </label>
-                                        <div class="input">
-                                            <select class="xlarge" name="eventType" id="eventType">
-                                                <option>Junior</option> <option>Senior</option> <option>Junior and Senior</option>
-                                            </select>
-                                        </div>
-                                    </div><!-- /clearfix -->
-                                </fieldset>
-                            </form>
-                        </div>
-                        <div class="modal-footer">
-                            <div  id="eventResult" class="alert-message error">
-                            </div>
-                            <a id="eventCancel" class="btn secondary">Cancel</a> <a id="eventSave" class="btn primary">Save</a>
-                        </div>
-
-                    </div>
-                    <div id="modal-edit-event" class="modal hide fade">
-                        <div class="modal-header">
-                            <a href="#" class="close">&times;</a> <h3>Edit Event</h3>
-                        </div>
-                        <div class="modal-body">
-                            <form id="editEventForm">
-                                <fieldset>
-                                    <div class="clearfix">
-                                        <label for="eventNameEdit">
-                                            Event Name
-                                        </label>
-                                        <div class="input">
-                                            <input class="xlarge" id="eventNameEdit" name="eventNameEdit" size="30" type="text" />
-                                        </div>
-                                    </div><!-- /clearfix -->
-                                </fieldset>
-                            </form>
-
-                            <table id="eventsTable" class="bordered-table condensed-table">
-                                <thead>
-                                    <tr>
-                                        <th>#</th>
-                                        <th>Name</th>
-                                        <th>Type</th>
-                                        <th>Edit&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                </tbody>
-                                <tfoot>
-                                </tfoot>
-                            </table>
-                            <div class="pagination" id="eventEditPages">
-                                <ul>
-                                    <li id="eventPrevPage" class="prev">
-                                        <a>&larr; Previous&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
-                                    </li>
-                                    <li class="disabled">
-                                        <a> <span id="curPage"></span>/<span id ="totalPages"></span></a>
-                                    </li>
-                                    <li id="eventNextPage" class="next">
-                                        <a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Next 
-                                            &rarr;</a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-
-
-                        <div class="modal-footer">
-                            <div  id="eventEditResult" class="alert-message error">
-                            </div>
-                            <a id="eventEditCancel" class="btn secondary">Cancel</a>
-                            <!--                            <a id="eventEditSave" class="btn primary">Save&nbsp;&nbsp;</a>
-                                                                                    <a id="eventEditDelete" class="btn danger">Delete</a>                            -->
-                        </div>
-
-                    </div>
-                    <div id="modal-add-school" class="modal hide fade">
-                        <div class="modal-header">
-                            <a href="#" class="close">&times;</a> <h3>Add School</h3>
-                        </div>
-                        <div class="modal-body">
-                            <form id="saveSchoolForm">
-                                <fieldset>
-                                    <div class="clearfix">
-                                        <label for="schoolName">
-                                            School Name
-                                        </label>
-                                        <div class="input">
-                                            <input class="xlarge" id="schoolName" name="schoolName" size="30" type="text" />
-                                        </div>
-                                    </div><!-- /clearfix -->
-
-                                    <div class="clearfix">
-                                        <label for="schoolAddress">
-                                            Address
-                                        </label>
-                                        <div class="input">
-                                            <textarea class="xlarge" id="schoolAddress" name="schoolAddress" rows="4" ></textarea>
-                                        </div>
-                                    </div><!-- /clearfix -->
-
-                                    <div class="clearfix">
-                                        <label for="principalName">
-                                            Name of Principal
-                                        </label>
-                                        <div class="input">
-                                            <input class="xlarge" id="principalName" name="principalName" size="30" type="text" />
-                                        </div>
-                                    </div><!-- /clearfix -->
-
-                                    <div class="clearfix">
-                                        <label for="phoneNumber">
-                                            Phone Number
-                                        </label>
-                                        <div class="input">
-                                            <input class="xlarge" id="phoneNumber" name="phoneNumber" size="30" type="text" />
-                                        </div>
-                                    </div><!-- /clearfix -->
-
-                                    <div class="clearfix">
-                                        <label for="emailId">
-                                            Email ID
-                                        </label>
-                                        <div class="input">
-                                            <input class="xlarge" id="emailId" name="emailId" size="30" type="text" />
-                                        </div>
-                                    </div><!-- /clearfix -->
-                                </fieldset>
-                            </form>
-                        </div>
-                        <div class="modal-footer">
-                            <a id="schoolCancel" class="btn secondary">Cancel</a> <a id="schoolSave" class="btn primary">Save</a>
-                        </div>
-                    </div>
+                    <?php include_once "eventView.html"; ?>
+                    <?php include_once "schoolView.html"; ?>
                     <button data-controls-modal="modal-add-event" data-backdrop="static" data-keyboard="true" class="btn success">ADD 
                         Event&nbsp;&nbsp;</button> <button data-controls-modal="modal-edit-event" data-backdrop="static" data-keyboard="true" class="btn primary">Edit 
                         Event&nbsp;&nbsp;&nbsp;</button><br/>
@@ -273,29 +125,7 @@
                     <p>
                         Use this page to add or remove participants
                     </p>
-                    <div id="modal-add-participant" class="modal hide fade">
-                        <div class="modal-header">
-                            <a href="#" class="close">&times;</a> <h3>Add participant</h3>
-                        </div>
-                        <div class="modal-body">
-                            <form id="saveParticipantForm">
-                                <fieldset>
-                                    <div class="clearfix">
-                                        <label for="participantName">
-                                            Name
-                                        </label>
-                                        <div class="input">
-                                            <input class="xlarge" id="participantName" name="participantName" size="30" type="text" />
-                                        </div>
-                                    </div><!-- /clearfix -->
-                                </fieldset>
-                            </form>
-                        </div>
-                        <div class="modal-footer">
-                            <a id="participantCancel" class="btn secondary">Cancel</a> <a id="participantSave" class="btn primary">Save</a>
-
-                        </div>
-                    </div>
+                    <?php include_once "participantView.html"; ?>
                     <button data-controls-modal="modal-add-participant" data-backdrop="static" data-keyboard="true" class="btn success">ADD 
                         Participant</button> <button data-controls-modal="modal-edit-participant" data-backdrop="static" data-keyboard="true" class="btn primary">Edit 
                         Participant</button>
@@ -319,42 +149,6 @@
                 </p>
             </footer>
         </div> <!-- /container -->
-        <div id="modal-editSave-event" class="modal hide fade">
-            <div class="modal-header">
-                <a href="#" class="close">&times;</a> <h3>Edit Event</h3>
-            </div>
-            <div class="modal-body">
-                <form id="eidtEventSaveForm">
-                    <fieldset>
-                        <div class="clearfix">
-                            <label for="eventSaveName">
-                                Event Name
-                            </label>
-                            <div class="input">
-                                <input class="xlarge" id="eventSaveName" name="eventSaveName" size="30" type="text" />
-                            </div>
-                        </div><!-- /clearfix -->
-                        <div class="clearfix">
-                            <label for="eventSaveType">
-                                Event Type
-                            </label>
-                            <div class="input">
-                                <select class="xlarge" name="eventSaveType" id="eventSaveType">
-                                    <option value="1">Junior</option> <option value="2">Senior</option> <option value="3">Junior and Senior</option>
-                                </select>
-                            </div>
-                        </div><!-- /clearfix -->
-                        <input type="hidden" id="eventIdForEdit" value="NULL">                        
-                    </fieldset>
 
-                </form>
-            </div>
-            <div class="modal-footer">
-                <div  id="eventEditSaveResult" class="alert-message success">
-                </div>
-                <a id="eventSaveCancel" class="btn secondary">Cancel</a> <a id="eventEditSave" class="btn primary">Save</a>
-            </div>
-
-        </div>
     </body>
 </html>
