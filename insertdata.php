@@ -23,6 +23,7 @@ if (!$con) {
     if ($db_selected) {
         if (strcmp($insertType, "addEvent") == 0) {
             $ename = $_POST["eName"];
+            $ename = mysql_real_escape_string($ename);
             $eType = $_POST["etype"];
             $year = getYear();
             $etype = getEventType($eType);
@@ -39,6 +40,7 @@ if (!$con) {
             } else {
                 echo "2";
             }
+            mysql_close($con);
         } else if (strcmp($insertType, "deleteEvent") == 0) {
             $eid = $_POST["eid"];
             $year = getYear();
@@ -47,15 +49,17 @@ if (!$con) {
             if ($count[0] >= 1) {
                 if (!mysql_query("DELETE FROM event_master WHERE event_id='$eid' and event_year='$year'")) {
                     echo "0";
-                    echo mysql_error();
+                    Print mysql_error();
                 } else {
                     echo "1";
                 }
             } else {
                 echo "2";
             }
+            mysql_close($con);
         } else if (strcmp($insertType, "getEvent") == 0 || strcmp($insertType, "NextEventPage") == 0 || strcmp($insertType, "PrevEventPage") == 0) {
             $ename = $_POST["eName"];
+            $ename = mysql_real_escape_string($ename);
             $result = array();
             $year = getYear();
             $sType = $_POST["searchType"];
@@ -86,6 +90,7 @@ if (!$con) {
                 array_push($result, array("id" => $rs['event_id'], "value" => $rs['event_name'], "event_type" => $rs['event_type']));
             }
             echo array_to_json($result);
+            mysql_close($con);
         } else if (strcmp($insertType, "getEventbyId") == 0) {
             $result = array();
             $eid = $_POST["eid"];
@@ -100,8 +105,10 @@ if (!$con) {
                 array_push($result, array("id" => $rs['event_id'], "value" => $rs['event_name'], "event_type" => $rs['event_type']));
             }
             echo array_to_json($result);
+            mysql_close($con);
         } else if (strcmp($insertType, "eventModify") == 0) {
             $eName = $_POST["eName"];
+            $eName = mysql_real_escape_string($eName);
             $eType = $_POST["eType"];
             $eid = $_POST["eid"];
             $year = getYear();
@@ -117,6 +124,7 @@ if (!$con) {
             } else {
                 echo "2";
             }
+            mysql_close($con);
         }
     }
 }

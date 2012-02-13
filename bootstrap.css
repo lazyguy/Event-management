@@ -2101,7 +2101,7 @@ button.btn::-moz-focus-inner, input[type=submit].btn::-moz-focus-inner {
   height: 36px;
   margin: 18px 0;
 }
-.pagination ul {
+.pagination ul { 
   float: left;
   margin: 0;
   border: 1px solid #ddd;
@@ -2118,7 +2118,6 @@ button.btn::-moz-focus-inner, input[type=submit].btn::-moz-focus-inner {
 }
 .pagination a {
   float: left;
-  padding: 0 14px;
   line-height: 34px;
   border-right: 1px solid;
   border-right-color: #ddd;
@@ -2250,6 +2249,9 @@ button.btn::-moz-focus-inner, input[type=submit].btn::-moz-focus-inner {
 }
 .modal .popover, .modal .twipsy {
   z-index: 12000;
+}
+.modal h3 {
+    color: #0064cd;
 }
 .twipsy {
   display: block;
@@ -2470,9 +2472,13 @@ button.btn::-moz-focus-inner, input[type=submit].btn::-moz-focus-inner {
   -moz-box-shadow: 0 1px 4px rgba(0, 105, 214, 0.25);
   box-shadow: 0 1px 4px rgba(0, 105, 214, 0.25);
 }
-.deleteimage  {
-cursor: pointer;
+.deleteimageptr  {
+    cursor: pointer;
 }
-.editimage  {
-cursor: pointer;
+.editimageptr  {
+    cursor: pointer;
+}
+.paginationmodal {
+    padding-left: 60px;
+    padding-right: 60px;
 }

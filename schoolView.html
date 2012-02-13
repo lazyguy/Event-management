@@ -1,3 +1,12 @@
+<!--
+all id goes here for reference
+Add school modal -> modal-add-school
+Add school form -> saveSchoolForm
+form elements [schoolName,schoolAddress,principalName,phoneNumber,emailId]
+Add school cancel -> schoolCancel
+Add school result ->schoolAddResult
+-->
+
 <div id="modal-add-school" class="modal hide fade">
     <div class="modal-header">
         <a href="#" class="close">&times;</a> <h3>Add School</h3>
@@ -53,6 +62,124 @@
         </form>
     </div>
     <div class="modal-footer">
+        <div  id="schoolAddResult" class="alert-message error"></div>
         <a id="schoolCancel" class="btn secondary">Cancel</a> <a id="schoolSave" class="btn primary">Save</a>
+    </div>
+</div>
+
+<div id="modal-edit-school" class="modal hide fade">
+    <div class="modal-header">
+        <a href="#" class="close">&times;</a> <h3>Edit School</h3>
+    </div>
+    <div class="modal-body">
+        <form id="editSchoolForm">
+            <fieldset>
+                <div class="clearfix">
+                    <label for="schoolNameEdit">
+                        School Name
+                    </label>
+                    <div class="input">
+                        <input class="xlarge" id="schoolNameEdit" name="schoolNameEdit" size="30" type="text" />
+                    </div>
+                </div><!-- /clearfix -->
+            </fieldset>
+        </form>
+
+        <table id="schoolsTable" class="bordered-table condensed-table">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Name</th>
+                    <th>Principal</th>
+                    <th>Edit&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+            <tfoot>
+            </tfoot>
+        </table>
+        <div class="pagination" id="schoolEditPages">
+            <ul>
+                <li id="schoolPrevPage" class="prev">
+                    <a class ="paginationmodal">&larr; Previous&nbsp;</a>
+                </li>
+                <li class="disabled">
+                    <a class ="paginationmodal"> <span id="curSchoolPage"></span>/<span id ="totalSchoolPages"></span></a>
+                </li>
+                <li id="schoolNextPage" class="next">
+                    <a class ="paginationmodal">&nbsp;Next&nbsp;&nbsp;&nbsp;&nbsp;&rarr;</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+
+    <div class="modal-footer">
+        <div  id="schoolEditResult" class="alert-message error">
+        </div>
+        <a id="schoolEditCancel" class="btn secondary">Cancel</a>
+    </div>
+
+</div>
+
+<div id="modal-edit-save-school" class="modal hide fade">
+    <div class="modal-header">
+        <a href="#" class="close">&times;</a> <h3>Edit School</h3>
+    </div>
+    <div class="modal-body">
+        <form id="editSchoolsaveForm">
+            <fieldset>
+                <div class="clearfix">
+                    <label for="schoolNameEditsave">
+                        School Name
+                    </label>
+                    <div class="input">
+                        <input class="xlarge" id="schoolNameEditsave" name="schoolNameEditsave" size="30" type="text" />
+                    </div>
+                </div><!-- /clearfix -->
+
+                <div class="clearfix">
+                    <label for="schoolAddressEdit">
+                        Address
+                    </label>
+                    <div class="input">
+                        <textarea class="xlarge" id="schoolAddressEdit" name="schoolAddressEdit" rows="4" ></textarea>
+                    </div>
+                </div><!-- /clearfix -->
+
+                <div class="clearfix">
+                    <label for="principalNameEdit">
+                        Name of Principal
+                    </label>
+                    <div class="input">
+                        <input class="xlarge" id="principalNameEdit" name="principalNameEdit" size="30" type="text" />
+                    </div>
+                </div><!-- /clearfix -->
+
+                <div class="clearfix">
+                    <label for="phoneNumberEdit">
+                        Phone Number
+                    </label>
+                    <div class="input">
+                        <input class="xlarge" id="phoneNumberEdit" name="phoneNumberEdit" size="30" type="text" />
+                    </div>
+                </div><!-- /clearfix -->
+
+                <div class="clearfix">
+                    <label for="emailIdEdit">
+                        Email ID
+                    </label>
+                    <div class="input">
+                        <input class="xlarge" id="emailIdEdit" name="emailIdEdit" size="30" type="text" />
+                    </div>
+                </div><!-- /clearfix -->
+                <input type="hidden" id="schoolIdForEdit" value="NULL">
+            </fieldset>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <a id="schoolEditsaveCancel" class="btn secondary">Cancel</a> 
+        <a id="schoolEditSave" class="btn primary">Save</a>
     </div>
 </div>

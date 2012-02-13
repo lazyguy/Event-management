@@ -43,9 +43,9 @@ function saveEvent(e) {
 }
 function getAction(e) {
     var event_element=e.target? e.target : e.srcElement;
-    if (e && event_element.className == "deleteimage")
+    if (e && event_element.className == "deleteimage deleteimageptr")
         deleteEvent(e);
-    else if (e && event_element.className == "editimage")
+    else if (e && event_element.className == "editimage editimageptr")
         editEvent(e);
     else
         return;
@@ -114,9 +114,9 @@ function getEvents(e) {
                 $('#eventsTable').show();
                 if(parseInt(numofPages)>1){
                     $('#eventEditPages').show();                 
-                    $('#eventNextPage').addClass('editimage');
+                    $('#eventNextPage').addClass('editimageptr');
                     $('#eventPrevPage').addClass('disabled');
-                    $('#eventPrevPage').removeClass('editimage');
+                    $('#eventPrevPage').removeClass('editimageptr');
                 }
             }
             else{
@@ -143,8 +143,8 @@ function getEvents(e) {
                         break;
                 }
                 $('#eventsTable > tbody:last').append('<tr id="'+item.id+'"><td>'+item.id+'</td><td>'+item.value+
-                    '</td><td>'+eType+'</td><td><img class="editimage" name="'+item.id+'" src="images/edit.png" title="Edit" alt="Edit"></img>'+
-                    '&nbsp;&nbsp;&nbsp;<img class="deleteimage" name="'+item.id+'"src="images/delete.png" title="Delete" alt="Del"></img></td></tr>');
+                    '</td><td>'+eType+'</td><td><img class="editimage editimageptr" name="'+item.id+'" src="images/edit.png" title="Edit" alt="Edit"></img>'+
+                    '&nbsp;&nbsp;&nbsp;<img class="deleteimage deleteimageptr" name="'+item.id+'"src="images/delete.png" title="Delete" alt="Del"></img></td></tr>');
                 $("table#eventsTable").trigger("update");
             });
         });
@@ -222,8 +222,8 @@ function getEventPage(e){
                     break;
             }
             $('#eventsTable > tbody:last').append('<tr id="'+item.id+'"><td>'+item.id+'</td><td>'+item.value+
-                '</td><td>'+eType+'</td><td><img class="editimage" name="'+item.id+'" src="images/edit.png" title="Edit" alt="Edit"></img>'+
-                '&nbsp;&nbsp;&nbsp;<img class="deleteimage" name="'+item.id+'"src="images/delete.png" title="Delete" alt="Del"></img></td></tr>');
+                '</td><td>'+eType+'</td><td><img class="editimage editimageptr" name="'+item.id+'" src="images/edit.png" title="Edit" alt="Edit"></img>'+
+                '&nbsp;&nbsp;&nbsp;<img class="deleteimage deleteimageptr" name="'+item.id+'"src="images/delete.png" title="Delete" alt="Del"></img></td></tr>');
             $("table#eventsTable").trigger("update");
         });
     });
@@ -232,19 +232,19 @@ function getEventPage(e){
 function setpageEnableDisable(currentPage,numofPages){
     if(numofPages == parseInt(currentPage)){
         $('#eventNextPage').addClass('disabled');
-        $('#eventNextPage').removeClass('editimage');
+        $('#eventNextPage').removeClass('editimageptr');
     }
     else {
         $('#eventNextPage').removeClass('disabled');
-        $('#eventNextPage').addClass('editimage');
+        $('#eventNextPage').addClass('editimageptr');
     }
     if(parseInt(currentPage) <= 1){
         $('#eventPrevPage').addClass('disabled');
-        $('#eventPrevPage').removeClass('editimage');                                    
+        $('#eventPrevPage').removeClass('editimageptr');                                    
     }
     else{
         $('#eventPrevPage').removeClass('disabled');
-        $('#eventPrevPage').addClass('editimage');
+        $('#eventPrevPage').addClass('editimageptr');
     }
 }
 
@@ -287,6 +287,7 @@ function editEventSave(e) {
     function(data){
         // alert(data);
         if(data == 1){  //return 1 = event added succesfully
+            $('#eventEditResult').empty();
             $('#eventEditResult').append("Event Modified Succesfully");
             $('#eventEditResult').removeClass('warning error').addClass('success');
             $('#eventEditResult').show();

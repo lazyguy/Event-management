@@ -35,6 +35,7 @@
             //Global required for pagination
             var eventName;  //last event name that was searched
             var searchType; //last search type -> exact or match(%like%)
+            var schoolName; //last school name that was searched
             $(document).ready(function(){
                 $('#eventResult').hide();
                 $('#eventCancel').click(function(){  $('#modal-add-event').modal('hide')});
@@ -55,8 +56,6 @@
                 $('#eventEditResult').hide();
                 $('#eventEditCancel').click(function(){  $('#modal-edit-event').modal('hide')});
                 $('#modal-edit-event').bind('shown', function(){$('#eventNameEdit').select();$('#eventEditResult').hide();$('#eventsTable').hide();$('#eventEditPages').hide();});
-                $('#schoolCancel').click(function(){  $('#modal-add-school').modal('hide')});
-                $('#modal-add-school').bind('shown', function(){$('#schoolName').select();});
                 $("table#eventsTable").on("click", getAction);
                 $('#eventNameEdit').autocomplete({
                     source: "get_event_list.php",
@@ -72,6 +71,40 @@
                 $('#modal-editSave-event').bind('shown', function(){$('#eventSaveName').select();$('#eventEditSaveResult').hide();});
                 $('#eventSaveCancel').click(function(){  $('#modal-editSave-event').modal('hide')});
                 $('#eventEditSave').click(editEventSave);
+                //School add stuff
+                $('#modal-add-school').bind('shown', function(){ $(':input','#saveSchoolForm').not(':button, :submit, :reset, :hidden').val(''); $('#schoolAddResult').hide();} );
+                $('#schoolCancel').click(function(){  $('#modal-add-school').modal('hide')});
+                $('#schoolSave').click(saveSchool);
+                $('#modal-edit-school').bind('shown', function(){$('#schoolNameEdit').select();$('#schoolEditResult').hide();$('#schoolsTable').hide();$('#schoolEditPages').hide();});
+                $('#schoolEditCancel').click(function(){  $('#modal-edit-school').modal('hide')});
+                $('#schoolNameEdit').autocomplete({
+                    source: "get_school_list.php",
+                    minLength: 2,
+                    select: function( event, ui ){
+                        ui.item ? getSchools(ui.item.value):false;
+                    }
+                });
+                $('#saveSchoolForm').bind('keypress', function(e){
+                    if ( e.keyCode == 13 ){
+                        saveSchool(e);
+                    }
+                });
+                $('#schoolNameEdit').bind('keypress', function(e){
+                    if ( e.keyCode == 13 ){
+                        e.preventDefault();
+                        $('#schoolNameEdit').autocomplete("close");
+                        getSchools(null);
+                    }
+                });
+                $("table#schoolsTable").tablesorter({ headers:{ 2:{ sorter: false}, 3:{ sorter: false}}}); 
+                $("#schoolNextPage").on("click", getSchoolNextPage);
+                $("#schoolPrevPage").on("click", getSchoolPrevPage);
+                $("table#schoolsTable").on("click", getSchoolAction);
+                $('#modal-edit-save-school').bind('shown', function(){$('#schoolNameEdit').select();});
+                $('#schoolEditsaveCancel').click(function(){  $('#modal-edit-save-school').modal('hide')});
+                //participant add stuff.
+                $('#modal-add-participant').bind('shown', function(){ $(':input','#saveSchoolForm').not(':button, :submit, :reset, :hidden').val(''); $('#participantAddResult').hide();} );
+                $('#participantCancel').click(function(){  $('#modal-add-participant').modal('hide')});
             });
            
         </script>
