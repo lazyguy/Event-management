@@ -102,6 +102,7 @@
                 $("table#schoolsTable").on("click", getSchoolAction);
                 $('#modal-edit-save-school').bind('shown', function(){$('#schoolNameEdit').select();});
                 $('#schoolEditsaveCancel').click(function(){  $('#modal-edit-save-school').modal('hide')});
+                $('#schoolEditSave').click(function(){  editSchoolSave()});
                 //participant add stuff.
                 $('#modal-add-participant').bind('shown', function(){ $(':input','#saveSchoolForm').not(':button, :submit, :reset, :hidden').val(''); $('#participantAddResult').hide();} );
                 $('#participantCancel').click(function(){  $('#modal-add-participant').modal('hide')});

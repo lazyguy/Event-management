@@ -98,10 +98,37 @@ if (!$con) {
                 break;
             }
             while ($rs = mysql_fetch_array($rsd)) {
-                array_push($result, array("id" => $rs['school_id'], "value" => $rs['school_name'], 
+                array_push($result, array("id" => $rs['school_id'], "value" => $rs['school_name'],
                     "address" => $rs['s_address'], "pname" => $rs['princ_name'], "pnum" => $rs['phone_number'], "mailid" => $rs['mail_id']));
             }
             echo array_to_json($result);
+            mysql_close($con);
+        } else if (strcmp($insertType, "schoolModify") == 0) {
+            $result = array();
+
+            $eid = $_POST["eid"];
+            $eName = $_POST["eName"];
+            $eAddress = $_POST["eAddress"];
+            $ePrincipal = $_POST["ePrincipal"];
+            $ePhone = $_POST["ePhone"];
+            $eEmail = $_POST["eEmail"];
+            $year = getYear();
+
+
+            $count = mysql_query("SELECT COUNT(*) FROM school_master WHERE school_id='$eid'");
+            $erroror = mysql_error();
+            $count = mysql_fetch_array($count);
+            if ($count[0] >= 1) {
+                if (!mysql_query("UPDATE school_master SET school_name='$eName',s_address='$eAddress'
+                        ,princ_name='$ePrincipal',phone_number='$ePhone',mail_id='$eEmail' WHERE school_id='$eid'")) {
+                    echo "0";
+                } else {
+                    $erroror = mysql_error();
+                    echo "1";
+                }
+            } else {
+                echo "2";
+            }
             mysql_close($con);
         }
     }

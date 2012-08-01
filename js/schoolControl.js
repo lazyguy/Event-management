@@ -14,7 +14,8 @@ function saveSchool(e) {
         $('#schoolAddResult').show();
         $('#schoolName').html("");
         $('#schoolName').select();
-    } else {
+    }
+    else {
         $.post("addSchool.php",{
             type:"addSchool",
             eName:ename,
@@ -252,7 +253,7 @@ function editSchool(e) {
         $('#emailIdEdit').val(pMail);
             
         $('#modal-edit-save-school').modal({
-            backdrop: true, 
+            backdrop: false, 
             keyboard:true
         });
         
@@ -262,13 +263,19 @@ function editSchool(e) {
 
 function editSchoolSave(e) {
     var eid =  $('#schoolIdForEdit').val();
-    var eType = $('#schoolSaveType').val();
-    var eName = $('#schoolSaveName').val();
+    var eName = $('#schoolNameEditsave').val();
+    var eAddress = $('#schoolAddressEdit').val();
+    var ePrincipal = $('#principalNameEdit').val();
+    var ePhone = $('#phoneNumberEdit').val();
+    var eEmail = $('#emailIdEdit').val();
     $.post("addSchool.php",{
         type:"schoolModify",
         eid:eid,
-        eType:eType,
-        eName:eName
+        eName:eName,
+        eAddress:eAddress,
+        ePrincipal:ePrincipal,
+        ePhone:ePhone,
+        eEmail:eEmail
     },
     function(data){
         // alert(data);
@@ -279,7 +286,7 @@ function editSchoolSave(e) {
             $('#schoolsTable').hide();
             $('#schoolEditPages').hide();
             $('#schoolNameEdit').select();
-            $('#modal-editSave-school').modal('hide');
+            $('#modal-edit-save-school').modal('hide')
         }else if(data == 2){
             $('#schoolEditSaveResult').empty();
             $('#schoolEditSaveResult').append("Same school already exists");
