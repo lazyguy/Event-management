@@ -13,13 +13,16 @@
         <!-- Le styles -->
         <link href="bootstrap.css" rel="stylesheet">
         <link href="jquery.ui.autocomplete.css" rel="stylesheet">
+        <link rel="stylesheet" href="chosen.css" />
         <script src="js/jquery.min.js"></script>
         <script src="js/bootstrap-modal.js"></script>
-        <script src="js/jquery-ui-1.8.16.custom.min.js"></script>
+        <script src="js/jquery-ui-1.8.22.custom.min.js"></script>
         <script src="js/bootstrap-alerts.js"></script>
         <script src="js/table-sorter.js"></script>
         <script src="js/eventControl.js"></script>        
         <script src="js/schoolControl.js"></script>
+        <script src="js/participantControl.js"></script> 
+        <script src="js/chosen.jquery.min.js"></script> 
         <!--
         <script src="js/bootstrap-twipsy.js"></script>
         <script src="js/bootstrap-popover.js"></script>
@@ -104,8 +107,21 @@
                 $('#schoolEditsaveCancel').click(function(){  $('#modal-edit-save-school').modal('hide')});
                 $('#schoolEditSave').click(function(){  editSchoolSave()});
                 //participant add stuff.
-                $('#modal-add-participant').bind('shown', function(){ $(':input','#saveSchoolForm').not(':button, :submit, :reset, :hidden').val(''); $('#participantAddResult').hide();} );
+                $('#modal-add-participant').bind('shown', function(){
+                    $(':input','#saveSchoolForm').not(':button, :submit, :reset, :hidden').val(''); 
+                    $('#participantAddResult').hide();
+                    geteventnames();
+                });
                 $('#participantCancel').click(function(){  $('#modal-add-participant').modal('hide')});
+                
+                $('#part-school-name').autocomplete({
+                    source: "get_school_list.php",
+                    minLength: 2,
+                    select: function( event, ui ){
+                        ui.item ? getSchools(ui.item.value):false;
+                    }
+                });
+                $(".chzn-select").chosen();
             });
            
         </script>
