@@ -7,23 +7,20 @@
         <form id="saveParticipantForm">
             <fieldset>
                 <div class="clearfix">
-                    <label for="participantName">
-                        Name
-                    </label>
+                    <label for="participantName">Name</label>
                     <div class="input">
                         <input class="xlarge" id="participantName" name="participantName" size="30" type="text" />
                     </div>
-                    <label for="DOB" style="padding-top: 5px;">
-                        DOB
-                    </label>
+                    <label for="DOB" style="padding-top: 5px;">DOB</label>
                     <div class="input" style="padding-top: 5px;">
-                        <input class="xlarge" id="DOB" name="DOB" size="30" type="text" />
+                        <input placeholder="mm/dd/yy"class="xlarge" id="DOB" name="DOB" size="30" type="text" />
                     </div>
-                    <label for="SEX" style="padding-top: 5px;">
-                        SEX
-                    </label>
+                    <label for="SEX" style="padding-top: 5px;">SEX</label>
                     <div class="input" style="padding-top: 5px;">
-                        <input class="xlarge" id="SEX" name="SEX" size="30" type="text" />
+                        <select class="xlarge" id="SEX" name="SEX"> 
+                            <option value="1">Male</option>
+                            <option value="2">Female</option>
+                        </select>
                     </div>
                     <label for="part-items" style="padding-top: 5px;">
                         Items
@@ -37,6 +34,7 @@
                         School Name
                     </label>
                     <div class="input" style="padding-top: 5px;">
+                        <input type ="hidden" name="part-school-id" id="part-school-id" value="" />
                         <input class="xlarge" id="part-school-name" placeholder="Type first few letters of school to search" name="part-school-name" size="30" type="text" />
                     </div>
                     <label for="part-parent-name" style="padding-top: 5px;">
@@ -63,7 +61,7 @@
                     <div class="input" style="padding-top: 5px;">
                         <input class="xlarge" id="part-ph-num" name="part-ph-num" size="30" type="text" />
                     </div>
-                    
+
                     <label for="part-feePaid" style="padding-top: 5px;">
                         Fee Paid
                     </label>
@@ -72,10 +70,12 @@
                     </div>
                 </div><!-- /clearfix -->
             </fieldset>
+            <a   id="participantAddResult" class="alert-message error"></a>
         </form>
     </div>
     <div class="modal-footer">
-        <a id="participantCancel" class="btn secondary">Cancel</a> <a id="participantSave" class="btn primary">Save</a>
-        <div  id="participantAddResult" class="alert-message error"></div>
+        <a id="participantCancel" class="btn secondary">Cancel</a> 
+        <a id="participantSave" class="btn primary">Save</a>
+        <a id="participantSavePrint" class="btn primary">Save &AMP; Print</a>
     </div>
 </div>

@@ -12,7 +12,8 @@
         <![endif]-->
         <!-- Le styles -->
         <link href="bootstrap.css" rel="stylesheet">
-        <link href="jquery.ui.autocomplete.css" rel="stylesheet">
+
+        <link href="jquery-ui-1.8.22.custom.css" rel="stylesheet">
         <link rel="stylesheet" href="chosen.css" />
         <script src="js/jquery.min.js"></script>
         <script src="js/bootstrap-modal.js"></script>
@@ -108,7 +109,7 @@
                 $('#schoolEditSave').click(function(){  editSchoolSave()});
                 //participant add stuff.
                 $('#modal-add-participant').bind('shown', function(){
-                    $(':input','#saveSchoolForm').not(':button, :submit, :reset, :hidden').val(''); 
+                    //$(':input','#saveSchoolForm').not(':button, :submit, :reset, :hidden').val(''); 
                     $('#participantAddResult').hide();
                     geteventnames();
                 });
@@ -119,9 +120,21 @@
                     minLength: 2,
                     select: function( event, ui ){
                         ui.item ? getSchools(ui.item.value):false;
+                        $('#part-school-id').val(ui.item.id);
                     }
                 });
                 $(".chzn-select").chosen();
+                $('#part-school-name').change(function() {
+                    $('#part-school-id').val(0);
+                });
+                $("#DOB").datepicker({
+                    changeMonth: true,
+                    changeYear: true,
+                    yearRange: "c-20:c"
+                });
+                $("#participantSave").on("click", saveParticipant);
+               
+                
             });
            
         </script>

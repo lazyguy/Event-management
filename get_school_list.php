@@ -12,11 +12,11 @@ if (!$con) {
     if (!$q)
         return;
     $year = getYear();
-    $sql = "select DISTINCT school_name as school_name from school_master where school_name LIKE '%$q%' order by school_name";
+    $sql = "select DISTINCT school_id as id, school_name as school_name from school_master where school_name LIKE '%$q%' order by school_name";
     $rsd = mysql_query($sql);
     $result = array();
     while ($rs = mysql_fetch_array($rsd)) {
-        array_push($result, array("id" => $rs['school_name'], "label" => $rs['school_name'], "value" => strip_tags($rs['school_name'])));
+        array_push($result, array("id" => $rs['id'], "label" => $rs['school_name'], "value" => strip_tags($rs['school_name'])));
 
         if (count($result) > 6)
             break;
