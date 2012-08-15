@@ -23,21 +23,23 @@ if (!$con) {
             $birthDate = explode("/", $DOB);
             //get age from date or birthdate
             $age = (date("md", date("U", mktime(0, 0, 0, $birthDate[0], $birthDate[1], $birthDate[2]))) > date("md") ? ((date("Y") - $birthDate[2]) - 1) : (date("Y") - $birthDate[2]));
-            $count = mysqli_query($con,"SELECT COUNT(*) FROM participant_master WHERE
-                     student_name='$participantName' and dob='$DOB' and school_id='$partSId'");
-            $count = mysql_fetch_array($count);
+//            $DOB = STR_TO_DATE($DOB, '%m/%d/%Y');
+            $count = mysqli_query($con, "SELECT COUNT(*) FROM participant_master WHERE
+                     student_name='$participantName' and dob=STR_TO_DATE('$DOB', '%m/%d/%Y') and school_id='$partSId'");
+            $count = mysqli_fetch_array($count);
             if ($count[0] < 1) {
-                $rsd = mysqli_query($con,"SELECT MAX( regn_number ) as nextid FROM participant_master where 1");
+                $rsd = mysqli_query($con, "SELECT MAX( regn_number ) as nextid FROM participant_master where 1");
                 $rs = mysqli_fetch_array($rsd);
-                $regn_number = $rs['nextid'];
-                mysqli_autocommit($con, FALSE);
-                $result = mysqli_query($con, "INSERT INTO participant_master 
-                        (regn_number,student_name,age,dob,sex,school_id,parent_name,st_adress,
-                        pa_mail_id,pa_phone_number) VALUES ('$regn_number',$participantName',
-                        '$age', '$DOB', '$SEX', '$partSId','$partParentName',
-                        '$partAddress','$partMailid','$partPhNum')");
+                $regn_number = $rs['nextid'] + 1;   //get next allowed id;
+                //  mysqli_autocommit($con, FALSE);
+                $query = "INSERT INTO participant_master (regn_number,
+                    student_name,age,dob,sex,school_id,parent_name,st_adress,
+                    pa_mail_id,pa_phone_number) VALUES ('$regn_number',
+                    '$participantName','$age',STR_TO_DATE('$DOB', '%m/%d/%Y'),'$SEX','$partSId',
+                    '$partParentName','$partAddress','$partMailid','$partPhNum')";
+                $result = mysqli_query($con, $query);
 
-                if ($result !== TRUE) {
+                if ($result === FALSE) {
                     mysqli_rollback($con);  // if error, roll back transaction
                     echo 0;
                     mysqli_close($con);
@@ -47,7 +49,7 @@ if (!$con) {
                 //      $partId = mysqli_insert_id();
                 for ($index = 0; $index < count($partItems); $index++) {
                     $result = mysqli_query($con, "INSERT INTO event_trans VALUES 
-                            ('$partId','$partItems[$index]', '$partFeePaid')");
+                            ('$regn_number','$partItems[$index]', '$partFeePaid')");
                     if ($result !== TRUE) {
                         mysqli_rollback($con);  // if error, roll back transaction
                         echo 0;
@@ -57,6 +59,8 @@ if (!$con) {
                 }
                 mysqli_commit($con);
                 echo "1";
+            } else {
+                echo "2"; //participant already exists
             }
             mysqli_close($con);
         }

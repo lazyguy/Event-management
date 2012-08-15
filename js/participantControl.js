@@ -23,7 +23,7 @@ function saveParticipant(print){
     var SEX = $('#SEX').val();
     var partItems = $('#part-items').val();
     var partSId = $('#part-school-id').val();
-    var partParentName = $('#part-parent-nam').val();
+    var partParentName = $('#part-parent-name').val();
     var partAddress = $('#part-address').val();
     var partMailid = $('#part-mailid').val();
     var partPhNum = $('#part-ph-num').val();
@@ -71,7 +71,34 @@ function saveParticipant(print){
             partFeePaid:partFeePaid
         },
         function(data){
-            
-            });
+            alert(data);
+            if(data==1){
+                $('#participantAddResult').removeClass("success");
+                $('#participantAddResult').removeClass("error");
+                $('#participantAddResult').addClass("success");
+                $('#participantAddResult').empty();
+                $('#participantAddResult').append("Participant added");
+                $('#participantAddResult').show();
+                $(".chzn-select").val('').trigger("liszt:updated");
+                $('#partFields').find(':input').each(function() {
+                    if(this.id != "part-school-name" && this.id != "part-school-id" && this.id !="part-items")
+                        $(this).val('');
+                });
+            }else if(data==2){
+                $('#participantAddResult').removeClass("success");
+                $('#participantAddResult').removeClass("error");
+                $('#participantAddResult').addClass("error");
+                $('#participantAddResult').empty();
+                $('#participantAddResult').append("Same participant already exists");
+                $('#participantAddResult').show();
+            }else{
+                $('#participantAddResult').removeClass("success");
+                $('#participantAddResult').removeClass("error");
+                $('#participantAddResult').addClass("error");
+                $('#participantAddResult').empty();
+                $('#participantAddResult').append("An Error occured while adding participant.");
+                $('#participantAddResult').show();
+            }
+        });
     }
 }
