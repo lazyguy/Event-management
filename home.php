@@ -43,7 +43,7 @@
             $(document).ready(function(){
                 //Detect if browser is IE. Many things do not work as expected in ie.
                 //Not supporting IE seems like a better idea.
-                if($.browser.msie){
+                if($.browser.msie && $.browser.version <9){
                     if (navigator.onLine){
                         window.location.replace("http://abetterbrowser.org/");
                     }else{
