@@ -41,6 +41,15 @@
             var searchType; //last search type -> exact or match(%like%)
             var schoolName; //last school name that was searched
             $(document).ready(function(){
+                //Detect if browser is IE. Many things do not work as expected in ie.
+                //Not supporting IE seems like a better idea.
+                if($.browser.msie){
+                    if (navigator.onLine){
+                        window.location.replace("http://abetterbrowser.org/");
+                    }else{
+                        window.location.replace("better.html");
+                    }
+                }
                 $('#eventResult').hide();
                 $('#eventCancel').click(function(){  $('#modal-add-event').modal('hide')});
                 $('#eventSave').click(saveEvent);

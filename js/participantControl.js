@@ -71,7 +71,7 @@ function saveParticipant(print){
             partFeePaid:partFeePaid
         },
         function(data){
-            alert(data);
+           // alert(data);
             if(data==1){
                 $('#participantAddResult').removeClass("success");
                 $('#participantAddResult').removeClass("error");

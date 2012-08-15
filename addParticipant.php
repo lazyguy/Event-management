@@ -31,7 +31,7 @@ if (!$con) {
                 $rsd = mysqli_query($con, "SELECT MAX( regn_number ) as nextid FROM participant_master where 1");
                 $rs = mysqli_fetch_array($rsd);
                 $regn_number = $rs['nextid'] + 1;   //get next allowed id;
-                //  mysqli_autocommit($con, FALSE);
+                mysqli_autocommit($con, FALSE);
                 $query = "INSERT INTO participant_master (regn_number,
                     student_name,age,dob,sex,school_id,parent_name,st_adress,
                     pa_mail_id,pa_phone_number) VALUES ('$regn_number',
