@@ -81,7 +81,7 @@ if (!$con) {
                         $isSuccess = 1;
                         Print "Creating tables<br />";
                         if (!mysql_query("create table school_master(
-								school_id int(4) default null auto_increment ,
+								school_id int(6) default null auto_increment ,
 								school_name   char(100) not  NULL,
 								s_address     char(100) default NULL,
 								princ_name    char(60) default NULL,
@@ -94,9 +94,10 @@ if (!$con) {
                         } else {
                             Print " School Master created <br />";
                             $isSuccess = 1;
+                            mysql_query("ALTER TABLE school_master AUTO_INCREMENT = 4000;");
                         }
                         if (!mysql_query("create table event_master(
-								event_id     int(4) default null auto_increment,
+								event_id     int(6) default null auto_increment,
 								event_name   char(100) default NULL,
 								event_type   int(1),
 								event_year   int(4),
@@ -104,11 +105,12 @@ if (!$con) {
                             die('Could not create table event_master: ' . mysql_error());
                             $isSuccess = 0;
                         } else {
+                            mysql_query("ALTER TABLE event_master AUTO_INCREMENT = 6000;");
                             Print " Event Master created <br />";
                             $isSuccess = 1;
                         }
                         if (!mysql_query("create table participant_master(
-								regn_number  int(4) default null auto_increment,
+								regn_number  int(6) default null auto_increment,
 								student_name char(100) not  NULL,
 								age          int(3) not null,
 								dob          date   not null,
@@ -122,6 +124,7 @@ if (!$con) {
                             die('Could not create table participant_master: ' . mysql_error());
                             $isSuccess = 0;
                         } else {
+                            mysql_query("ALTER TABLE participant_master AUTO_INCREMENT = 200;");
                             Print " Participant Master created <br />";
                             $isSuccess = 1;
                         }
@@ -130,6 +133,17 @@ if (!$con) {
 								event_id       int(4),
 								fee_paid       FLOAT,
 								primary key (regn_number,event_id ));")) {
+                            die('Could not create table event_trans: ' . mysql_error());
+                            $isSuccess = 0;
+                        } else {
+                            Print " event trans created <br />";
+                            $isSuccess = 1;
+                        }
+                        if (!mysql_query("create table event_result (
+								regn_number    int(4) NOT NULL,
+								event_id       int(4) NOT NULL,
+								position       int(4) NOT NULL,
+								primary key (regn_number,event_id,position ));")) {
                             die('Could not create table event_trans: ' . mysql_error());
                             $isSuccess = 0;
                         } else {

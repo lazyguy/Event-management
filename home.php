@@ -20,10 +20,10 @@
         <script src="js/jquery-ui-1.8.22.custom.min.js"></script>
         <script src="js/bootstrap-alerts.js"></script>
         <script src="js/table-sorter.js"></script>
-        <script src="js/eventControl.js"></script>        
+        <script src="js/eventControl.js"></script>
         <script src="js/schoolControl.js"></script>
-        <script src="js/participantControl.js"></script> 
-        <script src="js/chosen.jquery.min.js"></script> 
+        <script src="js/participantControl.js"></script>
+        <script src="js/chosen.jquery.min.js"></script>
         <!--
         <script src="js/bootstrap-twipsy.js"></script>
         <script src="js/bootstrap-popover.js"></script>
@@ -77,7 +77,7 @@
                         ui.item ? getEvents(ui.item.value):false;
                     }
                 });
-                $("table#eventsTable").tablesorter({ headers:{ 2:{ sorter: false}, 3:{ sorter: false}}}); 
+                $("table#eventsTable").tablesorter({ headers:{ 2:{ sorter: false}, 3:{ sorter: false}}});
                 $("#eventNextPage").on("click", getEventNextPage);
                 $("#eventPrevPage").on("click", getEventPrevPage);
                 $('#curPage').html("1");
@@ -109,7 +109,7 @@
                         getSchools(null);
                     }
                 });
-                $("table#schoolsTable").tablesorter({ headers:{ 2:{ sorter: false}, 3:{ sorter: false}}}); 
+                $("table#schoolsTable").tablesorter({ headers:{ 2:{ sorter: false}, 3:{ sorter: false}}});
                 $("#schoolNextPage").on("click", getSchoolNextPage);
                 $("#schoolPrevPage").on("click", getSchoolPrevPage);
                 $("table#schoolsTable").on("click", getSchoolAction);
@@ -118,12 +118,12 @@
                 $('#schoolEditSave').click(function(){  editSchoolSave()});
                 //participant add stuff.
                 $('#modal-add-participant').bind('shown', function(){
-                    //$(':input','#saveSchoolForm').not(':button, :submit, :reset, :hidden').val(''); 
+                    //$(':input','#saveSchoolForm').not(':button, :submit, :reset, :hidden').val('');
                     $('#participantAddResult').hide();
-                    geteventnames();
+                    geteventnames(1);
                 });
                 $('#participantCancel').click(function(){  $('#modal-add-participant').modal('hide')});
-                
+
                 $('#part-school-name').autocomplete({
                     source: "get_school_list.php",
                     minLength: 2,
@@ -142,10 +142,10 @@
                     yearRange: "c-20:c"
                 });
                 $("#participantSave").on("click", saveParticipant);
-               
-                
+
+
             });
-           
+
         </script>
         <style type="text/css">
             body {
@@ -161,7 +161,7 @@
         <div class="topbar">
             <div class="fill">
                 <div class="container">
-                    <a class="brand" href="index.php">Balolsav 2012</a>
+                    <a class="brand" href="index.php">Balolsav <?php echo getYear() ?></a>
                     <ul class="nav">
                         <li class="active">
                             <a href="index.php">Home</a>
@@ -184,12 +184,12 @@
                     </p>
                     <?php include_once "eventView.html"; ?>
                     <?php include_once "schoolView.html"; ?>
-                    <button data-controls-modal="modal-add-event" data-backdrop="static" data-keyboard="true" class="btn success">ADD 
-                        Event&nbsp;&nbsp;</button> <button data-controls-modal="modal-edit-event" data-backdrop="static" data-keyboard="true" class="btn primary">Edit 
+                    <button data-controls-modal="modal-add-event" data-backdrop="static" data-keyboard="true" class="btn success">ADD
+                        Event&nbsp;&nbsp;</button> <button data-controls-modal="modal-edit-event" data-backdrop="static" data-keyboard="true" class="btn primary">Edit
                         Event&nbsp;&nbsp;&nbsp;</button><br/>
                     <br/>
-                    <button data-controls-modal="modal-add-school" data-backdrop="static" data-keyboard="true" class="btn success">ADD 
-                        School</button> <button data-controls-modal="modal-edit-school" data-backdrop="static" data-keyboard="true" class="btn primary">Edit 
+                    <button data-controls-modal="modal-add-school" data-backdrop="static" data-keyboard="true" class="btn success">ADD
+                        School</button> <button data-controls-modal="modal-edit-school" data-backdrop="static" data-keyboard="true" class="btn primary">Edit
                         School&nbsp;</button>
                 </div>
                 <div class="span-one-third">
@@ -198,8 +198,8 @@
                         Use this page to add or remove participants
                     </p>
                     <?php include_once "participantView.html"; ?>
-                    <button data-controls-modal="modal-add-participant" data-backdrop="static" data-keyboard="true" class="btn success">ADD 
-                        Participant</button> <button data-controls-modal="modal-edit-participant" data-backdrop="static" data-keyboard="true" class="btn primary">Edit 
+                    <button data-controls-modal="modal-add-participant" data-backdrop="static" data-keyboard="true" class="btn success">ADD
+                        Participant</button> <button data-controls-modal="modal-edit-participant" data-backdrop="static" data-keyboard="true" class="btn primary">Edit
                         Participant</button>
                 </div>
                 <div class="span-one-third">
@@ -208,7 +208,7 @@
                         Use this page to view or print reports and results
                     </p>
                     <p>
-                        <a class="btn success" href="#">View Reports &raquo;</a>
+                        <a class="btn success" href="reports.php">View Reports &raquo;</a>
                     </p>
                 </div>
             </div>

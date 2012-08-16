@@ -1,19 +1,48 @@
 
 
-function geteventnames() {
-    $('#part-items').empty();
-    $.get("get_event_list.php",{
+function geteventnames(element) {
+    var phpFile;
+    switch(element){
+        case 1:
+            $('#part-items').empty();
+            phpFile="get_event_list.php";
+            break;
+        case 2:
+            $('#report-eventName').empty();
+            phpFile="../get_event_list.php";
+            break;
+    }
+    $.get(phpFile,{
         term:"######getallstuff##########"    //I am too lazy to do stuff properly
     },
     function(data){
         var obj = jQuery.parseJSON(data);
         for(i=0;i<obj.length;i++){
-            $('#part-items').append(
-                $("<option></option>").attr("value",obj[i].id).text(obj[i].value+" - "+obj[i].label)
-                ); 
+            switch(element){
+                case 1:
+                    $('#part-items').append(
+                        $("<option></option>").attr("value",obj[i].id).text(obj[i].value+" - "+obj[i].label)
+                        );
+                    break;
+                case 2:
+                    if(i===0){
+                        $('#report-eventName').append("<option></option>");
+                    }
+                    $('#report-eventName').append(
+                        $("<option></option>").attr("value",obj[i].id).text(obj[i].value+" - "+obj[i].label)
+                        );
+                    break;
+            }
         }
-        //call list updated to add the new data from ajax to the list
-        $("#part-items").trigger("liszt:updated");
+        switch(element){
+            //call list updated to add the new data from ajax to the list
+            case 1:
+                $("#part-items").trigger("liszt:updated");
+                break;
+            case 2:
+                $("#report-eventName").trigger("liszt:updated");
+                break;
+        }
     });
 }
 
@@ -71,7 +100,7 @@ function saveParticipant(print){
             partFeePaid:partFeePaid
         },
         function(data){
-           // alert(data);
+            // alert(data);
             if(data==1){
                 $('#participantAddResult').removeClass("success");
                 $('#participantAddResult').removeClass("error");
