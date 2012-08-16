@@ -193,9 +193,9 @@
                     if ( e.keyCode == 13 ){
                         $.post("../addParticipant.php",{
                             type:"getParticipant",
-                            regId:$('#report-firstRegId').val("")
+                            regId:$('#report-firstRegId').val()
                         },function(data){
-                             alert(data);
+                             //alert(data);
                             if(data==-1){
                                 $('#report-firstRegId-error').empty();
                                 $('#report-firstRegId-error').append("Registration Id is not correct");
@@ -217,7 +217,7 @@
                     if ( e.keyCode == 13 ){
                         $.post("../addParticipant.php",{
                             type:"getParticipant",
-                            regId:$('#report-secondRegId').val("")
+                            regId:$('#report-secondRegId').val()
                         },function(data){
                             // alert(data);
                             if(data==-1){
@@ -241,7 +241,7 @@
                     if ( e.keyCode == 13 ){
                         $.post("../addParticipant.php",{
                             type:"getParticipant",
-                            regId:$('#report-thirdRegId').val("")
+                            regId:$('#report-thirdRegId').val()
                         },function(data){
                             // alert(data);
                             if(data==-1){

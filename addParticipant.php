@@ -87,6 +87,7 @@ if (!$con) {
                 $schoolName = $rs2['school_name'];
                 array_push($partList, array("student_name" => $rs['student_name'], "school_name" => $schoolName));
                 echo array_to_json($partList);
+                return;
             }
         }
     }
