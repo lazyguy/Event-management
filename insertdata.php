@@ -27,7 +27,7 @@ if (!$con) {
             $eType = $_POST["etype"];
             $year = getYear();
             $etype = getEventType($eType);
-            //see if event exists already	
+            //see if event exists already
             $count = mysql_query("SELECT COUNT(*) FROM event_master WHERE event_name='$ename' and event_type='$etype'");
             $count = mysql_fetch_array($count);
             if ($count[0] < 1) {
@@ -43,6 +43,7 @@ if (!$con) {
             mysql_close($con);
         } else if (strcmp($insertType, "deleteEvent") == 0) {
             $eid = $_POST["eid"];
+            $eid = mysql_real_escape_string($eid);
             $year = getYear();
             $count = mysql_query("SELECT COUNT(*) FROM event_master WHERE event_id='$eid' and event_year='$year'");
             $count = mysql_fetch_array($count);
@@ -94,6 +95,7 @@ if (!$con) {
         } else if (strcmp($insertType, "getEventbyId") == 0) {
             $result = array();
             $eid = $_POST["eid"];
+            $eid = mysql_real_escape_string($eid);
             $year = getYear();
             $rsd = mysql_query("SELECT * FROM event_master WHERE event_id='$eid' and event_year='$year'");
             $erroror = mysql_error();
@@ -111,6 +113,7 @@ if (!$con) {
             $eName = mysql_real_escape_string($eName);
             $eType = $_POST["eType"];
             $eid = $_POST["eid"];
+            $eid = mysql_real_escape_string($eid);
             $year = getYear();
             $etype = getEventType($eType);
             $count = mysql_query("SELECT COUNT(*) FROM event_master WHERE event_name='$eName' and event_type='$eType'");

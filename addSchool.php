@@ -73,6 +73,7 @@ if (!$con) {
             mysql_close($con);
         } else if (strcmp($insertType, "deleteSchool") == 0) {
             $eid = $_POST["eid"];
+            $eid = mysql_real_escape_string($eid);
             $year = getYear();
             $count = mysql_query("SELECT COUNT(*) FROM school_master WHERE school_id='$eid'");
             $count = mysql_fetch_array($count);
@@ -90,6 +91,7 @@ if (!$con) {
         } else if (strcmp($insertType, "getSchoolbyId") == 0) {
             $result = array();
             $eid = $_POST["eid"];
+            $eid = mysql_real_escape_string($eid);
             $year = getYear();
             $rsd = mysql_query("SELECT * FROM school_master WHERE school_id='$eid'");
             $erroror = mysql_error();
@@ -107,11 +109,17 @@ if (!$con) {
             $result = array();
 
             $eid = $_POST["eid"];
+            $eid = mysql_real_escape_string($eid);
             $eName = $_POST["eName"];
+            $eName = mysql_real_escape_string($eName);
             $eAddress = $_POST["eAddress"];
+            $eAddress = mysql_real_escape_string($eAddress);
             $ePrincipal = $_POST["ePrincipal"];
+            $ePrincipal = mysql_real_escape_string($ePrincipal);
             $ePhone = $_POST["ePhone"];
+            $ePhone = mysql_real_escape_string($ePhone);
             $eEmail = $_POST["eEmail"];
+            $eEmail = mysql_real_escape_string($eEmail);
             $year = getYear();
 
 

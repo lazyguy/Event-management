@@ -10,15 +10,23 @@ if (!$con) {
     if ($db_selected) {
         if (strcmp($insertType, "addParticipant") == 0) {
             $participantName = $_POST["participantName"];
+            $participantName = mysqli_real_escape_string($con, $participantName);
             $DOB = $_POST["DOB"];
             $SEX = $_POST["SEX"];
+            $SEX = mysqli_real_escape_string($con, $SEX);
             $partItems = $_POST["partItems"];
             $partSId = $_POST["partSId"];
+            $partSId = mysqli_real_escape_string($con, $partSId);
             $partParentName = $_POST["partParentName"];
+            $partParentName = mysqli_real_escape_string($con, $partParentName);
             $partAddress = $_POST["partAddress"];
+            $partAddress = mysqli_real_escape_string($con, $partAddress);
             $partMailid = $_POST["partMailid"];
+            $partMailid = mysqli_real_escape_string($con, $partMailid);
             $partPhNum = $_POST["partPhNum"];
+            $partPhNum = mysqli_real_escape_string($con, $partPhNum);
             $partFeePaid = $_POST["partFeePaid"];
+            $partFeePaid = mysqli_real_escape_string($con, $partFeePaid);
 
             //explode the date to get month, day and year
             $birthDate = explode("/", $DOB);
@@ -52,8 +60,9 @@ if (!$con) {
                 //now insert all items into the items table with student id.
                 //      $partId = mysqli_insert_id();
                 for ($index = 0; $index < count($partItems); $index++) {
+                    $partItemsEscaped = mysqli_real_escape_string($con, $partItems[$index]);
                     $result = mysqli_query($con, "INSERT INTO event_trans VALUES
-                            ('$regn_number','$partItems[$index]', '$partFeePaid')");
+                            ('$regn_number','$partItemsEscaped', '$partFeePaid')");
                     if ($result !== TRUE) {
                         mysqli_rollback($con);  // if error, roll back transaction
                         echo 0;
@@ -69,8 +78,9 @@ if (!$con) {
             mysqli_close($con);
         } else if (strcmp($insertType, "getParticipant") == 0) {
             $regId = $_POST["regId"];
+            $regId = mysqli_real_escape_string($con, $regId);
 
-            $count = mysqli_query($con, "select count(*) from participant_master where regn_number='$regId'");
+            $count = mysqli_query($con, "select count(*) from participant_master where BINARY regn_number='$regId'");
             $count = mysqli_fetch_array($count);
             if ($count[0] < 1) {
                 echo -1;    //there is no participant present with that id

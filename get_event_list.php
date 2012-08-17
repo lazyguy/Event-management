@@ -24,6 +24,7 @@ if (!$con) {
     $db_selected = mysql_select_db('BALOLSAV', $con);
 
     $q = strtolower($_GET["term"]);
+    $q = mysql_real_escape_string($q);
     if (!$q)
         return;
     $year = getYear();
