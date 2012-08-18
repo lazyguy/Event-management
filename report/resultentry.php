@@ -71,7 +71,7 @@
                                     </div>
                                 </div>
                                 <div class="span7 offset1">
-                                    <div  id="report-firstRegId-error" class="alert-message error"></div>
+                                    <div  id="report-firstRegId-error" class="alert-message warning"></div>
                                 </div>
                             </div>
                             <div class="row" style="padding-top: 10px;">
@@ -228,7 +228,6 @@
                 $('#saveButtonMessage').hide(); 
             });
             $('#report-entry-save').on("click",function(){
-                alert("++"+$('#report-score').val()+"++"+$('#report-score').val());
                 var firstHasCorrectValue = $('#firstHasCorrectValue').val();
                 if(firstHasCorrectValue <= 0){
                     $('#saveButtonMessage').removeClass('success');
@@ -236,11 +235,11 @@
                     $('#saveButtonMessage').empty();
                     $('#saveButtonMessage').append("Please enter registration id before pressing save.");
                     $('#saveButtonMessage').show();
-                }else if( ($('#report-score').val() <= 0 ||$('#report-score').val() == null) && $('#report-score').val() == null ){
+                }else if( ($('#report-score').val() <= 0 ||$('#report-score').val() == null) && $('#report-position-value').val() == 0 ){
                     $('#saveButtonMessage').removeClass('success');
                     $('#saveButtonMessage').addClass('error');
                     $('#saveButtonMessage').empty();
-                    $('#saveButtonMessage').append("Please enter asdasd id before pressing save.");
+                    $('#saveButtonMessage').append("Please enter poition or score or both ");
                     $('#saveButtonMessage').show();
                 }else{
                     $('#saveButtonMessage').hide();
