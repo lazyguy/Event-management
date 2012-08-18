@@ -179,9 +179,7 @@
             <div class="row">
                 <div class="span-one-third">
                     <h2>Event/School</h2>
-                    <p>
-                        Use this page to add or remove events and schools
-                    </p>
+
                     <?php include_once "eventView.html"; ?>
                     <?php include_once "schoolView.html"; ?>
                     <button data-controls-modal="modal-add-event" data-backdrop="static" data-keyboard="true" class="btn success">ADD
@@ -189,26 +187,35 @@
                         Event&nbsp;&nbsp;&nbsp;</button><br/>
                     <br/>
                     <button data-controls-modal="modal-add-school" data-backdrop="static" data-keyboard="true" class="btn success">ADD
-                        School</button> <button data-controls-modal="modal-edit-school" data-backdrop="static" data-keyboard="true" class="btn primary">Edit
+                        School</button> 
+                    <button data-controls-modal="modal-edit-school" data-backdrop="static" data-keyboard="true" class="btn primary">Edit
                         School&nbsp;</button>
+                    <p></p>
+                    <p>
+                        Use this page to add or remove events and schools
+                    </p>
                 </div>
                 <div class="span-one-third">
                     <h2>Participant</h2>
+
+                    <?php include_once "participantView.html"; ?>
+                    <button data-controls-modal="modal-add-participant" data-backdrop="static" data-keyboard="true" class="btn success">ADD
+                        Participant</button> 
+                    <button data-controls-modal="modal-edit-participant" data-backdrop="static" data-keyboard="true" class="btn primary">Edit
+                        Participant</button>
+                    <p></p>
                     <p>
                         Use this page to add or remove participants
                     </p>
-                    <?php include_once "participantView.html"; ?>
-                    <button data-controls-modal="modal-add-participant" data-backdrop="static" data-keyboard="true" class="btn success">ADD
-                        Participant</button> <button data-controls-modal="modal-edit-participant" data-backdrop="static" data-keyboard="true" class="btn primary">Edit
-                        Participant</button>
                 </div>
                 <div class="span-one-third">
                     <h2>Results/Reports</h2>
+
                     <p>
-                        Use this page to view or print reports and results
+                        <a class="btn success" href="reports.php">Reports/Results &raquo;</a>
                     </p>
                     <p>
-                        <a class="btn success" href="reports.php">View Reports &raquo;</a>
+                        Use this page to enter, view or print reports and results
                     </p>
                 </div>
             </div>

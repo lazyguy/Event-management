@@ -58,98 +58,85 @@
                                     <select id="report-eventName" data-placeholder="Choose an event" class="chzn-select" style="width:275px;">
                                         <option value=""></option>
                                     </select>
-                                    <input id="firstHasCorrectValue" type="hidden" value="-1"/>
-                                    <input id="secondHasCorrectValue" type="hidden" value="-1"/>
-                                    <input id="thirdHasCorrectValue" type="hidden" value="-1"/>
+                                    <input id="firstHasCorrectValue" type="hidden" value="0"/>
                                 </div>
                             </div><!-- /clearfix -->
                         </fieldset>
-                        <fieldset id="resultSet">
-                            <fieldset id="firstResultSet"  class="well" >
-                                <h5>First Position</h5>
-                                <div class="row">
-                                    <div class="span6">
-                                        <label for="report-firstRegId" style="padding-top: 15px;">Registration Id</label>
-                                        <div class="input" style="padding-top: 5px;">
-                                            <input class="large" id="report-firstRegId" placeholder="Enter registration Id and press enter" name="report-firstRegId" type="text" />
-                                        </div>
-                                    </div>
-                                    <div class="span7 offset1">
-                                        <div  id="report-firstRegId-error" class="alert-message error"></div>
+                        <fieldset id="resultSet"  class="well">
+                            <div class="row">
+                                <div class="span6">
+                                    <label for="report-firstRegId" style="padding-top: 15px;">Registration Id</label>
+                                    <div class="input" style="padding-top: 5px;">
+                                        <input class="large" id="report-firstRegId" placeholder="Enter registration Id and press enter" name="report-firstRegId" type="text" />
                                     </div>
                                 </div>
-                                <div class="row" style="padding-top: 10px;">
-                                    <div class="span6">
-                                        <label for="report-firstPName" style="padding-top: 15px;">Participant Name</label>
-                                        <div class="input" style="padding-top: 5px;">
-                                            <input class="large" id="report-firstPName" name="report-firstPName" type="text" readonly="readonly" />
-                                        </div>
-                                    </div>
-                                    <div class="span6">
-                                        <label for="report-firstSName" style="padding-top: 15px;">School Name</label>
-                                        <div class="input" style="padding-top: 5px;">
-                                            <input class="large" id="report-firstSName" name="report-firstSName" type="text" readonly="readonly" />
-                                        </div>
+                                <div class="span7 offset1">
+                                    <div  id="report-firstRegId-error" class="alert-message error"></div>
+                                </div>
+                            </div>
+
+
+                            <div class="row" style="padding-top: 10px;">
+                                <div class="span6">
+                                    <label for="report-score" style="padding-top: 15px;">Score</label>
+                                    <div class="input" style="padding-top: 5px;">
+                                        <input class="large" id="report-score" placeholder="Enter score out of 100" name="report-score" type="text" />
                                     </div>
                                 </div>
-                            </fieldset>
-                            <fieldset id="secondResultSet"  class="well" >
-                                <h5>Second Position</h5>
-                                <div class="row">
-                                    <div class="span6">
-                                        <label for="report-secondRegId" style="padding-top: 15px;">Registration Id</label>
-                                        <div class="input" style="padding-top: 5px;">
-                                            <input class="large" id="report-secondRegId" placeholder="Enter registration Id and press enter" name="report-secondRegId" type="text" />
-                                        </div>
-                                    </div>
-                                    <div class="span7 offset1">
-                                        <div  id="report-secondRegId-error" class="alert-message error"></div>
+                                <div class="span6">
+                                    <label for="report-grade" style="padding-top: 15px;">Grade</label>
+                                    <div class="input" style="padding-top: 5px;">
+                                        <input class="large" id="report-grade" readonly="readonly" name="report-grade" type="text" />
                                     </div>
                                 </div>
-                                <div class="row" style="padding-top: 10px;">
-                                    <div class="span6">
-                                        <label for="report-secondPName" style="padding-top: 15px;">Participant Name</label>
-                                        <div class="input" style="padding-top: 5px;">
-                                            <input class="large" id="report-secondPName" name="report-secondPName" type="text" readonly="readonly" />
-                                        </div>
-                                    </div>
-                                    <div class="span6">
-                                        <label for="report-secondSName" style="padding-top: 15px;">School Name</label>
-                                        <div class="input" style="padding-top: 5px;">
-                                            <input class="large" id="report-secondSName" name="report-secondSName" type="text" readonly="readonly" />
-                                        </div>
+                            </div>
+
+                            <div class="clearfix" style="padding-top: 10px;">
+                                <input id="report-position-value" type="hidden" value="0"/>
+                                <label id="optionsRadio">Position/Place</label>
+                                <div class="input">
+                                    <ul class="inputs-list">
+                                        <li>
+                                            <label>
+                                                <input type="radio" name="report-position" value="1" />
+                                                <span>First Position</span>
+                                            </label>
+                                        </li>
+                                        <li>
+                                            <label>
+                                                <input type="radio" name="report-position" value="2" />
+                                                <span>Second Position</span>
+                                            </label>
+                                        </li>
+                                        <li>
+                                            <label>
+                                                <input type="radio" name="report-position" value="3" />
+                                                <span>Third Position</span>
+                                            </label>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div><!-- /clearfix -->
+
+
+
+
+                            <div class="row" >
+                                <div class="span6">
+                                    <label for="report-firstPName" style="padding-top: 15px;">Participant Name</label>
+                                    <div class="input" style="padding-top: 5px;">
+                                        <input class="large" id="report-firstPName" name="report-firstPName" type="text" readonly="readonly" />
                                     </div>
                                 </div>
-                            </fieldset>
-                            <fieldset id="thirdResultSet"  class="well" >
-                                <h5>Third Position</h5>
-                                <div class="row">
-                                    <div class="span6">
-                                        <label for="report-thirdRegId" style="padding-top: 15px;">Registration Id</label>
-                                        <div class="input" style="padding-top: 5px;">
-                                            <input class="large" id="report-thirdRegId" placeholder="Enter registration Id and press enter" name="report-thirdRegId" type="text" />
-                                        </div>
-                                    </div>
-                                    <div class="span7 offset1">
-                                        <div  id="report-thirdRegId-error" class="alert-message error"></div>
+                                <div class="span6">
+                                    <label for="report-firstSName" style="padding-top: 15px;">School Name</label>
+                                    <div class="input" style="padding-top: 5px;">
+                                        <input class="large" id="report-firstSName" name="report-firstSName" type="text" readonly="readonly" />
                                     </div>
                                 </div>
-                                <div class="row" style="padding-top: 10px;">
-                                    <div class="span6">
-                                        <label for="report-thirdPName" style="padding-top: 15px;">Participant Name</label>
-                                        <div class="input" style="padding-top: 5px;">
-                                            <input class="large" id="report-thirdPName" name="report-thirdPName" type="text" readonly="readonly" />
-                                        </div>
-                                    </div>
-                                    <div class="span6">
-                                        <label for="report-thirdSName" style="padding-top: 15px;">School Name</label>
-                                        <div class="input" style="padding-top: 5px;">
-                                            <input class="large" id="report-thirdSName" name="report-thirdSName" type="text" readonly="readonly" />
-                                        </div>
-                                    </div>
-                                </div>
-                            </fieldset>
-                            <div class="row" id="resultSaveButtons">
+                            </div>
+
+                            <div class="row" id="resultSaveButtons" style="padding-top: 25px;">
                                 <div class="span3" >
                                     <a id="report-entry-cancel" class="btn error">Reset</a>
                                     <a id="report-entry-save" class="btn primary">Save</a>
@@ -170,8 +157,6 @@
                 geteventnames(2);
                 $('#resultSet').hide();
                 $('#report-firstRegId-error').hide();
-                $('#report-secondRegId-error').hide();
-                $('#report-thirdRegId-error').hide();
                 $('#saveButtonMessage').hide();                
                 $('#report-firstRegId').change( function(e){
                     $('#report-firstPName').val("");
@@ -179,38 +164,24 @@
                     $('#report-firstRegId-error').empty();
                     $('#report-firstRegId-error').append("Registration Id is changed, press enter in the field to validate");
                     $('#report-firstRegId-error').show();
-                    $('#firstHasCorrectValue').val("-1");
+                    $('#firstHasCorrectValue').val("0");
                 });
-                $('#report-secondRegId').change( function(e){
-                    $('#report-secondPName').val("");
-                    $('#report-secondSName').val("");
-                    $('#report-secondRegId-error').empty();
-                    $('#report-secondRegId-error').append("Registration Id is changed, press enter in the field to validate");
-                    $('#report-secondRegId-error').show();
-                    $('#secondHasCorrectValue').val("-1");
-                });
-                $('#report-thirdRegId').change( function(e){
-                    $('#report-thirdPName').val("");
-                    $('#report-thirdSName').val("");
-                    $('#report-thirdRegId-error').empty();
-                    $('#report-thirdRegId-error').append("Registration Id is changed, press enter in the field to validate");
-                    $('#report-thirdRegId-error').show();
-                    $('#thirdHasCorrectValue').val("-1");
-                });
+               
                 $('#report-firstRegId').on('keypress', function(e){
                     if ( e.keyCode == 13 ){
                         $.post("../addParticipant.php",{
                             type:"getParticipant",
-                            regId:$('#report-firstRegId').val()
+                            regId:$('#report-firstRegId').val(),
+                            eid:$('#report-eventName').val()
                         },function(data){
-                            //alert(data);
+                            //    alert(data);
                             if(data==-1){
                                 $('#report-firstRegId-error').empty();
                                 $('#report-firstRegId-error').append("Registration Id is not correct");
                                 $('#report-firstRegId-error').show();
                                 $('#report-firstPName').val("");
                                 $('#report-firstSName').val("");
-                                $('#firstHasCorrectValue').val("-1");
+                                $('#firstHasCorrectValue').val("0");
                                 $('#report-firstRegId').select();
                             }else{
                                 var obj = jQuery.parseJSON(data);
@@ -219,88 +190,50 @@
                                 $('#report-firstPName').val(obj[0].student_name);
                                 $('#report-firstSName').empty();
                                 $('#report-firstSName').val(obj[0].school_name);
+                                $('#report-grade').val('');
+                                $('#report-grade').val(obj[0].grade);
+                                $('#report-score').val('');
+                                $('#report-score').val(obj[0].score);
                                 $('#firstHasCorrectValue').val("1");
-                                $('#report-secondRegId').focus();
-                                goToByScroll("report-secondRegId");
-                            }
-                        });
-                    }
-                });
-                $('#report-secondRegId').on('keypress', function(e){
-                    if ( e.keyCode == 13 ){
-                        $.post("../addParticipant.php",{
-                            type:"getParticipant",
-                            regId:$('#report-secondRegId').val()
-                        },function(data){
-                            // alert(data);
-                            if(data==-1){
-                                $('#report-secondRegId-error').empty();
-                                $('#report-secondRegId-error').append("Registration Id is not correct");
-                                $('#report-secondRegId-error').show();
-                                $('#report-secondPName').val("");
-                                $('#report-secondSName').val("");
-                                $('#secondHasCorrectValue').val("-1");
-                                $('#report-secondRegId').select();
-                            }else{
-                                var obj = jQuery.parseJSON(data);
-                                $('#report-secondRegId-error').hide();
-                                $('#report-secondPName').empty();
-                                $('#report-secondPName').val(obj[0].student_name);
-                                $('#report-secondSName').empty();
-                                $('#report-secondSName').val(obj[0].school_name);
-                                $('#secondHasCorrectValue').val("1");
-                                $('#report-thirdRegId').focus();
-                                goToByScroll("report-thirdRegId");
-                            }
-                        });
-                    }
-                });
-                $('#report-thirdRegId').on('keypress', function(e){
-                    if ( e.keyCode == 13 ){
-                        $.post("../addParticipant.php",{
-                            type:"getParticipant",
-                            regId:$('#report-thirdRegId').val()
-                        },function(data){
-                            // alert(data);
-                            if(data==-1){
-                                $('#report-thirdRegId-error').empty();
-                                $('#report-thirdRegId-error').append("Registration Id is not correct");
-                                $('#report-thirdRegId-error').show();
-                                $('#report-thirdPName').val("");
-                                $('#report-thirdSName').val("");
-                                $('#thirdHasCorrectValue').val("-1");
-                                $('#report-thirdRegId').select();
-                            }else{
-                                var obj = jQuery.parseJSON(data);
-                                $('#report-thirdRegId-error').hide();
-                                $('#report-thirdPName').empty();
-                                $('#report-thirdPName').val(obj[0].student_name);
-                                $('#report-thirdSName').empty();
-                                $('#report-thirdSName').val(obj[0].school_name);
-                                $('#thirdHasCorrectValue').val("1");
-                                goToByScroll("resultSaveButtons");
-                                //$('#resultSaveButtons').focus();
+                                $('#report-score').select();
                             }
                         });
                     }
                 });
             });
-            function goToByScroll(id){
-                // Reove "link" from the ID
-                id = id.replace("link", "");
-                // Scroll
-                $('html,body').animate({
-                    scrollTop: $("#"+id).offset().top},
-                'slow');
-            }
             $(".chzn-select").chosen();
             $("#report-eventName").chosen().change(function(){
-                // alert("Asd");
                 $('#resultSet').show();
+                $('#resultentryform').find(':input').each(function(){
+                    var objId = this.id;
+                    if(objId.localeCompare ("report-eventName") !=0){
+                        switch(this.type){
+                            case 'checkbox':
+                            case 'radio':
+                                this.checked = false;
+                                break;
+                            default:
+                                $(this).val('');
+                                break;
+                        }
+                    }
+                }); 
+                $('#report-firstRegId').focus();
             });
             $('#report-entry-cancel').on("click",function(){
                 $('#resultentryform').find(':input').each(function(){
-                    $(this).val('');
+                    var objId = this.id;
+                    if(objId.localeCompare ("report-eventName") !=0){
+                        switch(this.type){
+                            case 'checkbox':
+                            case 'radio':
+                                this.checked = false;
+                                break;
+                            default:
+                                $(this).val('');
+                                break;
+                        }
+                    }
                 });
                 $('#report-firstRegId-error').hide();
                 $('#report-secondRegId-error').hide();
@@ -309,23 +242,27 @@
             });
             $('#report-entry-save').on("click",function(){
                 var firstHasCorrectValue = $('#firstHasCorrectValue').val();
-                var secondHasCorrectValue = $('#secondHasCorrectValue').val();
-                var thirdHasCorrectValue = $('#thirdHasCorrectValue').val();
-                if(firstHasCorrectValue <= -1||secondHasCorrectValue == -1||thirdHasCorrectValue == -1){
+                if(firstHasCorrectValue <= 0){
                     $('#saveButtonMessage').removeClass('success');
                     $('#saveButtonMessage').addClass('error');
                     $('#saveButtonMessage').empty();
-                    $('#saveButtonMessage').append("Please enter result for all three places before pressing save.");
+                    $('#saveButtonMessage').append("Please enter result pressing save.");
                     $('#saveButtonMessage').show();
                 }else{
                     $('#saveButtonMessage').hide();
+                    var score = $('#report-score').val();
+                    if(score>=80) grade='A';
+                    if(score>=60&&score<80) grade='B';
+                    if(score<60) grade='C';
                     $.post("manageResult.php",{
-                        type:"addResult",
+                        type:"addResult2",
                         eid:$('#report-eventName').val(),
-                        firstregId:$('#report-firstRegId').val(),
-                        secondregId:$('#report-secondRegId').val(),
-                        thirdregId:$('#report-thirdRegId').val()
+                        regId:$('#report-firstRegId').val(),
+                        score:$('#report-score').val(),
+                        grade:grade,
+                        position:$('#report-position').val()
                     },function(data){
+                        alert(data);
                         if(data==1){
                             $('#saveButtonMessage').removeClass('error');
                             $('#saveButtonMessage').addClass('success');
@@ -341,6 +278,9 @@
                         }
                     });
                 }
+            });
+            $("input:radio[name=report-position]").click(function() {
+                $('#report-position-value').val($(this).val());
             });
         </script>
     </body>

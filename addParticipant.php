@@ -61,7 +61,7 @@ if (!$con) {
                 //      $partId = mysqli_insert_id();
                 for ($index = 0; $index < count($partItems); $index++) {
                     $partItemsEscaped = mysqli_real_escape_string($con, $partItems[$index]);
-                    $result = mysqli_query($con, "INSERT INTO event_trans VALUES
+                    $result = mysqli_query($con, "INSERT INTO event_trans(regn_number,event_id,fee_paid) VALUES
                             ('$regn_number','$partItemsEscaped', '$partFeePaid')");
                     if ($result !== TRUE) {
                         mysqli_rollback($con);  // if error, roll back transaction
@@ -79,7 +79,7 @@ if (!$con) {
         } else if (strcmp($insertType, "getParticipant") == 0) {
             $regId = $_POST["regId"];
             $regId = mysqli_real_escape_string($con, $regId);
-
+            $eid = $_POST["eid"];
             $count = mysqli_query($con, "select count(*) from participant_master where BINARY regn_number='$regId'");
             $count = mysqli_fetch_array($count);
             if ($count[0] < 1) {
@@ -95,7 +95,13 @@ if (!$con) {
                 $result2 = mysqli_query($con, $query);
                 $rs2 = mysqli_fetch_array($result2);
                 $schoolName = $rs2['school_name'];
-                array_push($partList, array("student_name" => $rs['student_name'], "school_name" => $schoolName));
+
+                $query = "select * from event_trans where event_id='$eid' and regn_number='$regId'";
+                $result3 = mysqli_query($con, $query);
+                $rs3 = mysqli_fetch_array($result3);
+                $grade = $rs3['event_grade'];
+                $score = $rs3['event_marks'];
+                array_push($partList, array("student_name" => $rs['student_name'], "school_name" => $schoolName,"score" => $score,"grade" => $grade));
                 echo array_to_json($partList);
                 return;
             }

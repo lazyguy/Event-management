@@ -3,7 +3,7 @@
 <html lang="en">
     <head>
         <meta charset="utf-8">
-        <title>Bootstrap, from Twitter</title>
+         <title>Balolsav <?php echo getYear() ?></title>
         <meta name="description" content="">
         <meta name="author" content="">
 
@@ -35,7 +35,22 @@
         </div>
 
         <div class="container-fluid">
-            <?php include_once "report/sidebar.html"; ?>
+            <div class="sidebar" >
+                <div class="well">
+                    <h5>Results</h5>
+                    <ul>
+                        <li><a id="enterResult" href="report/resultentry.php">Enter/Edit Result</a></li>
+                    </ul>
+                    <h5>Print Reports</h5>
+                    <ul>
+                        <li><a href="#">Schools</a></li>
+                        <li><a href="#">Items</a></li>
+                        <li><a href="#">Participants</a></li>
+                        <li><a href="#">Certificate</a></li>
+                    </ul>
+
+                </div>
+            </div>
             <div class="content" >
                 <div id="reportContents">
                     <div class="hero-unit">
