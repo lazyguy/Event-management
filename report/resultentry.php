@@ -50,7 +50,7 @@
                     <h5>Select Event name to enter result</h5>
                 </div>
                 <div id="reportContents" class="row" >
-                    <form>
+                    <form id="resultentryform">
                         <fieldset>
                             <div class="clearfix">
                                 <label for="report-eventName">Event Name</label>
@@ -58,6 +58,9 @@
                                     <select id="report-eventName" data-placeholder="Choose an event" class="chzn-select" style="width:275px;">
                                         <option value=""></option>
                                     </select>
+                                    <input id="firstHasCorrectValue" type="hidden" value="-1"/>
+                                    <input id="secondHasCorrectValue" type="hidden" value="-1"/>
+                                    <input id="thirdHasCorrectValue" type="hidden" value="-1"/>
                                 </div>
                             </div><!-- /clearfix -->
                         </fieldset>
@@ -147,10 +150,11 @@
                                 </div>
                             </fieldset>
                             <div class="row">
-                                <div class="span6 offset11" >
-                                    <a id="report-entry-cancel" class="btn secondary">Cancel</a>
+                                <div class="span3" >
+                                    <a id="report-entry-cancel" class="btn error">Reset</a>
                                     <a id="report-entry-save" class="btn primary">Save</a>
                                 </div>
+                                <div id="saveButtonMessage" class="span7 alert-message error"></div>
                             </div>
                         </fieldset>
                     </form>
@@ -164,16 +168,18 @@
         <script type="text/javascript">
             $(document).ready(function(){
                 geteventnames(2);
-                $('#resultSet').hide();
+                //  $('#resultSet').hide();
                 $('#report-firstRegId-error').hide();
                 $('#report-secondRegId-error').hide();
                 $('#report-thirdRegId-error').hide();
+                $('#saveButtonMessage').hide();                
                 $('#report-firstRegId').change( function(e){
                     $('#report-firstPName').val("");
                     $('#report-firstSName').val("");
                     $('#report-firstRegId-error').empty();
                     $('#report-firstRegId-error').append("Registration Id is changed, press enter in the field to validate");
                     $('#report-firstRegId-error').show();
+                    $('#firstHasCorrectValue').val("-1");
                 });
                 $('#report-secondRegId').change( function(e){
                     $('#report-secondPName').val("");
@@ -181,6 +187,7 @@
                     $('#report-secondRegId-error').empty();
                     $('#report-secondRegId-error').append("Registration Id is changed, press enter in the field to validate");
                     $('#report-secondRegId-error').show();
+                    $('#secondHasCorrectValue').val("-1");
                 });
                 $('#report-thirdRegId').change( function(e){
                     $('#report-thirdPName').val("");
@@ -188,6 +195,7 @@
                     $('#report-thirdRegId-error').empty();
                     $('#report-thirdRegId-error').append("Registration Id is changed, press enter in the field to validate");
                     $('#report-thirdRegId-error').show();
+                    $('#thirdHasCorrectValue').val("-1");
                 });
                 $('#report-firstRegId').on('keypress', function(e){
                     if ( e.keyCode == 13 ){
@@ -195,13 +203,14 @@
                             type:"getParticipant",
                             regId:$('#report-firstRegId').val()
                         },function(data){
-                             //alert(data);
+                            //alert(data);
                             if(data==-1){
                                 $('#report-firstRegId-error').empty();
                                 $('#report-firstRegId-error').append("Registration Id is not correct");
                                 $('#report-firstRegId-error').show();
                                 $('#report-firstPName').val("");
                                 $('#report-firstSName').val("");
+                                $('#firstHasCorrectValue').val("-1");
                             }else{
                                 var obj = jQuery.parseJSON(data);
                                 $('#report-firstRegId-error').hide();
@@ -209,6 +218,7 @@
                                 $('#report-firstPName').val(obj[0].student_name);
                                 $('#report-firstSName').empty();
                                 $('#report-firstSName').val(obj[0].school_name);
+                                $('#firstHasCorrectValue').val("1");
                             }
                         });
                     }
@@ -226,6 +236,7 @@
                                 $('#report-secondRegId-error').show();
                                 $('#report-secondPName').val("");
                                 $('#report-secondSName').val("");
+                                $('#secondHasCorrectValue').val("-1");
                             }else{
                                 var obj = jQuery.parseJSON(data);
                                 $('#report-secondRegId-error').hide();
@@ -233,6 +244,7 @@
                                 $('#report-secondPName').val(obj[0].student_name);
                                 $('#report-secondSName').empty();
                                 $('#report-secondSName').val(obj[0].school_name);
+                                $('#secondHasCorrectValue').val("1");
                             }
                         });
                     }
@@ -250,6 +262,7 @@
                                 $('#report-thirdRegId-error').show();
                                 $('#report-thirdPName').val("");
                                 $('#report-thirdSName').val("");
+                                $('#thirdHasCorrectValue').val("-1");
                             }else{
                                 var obj = jQuery.parseJSON(data);
                                 $('#report-thirdRegId-error').hide();
@@ -257,6 +270,7 @@
                                 $('#report-thirdPName').val(obj[0].student_name);
                                 $('#report-thirdSName').empty();
                                 $('#report-thirdSName').val(obj[0].school_name);
+                                $('#thirdHasCorrectValue').val("1");
                             }
                         });
                     }
@@ -266,6 +280,30 @@
             $("#report-eventName").chosen().change(function(){
                 // alert("Asd");
                 $('#resultSet').show();
+            });
+            $('#report-entry-cancel').on("click",function(){
+                alert("dsa");
+            });
+            $('#report-entry-save').on("click",function(){
+                var firstHasCorrectValue = $('#firstHasCorrectValue').val();
+                var secondHasCorrectValue = $('#secondHasCorrectValue').val();
+                var thirdHasCorrectValue = $('#thirdHasCorrectValue').val();
+                if(firstHasCorrectValue <= -1||secondHasCorrectValue == -1||thirdHasCorrectValue == -1){
+                    $('#saveButtonMessage').empty();
+                    $('#saveButtonMessage').append("Please enter result for all three places before pressing save.");
+                    $('#saveButtonMessage').show();
+                }else{
+                    $('#saveButtonMessage').hide();
+                    $.post("../resultentry.php",{
+                        type:"addResult",
+                        eid:$('#report-eventName').val(),
+                        firstregId:$('#report-firstRegId').val(),
+                        secondregId:$('#report-secondRegId').val(),
+                        thirdregId:$('#report-thirdRegId').val()
+                    },function(data){
+                        alert("insert done"+data);
+                    });
+                }
             });
         </script>
     </body>

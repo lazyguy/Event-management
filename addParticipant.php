@@ -4,7 +4,7 @@ include_once "include.php";
 $insertType = $_POST["type"];
 $con = mysqli_connect("localhost", "root", "");
 if (!$con) {
-    die('Could not connect: ' . mysql_error());
+    die('Could not connect: ' . mysqli_error($con));
 } else {
     $db_selected = mysqli_select_db($con, 'BALOLSAV');
     if ($db_selected) {
