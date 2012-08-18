@@ -91,17 +91,25 @@ if (!$con) {
                 $partList = array();
                 $rs = mysqli_fetch_array($result);
                 $sId = $rs['school_id'];
+                
                 $query = "select school_name from school_master where school_id='$sId'";
                 $result2 = mysqli_query($con, $query);
                 $rs2 = mysqli_fetch_array($result2);
                 $schoolName = $rs2['school_name'];
-
+                
                 $query = "select * from event_trans where event_id='$eid' and regn_number='$regId'";
                 $result3 = mysqli_query($con, $query);
                 $rs3 = mysqli_fetch_array($result3);
                 $grade = $rs3['event_grade'];
                 $score = $rs3['event_marks'];
-                array_push($partList, array("student_name" => $rs['student_name'], "school_name" => $schoolName,"score" => $score,"grade" => $grade));
+                
+                $query = "select * from event_result where event_id='$eid' and regn_number='$regId'";
+                $result4 = mysqli_query($con, $query);
+                $rs4 = mysqli_fetch_array($result4);
+                $position = $rs4['position'];
+                
+                array_push($partList, array("student_name" => $rs['student_name']
+                    , "school_name" => $schoolName,"score" => $score,"grade" => $grade,"position" =>$position));
                 echo array_to_json($partList);
                 return;
             }

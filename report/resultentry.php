@@ -74,8 +74,6 @@
                                     <div  id="report-firstRegId-error" class="alert-message error"></div>
                                 </div>
                             </div>
-
-
                             <div class="row" style="padding-top: 10px;">
                                 <div class="span6">
                                     <label for="report-score" style="padding-top: 15px;">Score</label>
@@ -90,7 +88,6 @@
                                     </div>
                                 </div>
                             </div>
-
                             <div class="clearfix" style="padding-top: 10px;">
                                 <input id="report-position-value" type="hidden" value="0"/>
                                 <label id="optionsRadio">Position/Place</label>
@@ -98,29 +95,31 @@
                                     <ul class="inputs-list">
                                         <li>
                                             <label>
-                                                <input type="radio" name="report-position" value="1" />
+                                                <input type="radio" name="report-position" id="report-first-position" value="1" />
                                                 <span>First Position</span>
                                             </label>
                                         </li>
                                         <li>
                                             <label>
-                                                <input type="radio" name="report-position" value="2" />
+                                                <input type="radio" name="report-position" id="report-second-position" value="2" />
                                                 <span>Second Position</span>
                                             </label>
                                         </li>
                                         <li>
                                             <label>
-                                                <input type="radio" name="report-position" value="3" />
+                                                <input type="radio" name="report-position" id="report-third-position" value="3" />
                                                 <span>Third Position</span>
+                                            </label>
+                                        </li>
+                                        <li>
+                                            <label>
+                                                <input type="radio" name="report-position" id="report-no-position" value="0" checked="checked"/>
+                                                <span>No Podium Position</span>
                                             </label>
                                         </li>
                                     </ul>
                                 </div>
                             </div><!-- /clearfix -->
-
-
-
-
                             <div class="row" >
                                 <div class="span6">
                                     <label for="report-firstPName" style="padding-top: 15px;">Participant Name</label>
@@ -135,7 +134,6 @@
                                     </div>
                                 </div>
                             </div>
-
                             <div class="row" id="resultSaveButtons" style="padding-top: 25px;">
                                 <div class="span3" >
                                     <a id="report-entry-cancel" class="btn error">Reset</a>
@@ -158,7 +156,7 @@
                 $('#resultSet').hide();
                 $('#report-firstRegId-error').hide();
                 $('#saveButtonMessage').hide();                
-                $('#report-firstRegId').change( function(e){
+                $('#report-firstRegId').on("change keypress paste textInput input" ,function(e){
                     $('#report-firstPName').val("");
                     $('#report-firstSName').val("");
                     $('#report-firstRegId-error').empty();
@@ -174,7 +172,7 @@
                             regId:$('#report-firstRegId').val(),
                             eid:$('#report-eventName').val()
                         },function(data){
-                            //    alert(data);
+                            // alert(data);
                             if(data==-1){
                                 $('#report-firstRegId-error').empty();
                                 $('#report-firstRegId-error').append("Registration Id is not correct");
@@ -194,6 +192,21 @@
                                 $('#report-grade').val(obj[0].grade);
                                 $('#report-score').val('');
                                 $('#report-score').val(obj[0].score);
+                                $('#report-position-value').val(obj[0].position);
+                                switch( obj[0].position){
+                                    case '1':
+                                        $('#report-first-position').attr("checked","true");
+                                        break;
+                                    case '2':
+                                        $('#report-second-position').attr("checked","true");
+                                        break;
+                                    case '3':
+                                        $('#report-third-position').attr("checked","true");
+                                        break;
+                                    default:
+                                        $('#report-no-position').attr("checked","true");
+                                        break;
+                                }
                                 $('#firstHasCorrectValue').val("1");
                                 $('#report-score').select();
                             }
@@ -204,23 +217,77 @@
             $(".chzn-select").chosen();
             $("#report-eventName").chosen().change(function(){
                 $('#resultSet').show();
-                $('#resultentryform').find(':input').each(function(){
-                    var objId = this.id;
-                    if(objId.localeCompare ("report-eventName") !=0){
-                        switch(this.type){
-                            case 'checkbox':
-                            case 'radio':
-                                this.checked = false;
-                                break;
-                            default:
-                                $(this).val('');
-                                break;
-                        }
-                    }
-                }); 
+                resetform();
                 $('#report-firstRegId').focus();
             });
             $('#report-entry-cancel').on("click",function(){
+                resetform();
+                $('#report-firstRegId-error').hide();
+                $('#report-secondRegId-error').hide();
+                $('#report-thirdRegId-error').hide();
+                $('#saveButtonMessage').hide(); 
+            });
+            $('#report-entry-save').on("click",function(){
+                alert("++"+$('#report-score').val()+"++"+$('#report-score').val());
+                var firstHasCorrectValue = $('#firstHasCorrectValue').val();
+                if(firstHasCorrectValue <= 0){
+                    $('#saveButtonMessage').removeClass('success');
+                    $('#saveButtonMessage').addClass('error');
+                    $('#saveButtonMessage').empty();
+                    $('#saveButtonMessage').append("Please enter registration id before pressing save.");
+                    $('#saveButtonMessage').show();
+                }else if( ($('#report-score').val() <= 0 ||$('#report-score').val() == null) && $('#report-score').val() == null ){
+                    $('#saveButtonMessage').removeClass('success');
+                    $('#saveButtonMessage').addClass('error');
+                    $('#saveButtonMessage').empty();
+                    $('#saveButtonMessage').append("Please enter asdasd id before pressing save.");
+                    $('#saveButtonMessage').show();
+                }else{
+                    $('#saveButtonMessage').hide();
+                    var score = $('#report-score').val();
+                    var grade = null;
+                    if(score>=80) grade='A';
+                    else if(score>=60&&score<80) grade='B';
+                    else if(score<60) grade='C';
+                    if ( $('#report-position-value').val() == null) 
+                        $('#report-position-value').val(0);
+                    $.post("manageResult.php",{
+                        type:"addResult2",
+                        eid:$('#report-eventName').val(),
+                        regId:$('#report-firstRegId').val(),
+                        score:score,
+                        grade:grade,
+                        position:$('#report-position-value').val()
+                       
+                    },function(data){
+                        //alert(data);
+                        if(data==1){
+                            $('#saveButtonMessage').removeClass('error');
+                            $('#saveButtonMessage').addClass('success');
+                            $('#saveButtonMessage').empty();
+                            $('#saveButtonMessage').append("Result for the event is successfully saved.");
+                            $('#saveButtonMessage').show();
+                            resetform();
+                        }else if(data == -4){
+                            $('#saveButtonMessage').removeClass('success');
+                            $('#saveButtonMessage').addClass('error');
+                            $('#saveButtonMessage').empty();
+                            $('#saveButtonMessage').append("Participant is not registered for this event");
+                            $('#saveButtonMessage').show();
+                        }else{
+                            $('#saveButtonMessage').removeClass('success');
+                            $('#saveButtonMessage').addClass('error');
+                            $('#saveButtonMessage').empty();
+                            $('#saveButtonMessage').append("Result for the event coul not be saved.");
+                            $('#saveButtonMessage').show();
+                        }
+                    });
+                }
+            });
+            $("input:radio[name=report-position]").click(function() {
+                $('#report-position-value').val($(this).val());
+            });
+            function resetform() {
                 $('#resultentryform').find(':input').each(function(){
                     var objId = this.id;
                     if(objId.localeCompare ("report-eventName") !=0){
@@ -235,52 +302,15 @@
                         }
                     }
                 });
-                $('#report-firstRegId-error').hide();
-                $('#report-secondRegId-error').hide();
-                $('#report-thirdRegId-error').hide();
-                $('#saveButtonMessage').hide(); 
-            });
-            $('#report-entry-save').on("click",function(){
-                var firstHasCorrectValue = $('#firstHasCorrectValue').val();
-                if(firstHasCorrectValue <= 0){
-                    $('#saveButtonMessage').removeClass('success');
-                    $('#saveButtonMessage').addClass('error');
-                    $('#saveButtonMessage').empty();
-                    $('#saveButtonMessage').append("Please enter result pressing save.");
-                    $('#saveButtonMessage').show();
-                }else{
-                    $('#saveButtonMessage').hide();
-                    var score = $('#report-score').val();
-                    if(score>=80) grade='A';
-                    if(score>=60&&score<80) grade='B';
-                    if(score<60) grade='C';
-                    $.post("manageResult.php",{
-                        type:"addResult2",
-                        eid:$('#report-eventName').val(),
-                        regId:$('#report-firstRegId').val(),
-                        score:$('#report-score').val(),
-                        grade:grade,
-                        position:$('#report-position').val()
-                    },function(data){
-                        alert(data);
-                        if(data==1){
-                            $('#saveButtonMessage').removeClass('error');
-                            $('#saveButtonMessage').addClass('success');
-                            $('#saveButtonMessage').empty();
-                            $('#saveButtonMessage').append("Result for the event is successfully saved.");
-                            $('#saveButtonMessage').show();
-                        }else{
-                            $('#saveButtonMessage').removeClass('success');
-                            $('#saveButtonMessage').addClass('error');
-                            $('#saveButtonMessage').empty();
-                            $('#saveButtonMessage').append("Result for the event is was not saved.");
-                            $('#saveButtonMessage').show();
-                        }
-                    });
-                }
-            });
-            $("input:radio[name=report-position]").click(function() {
-                $('#report-position-value').val($(this).val());
+                $('#saveButtonMessage').hide();
+            }
+            $('#report-score').on("change keypress paste textInput input" ,function(e){
+                var score = $('#report-score').val();
+                var grade = null;
+                if(score>=80) grade='A';
+                else if(score>=60&&score<80) grade='B';
+                else if(score<60) grade='C';
+                $('#report-grade').val(grade);
             });
         </script>
     </body>
