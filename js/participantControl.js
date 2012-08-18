@@ -11,6 +11,10 @@ function geteventnames(element) {
             $('#report-eventName').empty();
             phpFile="../get_event_list.php";
             break;
+        default:
+            $('#edit-part-items').empty();
+            phpFile="get_event_list.php";
+            break;
     }
     $.get(phpFile,{
         term:"######getallstuff##########"    //I am too lazy to do stuff properly
@@ -32,6 +36,20 @@ function geteventnames(element) {
                         $("<option></option>").attr("value",obj[i].id).text(obj[i].value+" - "+obj[i].label)
                         );
                     break;
+                default:
+                    for (var ii in element){
+                        if(element[ii] == obj[i].id ){
+                            $('#edit-part-items').append(
+                                $("<option selected></option>").attr("value",obj[i].id).text(obj[i].value+" - "+obj[i].label)
+                                );
+                        }else{
+                            $('#edit-part-items').append(
+                                $("<option></option>").attr("value",obj[i].id).text(obj[i].value+" - "+obj[i].label)
+                                );
+                        }
+                    }
+                    
+                    break;
             }
         }
         switch(element){
@@ -41,6 +59,9 @@ function geteventnames(element) {
                 break;
             case 2:
                 $("#report-eventName").trigger("liszt:updated");
+                break;
+            default:
+                $("#edit-part-items").trigger("liszt:updated");
                 break;
         }
     });
@@ -130,4 +151,52 @@ function saveParticipant(print){
             }
         });
     }
+}
+
+function getparticipantdetails(){
+    $.post("addParticipant.php",{
+        type:"getpartDetailsForEdit",
+        pId:$('#edit-participantid').val()
+    },
+    function(data){
+        //alert(data);
+        if(data==-1){
+            $('#edit-participantAddResult').removeClass('success');
+            $('#edit-participantAddResult').addClass('error');
+            $('#edit-participantAddResult').empty();
+            $('#edit-participantAddResult').append("Not a valid registration id");
+            $('#edit-participantAddResult').show();
+        }
+        else{
+            $('#edit-participantAddResult').removeClass('error');
+            $('#edit-participantAddResult').addClass('success');
+            $('#edit-participantAddResult').empty();
+            $('#edit-participantAddResult').append("Details Retreived");
+            var obj = jQuery.parseJSON(data);
+            $('#edit-participantName').val(obj.student_name);
+            var myarr = obj.dob.split("-");
+            var mydate = myarr[1]+'/'+myarr[2]+'/'+myarr[0];
+            $('#edit-DOB').val(mydate);
+            $('#edit-SEX').val(obj.sex);
+            geteventnames(obj.events);
+            //  $('#edit-part-items').val(obj[0].);
+            
+            $('#edit-part-school-id').val(obj.school_id);
+            $('#edit-part-school-name').val(obj.school_name);
+            $('#edit-part-parent-name').val(obj.parent_name);
+            $('#edit-part-address').val(obj.st_adress);
+            $('#edit-part-mailid').val(obj.mail_id);
+            $('#edit-part-ph-num').val(obj.phone_number);
+            $('#edit-part-feePaid').val(obj.fee_paid);
+            $('#edit-saveParticipantForm').show(); 
+            $('#edit-participantAddResult').show();
+            $('#edit-participantSave').show();
+            $('#edit-participantSavePrint').show();
+            $("#edit-DOB").datepicker({
+                changeMonth: true,
+                changeYear: true
+            });
+        }
+    });
+    
 }

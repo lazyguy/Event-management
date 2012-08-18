@@ -86,30 +86,62 @@ if (!$con) {
                 echo -1;    //there is no participant present with that id
                 return;
             } else {
+                $partList = array();
                 $query = "select * from participant_master where regn_number='$regId'";
                 $result = mysqli_query($con, $query);
-                $partList = array();
                 $rs = mysqli_fetch_array($result);
                 $sId = $rs['school_id'];
-                
+
                 $query = "select school_name from school_master where school_id='$sId'";
                 $result2 = mysqli_query($con, $query);
                 $rs2 = mysqli_fetch_array($result2);
                 $schoolName = $rs2['school_name'];
-                
+
                 $query = "select * from event_trans where event_id='$eid' and regn_number='$regId'";
                 $result3 = mysqli_query($con, $query);
                 $rs3 = mysqli_fetch_array($result3);
                 $grade = $rs3['event_grade'];
                 $score = $rs3['event_marks'];
-                
+
                 $query = "select * from event_result where event_id='$eid' and regn_number='$regId'";
                 $result4 = mysqli_query($con, $query);
                 $rs4 = mysqli_fetch_array($result4);
                 $position = $rs4['position'];
-                
+
                 array_push($partList, array("student_name" => $rs['student_name']
-                    , "school_name" => $schoolName,"score" => $score,"grade" => $grade,"position" =>$position));
+                    , "school_name" => $schoolName, "score" => $score, "grade" => $grade, "position" => $position));
+                echo array_to_json($partList);
+                return;
+            }
+        } else if (strcmp($insertType, "getpartDetailsForEdit") == 0) {
+            $pId = $_POST["pId"];
+            $count = mysqli_query($con, "select count(*) FROM `participant_master` WHERE regn_number=$pId");
+            $count = mysqli_fetch_array($count);
+            if ($count[0] < 1) {
+                echo -1;    //there is no participant present with that id
+                return;
+            } else {
+                $evList = array();
+                $query = "SELECT * FROM `participant_master` WHERE regn_number=$pId";
+                $result = mysqli_query($con, $query);
+                $rs = mysqli_fetch_array($result);
+
+                $query = "SELECT * FROM `event_trans` WHERE regn_number=$pId";
+                $result2 = mysqli_query($con, $query);
+                $feePaid = 0;
+                while ($rs2 = mysqli_fetch_array($result2)) {
+                    array_push($evList, $rs2['event_id']);
+                    $feePaid = $rs2['fee_paid'];
+                }
+                $school_id = $rs['school_id'];
+                $query = "SELECT school_name FROM `school_master` WHERE school_id=$school_id";
+                $result3 = mysqli_query($con, $query);
+                $rs3 = mysqli_fetch_array($result3);
+                $school_name = $rs3['school_name'];
+
+                $partList = array('dob' => $rs['dob'], 'student_name' => $rs['student_name'], 'sex' => $rs['sex'], 'parent_name' => $rs['parent_name'],
+                    'st_adress' => $rs['st_adress'], 'mail_id' => $rs['pa_mail_id'], 'phone_number' => $rs['pa_phone_number'],
+                    'school_name' => $school_name, 'events' => $evList, 'school_id' => $school_id, 'fee_paid' => $feePaid);
                 echo array_to_json($partList);
                 return;
             }

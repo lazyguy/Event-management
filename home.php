@@ -88,7 +88,12 @@
                 $('#modal-add-school').bind('shown', function(){ $(':input','#saveSchoolForm').not(':button, :submit, :reset, :hidden').val(''); $('#schoolAddResult').hide();} );
                 $('#schoolCancel').click(function(){  $('#modal-add-school').modal('hide')});
                 $('#schoolSave').click(saveSchool);
-                $('#modal-edit-school').bind('shown', function(){$('#schoolNameEdit').select();$('#schoolEditResult').hide();$('#schoolsTable').hide();$('#schoolEditPages').hide();});
+                $('#modal-edit-school').bind('shown', function(){
+                    $('#schoolNameEdit').select();
+                    $('#schoolEditResult').hide();
+                    $('#schoolsTable').hide();
+                    $('#schoolEditPages').hide();
+                });
                 $('#schoolEditCancel').click(function(){  $('#modal-edit-school').modal('hide')});
                 $('#schoolNameEdit').autocomplete({
                     source: "get_school_list.php",
@@ -143,7 +148,22 @@
                 });
                 $("#participantSave").on("click", saveParticipant);
 
-
+                //stuff for particpant edit
+                $('#edit-modal-add-participant').bind('shown', function(){
+                    $('#edit-participantid').select();
+                    $('#edit-saveParticipantForm').hide();
+                    $('#edit-participantSave').hide();
+                    $('#edit-participantSavePrint').hide();
+                    $('#edit-participantAddResult').hide();
+                    
+                });
+                $('#edit-participantid').on("keypress",function(e){
+                    if ( e.keyCode == 13 ){
+                        e.preventDefault();
+                        getparticipantdetails();
+                    }
+                });
+                $('#edit-participantCancel').click(function(){  $('#edit-modal-add-participant').modal('hide')});
             });
 
         </script>
@@ -201,7 +221,7 @@
                     <?php include_once "participantView.html"; ?>
                     <button data-controls-modal="modal-add-participant" data-backdrop="static" data-keyboard="true" class="btn success">ADD
                         Participant</button> 
-                    <button data-controls-modal="modal-edit-participant" data-backdrop="static" data-keyboard="true" class="btn primary">Edit
+                    <button data-controls-modal="edit-modal-add-participant" data-backdrop="static" data-keyboard="true" class="btn primary">Edit
                         Participant</button>
                     <p></p>
                     <p>

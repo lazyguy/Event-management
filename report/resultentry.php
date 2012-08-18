@@ -195,16 +195,16 @@
                                 $('#report-position-value').val(obj[0].position);
                                 switch( obj[0].position){
                                     case '1':
-                                        $('#report-first-position').attr("checked","true");
+                                        $('#report-first-position').attr("checked","checked");
                                         break;
                                     case '2':
-                                        $('#report-second-position').attr("checked","true");
+                                        $('#report-second-position').attr("checked","checked");
                                         break;
                                     case '3':
-                                        $('#report-third-position').attr("checked","true");
+                                        $('#report-third-position').attr("checked","checked");
                                         break;
                                     default:
-                                        $('#report-no-position').attr("checked","true");
+                                        $('#report-no-position').attr("checked","checked");
                                         break;
                                 }
                                 $('#firstHasCorrectValue').val("1");
