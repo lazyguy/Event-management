@@ -149,7 +149,7 @@
                                     </div>
                                 </div>
                             </fieldset>
-                            <div class="row">
+                            <div class="row" id="resultSaveButtons">
                                 <div class="span3" >
                                     <a id="report-entry-cancel" class="btn error">Reset</a>
                                     <a id="report-entry-save" class="btn primary">Save</a>
@@ -168,7 +168,7 @@
         <script type="text/javascript">
             $(document).ready(function(){
                 geteventnames(2);
-                //  $('#resultSet').hide();
+                $('#resultSet').hide();
                 $('#report-firstRegId-error').hide();
                 $('#report-secondRegId-error').hide();
                 $('#report-thirdRegId-error').hide();
@@ -211,6 +211,7 @@
                                 $('#report-firstPName').val("");
                                 $('#report-firstSName').val("");
                                 $('#firstHasCorrectValue').val("-1");
+                                $('#report-firstRegId').select();
                             }else{
                                 var obj = jQuery.parseJSON(data);
                                 $('#report-firstRegId-error').hide();
@@ -219,6 +220,8 @@
                                 $('#report-firstSName').empty();
                                 $('#report-firstSName').val(obj[0].school_name);
                                 $('#firstHasCorrectValue').val("1");
+                                $('#report-secondRegId').focus();
+                                goToByScroll("report-secondRegId");
                             }
                         });
                     }
@@ -237,6 +240,7 @@
                                 $('#report-secondPName').val("");
                                 $('#report-secondSName').val("");
                                 $('#secondHasCorrectValue').val("-1");
+                                $('#report-secondRegId').select();
                             }else{
                                 var obj = jQuery.parseJSON(data);
                                 $('#report-secondRegId-error').hide();
@@ -245,6 +249,8 @@
                                 $('#report-secondSName').empty();
                                 $('#report-secondSName').val(obj[0].school_name);
                                 $('#secondHasCorrectValue').val("1");
+                                $('#report-thirdRegId').focus();
+                                goToByScroll("report-thirdRegId");
                             }
                         });
                     }
@@ -263,6 +269,7 @@
                                 $('#report-thirdPName').val("");
                                 $('#report-thirdSName').val("");
                                 $('#thirdHasCorrectValue').val("-1");
+                                $('#report-thirdRegId').select();
                             }else{
                                 var obj = jQuery.parseJSON(data);
                                 $('#report-thirdRegId-error').hide();
@@ -271,37 +278,67 @@
                                 $('#report-thirdSName').empty();
                                 $('#report-thirdSName').val(obj[0].school_name);
                                 $('#thirdHasCorrectValue').val("1");
+                                goToByScroll("resultSaveButtons");
+                                //$('#resultSaveButtons').focus();
                             }
                         });
                     }
                 });
             });
+            function goToByScroll(id){
+                // Reove "link" from the ID
+                id = id.replace("link", "");
+                // Scroll
+                $('html,body').animate({
+                    scrollTop: $("#"+id).offset().top},
+                'slow');
+            }
             $(".chzn-select").chosen();
             $("#report-eventName").chosen().change(function(){
                 // alert("Asd");
                 $('#resultSet').show();
             });
             $('#report-entry-cancel').on("click",function(){
-                alert("dsa");
+                $('#resultentryform').find(':input').each(function(){
+                    $(this).val('');
+                });
+                $('#report-firstRegId-error').hide();
+                $('#report-secondRegId-error').hide();
+                $('#report-thirdRegId-error').hide();
+                $('#saveButtonMessage').hide(); 
             });
             $('#report-entry-save').on("click",function(){
                 var firstHasCorrectValue = $('#firstHasCorrectValue').val();
                 var secondHasCorrectValue = $('#secondHasCorrectValue').val();
                 var thirdHasCorrectValue = $('#thirdHasCorrectValue').val();
                 if(firstHasCorrectValue <= -1||secondHasCorrectValue == -1||thirdHasCorrectValue == -1){
+                    $('#saveButtonMessage').removeClass('success');
+                    $('#saveButtonMessage').addClass('error');
                     $('#saveButtonMessage').empty();
                     $('#saveButtonMessage').append("Please enter result for all three places before pressing save.");
                     $('#saveButtonMessage').show();
                 }else{
                     $('#saveButtonMessage').hide();
-                    $.post("../resultentry.php",{
+                    $.post("manageResult.php",{
                         type:"addResult",
                         eid:$('#report-eventName').val(),
                         firstregId:$('#report-firstRegId').val(),
                         secondregId:$('#report-secondRegId').val(),
                         thirdregId:$('#report-thirdRegId').val()
                     },function(data){
-                        alert("insert done"+data);
+                        if(data==1){
+                            $('#saveButtonMessage').removeClass('error');
+                            $('#saveButtonMessage').addClass('success');
+                            $('#saveButtonMessage').empty();
+                            $('#saveButtonMessage').append("Result for the event is successfully saved.");
+                            $('#saveButtonMessage').show();
+                        }else{
+                            $('#saveButtonMessage').removeClass('success');
+                            $('#saveButtonMessage').addClass('error');
+                            $('#saveButtonMessage').empty();
+                            $('#saveButtonMessage').append("Result for the event is was not saved.");
+                            $('#saveButtonMessage').show();
+                        }
                     });
                 }
             });
