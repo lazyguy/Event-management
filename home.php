@@ -45,6 +45,7 @@
                 //Not supporting IE seems like a better idea.
                 if($.browser.msie && $.browser.version <9){
                     if (navigator.onLine){
+                        alert("This Web App will not work with inter net ecplorer versions < 9;")
                         window.location.replace("http://abetterbrowser.org/");
                     }else{
                         window.location.replace("better.html");
@@ -146,8 +147,8 @@
                     changeYear: true,
                     yearRange: "c-20:c"
                 });
-                $("#participantSave").on("click", saveParticipant);
-
+                $("#participantSave").on("click",function(){ saveParticipant(0)});
+                $("#participantSavePrint").on("click", function(){saveParticipant(1)});
                 //stuff for particpant edit
                 $('#edit-modal-add-participant').bind('shown', function(){
                     $('#edit-participantid').select();
@@ -164,6 +165,7 @@
                     }
                 });
                 $('#edit-participantCancel').click(function(){  $('#edit-modal-add-participant').modal('hide')});
+                $('#edit-participantSave').click(function(){ editParticipant(0);});
             });
 
         </script>

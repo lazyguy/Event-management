@@ -11,8 +11,9 @@ function getYear() {
 }
 
 function array_to_json($array) {
+    //since using php version > 5.2 there is inbuilt function to do this
     return json_encode($array);
-// no need to reinvent the wheel :P
+// in case using php version < 5.2, below code will come in handy
     /*
       if (!is_array($array)) {
       return false;

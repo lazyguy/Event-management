@@ -145,6 +145,24 @@ if (!$con) {
                 echo array_to_json($partList);
                 return;
             }
+        } else if (strcmp($insertType, "getEventsResultEntered") == 0) {
+            $pId = $_POST["pId"];
+            $count = mysqli_query($con, "select count(*) FROM `event_result` WHERE regn_number=$pId");
+            $count = mysqli_fetch_array($count);
+            if ($count[0] < 1) {
+                echo -1;    //there is no participant present with that id
+                return;
+            } else {
+                $evList = array();
+                $query = "SELECT event_id FROM `event_result` WHERE regn_number=$pId";
+                $result = mysqli_query($con, $query);
+                while ($rs = mysqli_fetch_array($result)){
+                    array_push($evList,$rs["event_id"]);
+                }
+                $returnVal = array('evts'=>$evList);
+                echo array_to_json($returnVal);
+               
+            }
         }
     }
 }
