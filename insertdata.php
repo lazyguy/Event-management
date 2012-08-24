@@ -2,16 +2,6 @@
 
 include_once "include.php";
 
-function getEventType($eType) {
-    if (strcmp($eType, "Junior") == 0)
-        $eType = 1;
-    else if (strcmp($eType, "Senior") == 0)
-        $eType = 2;
-    else
-        $eType = 3;
-    return $eType;
-}
-
 //Array ( [type] => addEvent [eName] => [etype] => Junior )
 // print_r($_POST);
 $insertType = $_POST["type"];

@@ -37,6 +37,17 @@ if (!$con) {
                      student_name='$participantName' and dob=STR_TO_DATE('$DOB', '%m/%d/%Y') and school_id='$partSId'");
             $count = mysqli_fetch_array($count);
             if ($count[0] < 1) {
+                //$partItemsEscaped = mysqli_real_escape_string($con, $partItems[$index]);
+                $comma_separated = implode(",", $partItems);
+                $query1 = "SELECT COUNT( DISTINCT event_type ) FROM event_master WHERE event_id IN ( $comma_separated )";
+                $rsd = mysqli_query($con, $query1);
+                $count = mysqli_fetch_array($rsd);
+                if ($count[0] > 1) {
+                    $result = array("result" => -1);
+                    echo array_to_json($result);
+                    mysqli_close($con);
+                    return;
+                }
                 $rsd = mysqli_query($con, "SELECT MAX( regn_number ) as nextid FROM participant_master where 1");
                 $rs = mysqli_fetch_array($rsd);
                 $regn_number = $rs['nextid'] + 1;   //get next allowed id;
@@ -53,7 +64,8 @@ if (!$con) {
 
                 if ($result === FALSE) {
                     mysqli_rollback($con);  // if error, roll back transaction
-                    echo 0;
+                    $result = array("result" => 0);
+                    echo array_to_json($result);
                     mysqli_close($con);
                     return;
                 }
@@ -65,15 +77,21 @@ if (!$con) {
                             ('$regn_number','$partItemsEscaped', '$partFeePaid')");
                     if ($result !== TRUE) {
                         mysqli_rollback($con);  // if error, roll back transaction
-                        echo 0;
+                        $result = array("result" => 0);
+                        echo array_to_json($result);
+                        ;
                         mysqli_close($con);
                         return;
                     }
                 }
                 mysqli_commit($con);
-                echo "1";
+                $result = array("result" => 1, "sid" => $regn_number);
+                echo array_to_json($result);
+                //  echo "1";
             } else {
-                echo "2"; //participant already exists
+                //participant already exists
+                $result = array("result" => 2);
+                echo array_to_json($result);
             }
             mysqli_close($con);
         } else if (strcmp($insertType, "getParticipant") == 0) {
@@ -156,12 +174,11 @@ if (!$con) {
                 $evList = array();
                 $query = "SELECT event_id FROM `event_result` WHERE regn_number=$pId";
                 $result = mysqli_query($con, $query);
-                while ($rs = mysqli_fetch_array($result)){
-                    array_push($evList,$rs["event_id"]);
+                while ($rs = mysqli_fetch_array($result)) {
+                    array_push($evList, $rs["event_id"]);
                 }
-                $returnVal = array('evts'=>$evList);
+                $returnVal = array('evts' => $evList);
                 echo array_to_json($returnVal);
-               
             }
         }
     }

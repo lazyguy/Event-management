@@ -1,5 +1,7 @@
 <?php
+
 require('../fpdf/pdf_js.php');
+include_once "../include.php";
 
 class PDF_AutoPrint extends PDF_JavaScript {
 
@@ -31,30 +33,54 @@ class PDF_AutoPrint extends PDF_JavaScript {
   $category = 'Senior';
   $events = array('123', '456', '678');
  */
-if (isset($_GET['name']))
-    $name = $_GET["name"];
-else
+if (isset($_GET['sid'])) {
+    $pId = $_GET["sid"];
+    $con = mysqli_connect("localhost", "root", "");
+    if (!$con) {
+        die('Could not connect: ' . mysqli_error($con));
+    } else {
+        $db_selected = mysqli_select_db($con, 'BALOLSAV');
+        if ($db_selected) {
+            $count = mysqli_query($con, "select count(*) FROM `participant_master` WHERE regn_number=$pId");
+            $count = mysqli_fetch_array($count);
+            if ($count[0] < 1) {
+                //    echo -1;    //there is no participant present with that id
+                return;
+            } else {
+                $evList = array();
+                $query = "SELECT * FROM `participant_master` WHERE regn_number=$pId";
+                $result = mysqli_query($con, $query);
+                $rs = mysqli_fetch_array($result);
+
+                $query = "SELECT event_name,event_type FROM `event_master` WHERE event_id in (select event_id from `event_trans` WHERE regn_number=$pId)";
+                $result2 = mysqli_query($con, $query);
+                $feePaid = 0;
+                while ($rs2 = mysqli_fetch_array($result2)) {
+                    array_push($evList, $rs2['event_name']);
+                    $event_type = $rs2['event_type'];
+                }
+
+                $school_id = $rs['school_id'];
+                $query = "SELECT school_name FROM `school_master` WHERE school_id=$school_id";
+                $result3 = mysqli_query($con, $query);
+                $rs3 = mysqli_fetch_array($result3);
+                $school_name = $rs3['school_name'];
+
+                $name = $rs['student_name'];
+                $dob = $rs['dob'];
+                $school = $school_name;
+                $category = getEventName($event_type);
+                $events = $evList;
+            }
+        }
+    }
+} else {
     $name = "balolsav";
-
-if (isset($_GET['dob']))
-    $dob = $_GET["dob"];
-else
     $dob = "00/00/00";
-
-if (isset($_GET['school']))
-    $school = $_GET["school"];
-else
     $school = "balolsav";
-
-if (isset($_GET['category']))
-    $category = $_GET["category"];
-else
     $category = "balolsav";
-
-if (isset($_GET['events']))
-    $events = $_GET["events"];
-else
     $events = array('balolsav', 'balolsav', 'balolsav');
+}
 
 $lineheight = 7;
 // Instanciation of inherited class
@@ -72,6 +98,7 @@ $pdf->SetFont('Times', 'B', 12);
 $pdf->Cell(25, $lineheight, 'DOB:');
 $pdf->SetFont('Times', '', 12);
 $pdf->Cell(0, $lineheight, $dob, 0, 1);
+
 $pdf->SetFont('Times', 'B', 12);
 $pdf->Cell(25, $lineheight, 'Category:');
 $pdf->SetFont('Times', '', 12);
@@ -80,7 +107,8 @@ $pdf->Cell(0, $lineheight, $category, 0, 1);
 $pdf->SetFont('Times', 'B', 12);
 $pdf->Cell(25, $lineheight, 'School:');
 $pdf->SetFont('Times', '', 12);
-$pdf->Cell(0, 10, $school, 0, 1);
+$pdf->Cell(0, $lineheight, $school, 0, 1);
+
 $pdf->SetFont('Times', 'B', 12);
 $pdf->Cell(25, $lineheight, 'Events:', 0, 1);
 //$pdf->line(3,65,112,65);

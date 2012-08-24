@@ -10,6 +10,31 @@ function getYear() {
     return $year;
 }
 
+function getEventType($eType) {
+    if (strcmp($eType, "Junior") == 0)
+        $eType = 1;
+    else if (strcmp($eType, "Senior") == 0)
+        $eType = 2;
+    else
+        $eType = 3;
+    return $eType;
+}
+
+
+function getEventName($eType) {
+    switch($eType) {
+        case 1:
+            return "Junior";
+            break;
+        case 2:
+            return "Senior";
+            break;
+        case 3:
+            return "Senior&Junior";
+            break;
+    }
+}
+
 function array_to_json($array) {
     //since using php version > 5.2 there is inbuilt function to do this
     return json_encode($array);

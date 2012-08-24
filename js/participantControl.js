@@ -122,8 +122,9 @@ function saveParticipant(print) {
         },
 
         function (data) {
-            // alert(data);
-            if (data == 1) {
+            var obj = jQuery.parseJSON(data);
+            var result = obj.result;
+            if (result == 1) {
                 $('#participantAddResult').removeClass("success");
                 $('#participantAddResult').removeClass("error");
                 $('#participantAddResult').addClass("success");
@@ -135,20 +136,17 @@ function saveParticipant(print) {
                     if (this.id != "part-school-name" && this.id != "part-school-id" && this.id != "part-items") $(this).val('');
                 });
                 if(print ==1){
-                    alert("printing");
-                    /*
-                    $.post("report/regcardgenerate.php", {
-                        name: participantName,
-                        dob: DOB,
-                        school: $('#part-school-name').val(),
-                        category: partParentName,
-                        events: '1111'
-                    },function(data){alert(data);});
-                    */
-                   var url = "report/regcardgenerate.php?name="+participantName+"&dob="+DOB+"&school="+$('#part-school-name').val()+"&category=test&events=21";
+                   var url = "report/regcardgenerate.php?sid="+obj.sid;
                    window.open(url);
                 }
-            } else if (data == 2) {
+            } else if (result == -1) {
+                $('#participantAddResult').removeClass("success");
+                $('#participantAddResult').removeClass("error");
+                $('#participantAddResult').addClass("error");
+                $('#participantAddResult').empty();
+                $('#participantAddResult').append("Cannot register senior and junior events for same participant");
+                $('#participantAddResult').show();
+            }else if (result == 2) {
                 $('#participantAddResult').removeClass("success");
                 $('#participantAddResult').removeClass("error");
                 $('#participantAddResult').addClass("error");
@@ -160,7 +158,7 @@ function saveParticipant(print) {
                 $('#participantAddResult').removeClass("error");
                 $('#participantAddResult').addClass("error");
                 $('#participantAddResult').empty();
-                $('#participantAddResult').append("An Error occured while adding participant.");
+                $('#participantAddResult').append("Could not add participant.");
                 $('#participantAddResult').show();
             }
         });
@@ -214,11 +212,11 @@ function getparticipantdetails() {
 }
 $(document).ready(function () {
     $('#edit-part-items').chosen().change(function (evt) {
-        //check if user is trying to delete any item from participants 
-        //registered events list for which result is declared 
+        //check if user is trying to delete any item from participants
+        //registered events list for which result is declared
         //if user removes any such item, put it back and warn user.
         if (eventsWithResult == null) {
-            //get all events whose results are entered for 
+            //get all events whose results are entered for
             //which current participant has registered
             $.post("addParticipant.php", {
                 type: "getEventsResultEntered",
@@ -230,7 +228,7 @@ $(document).ready(function () {
                     for (var i = 0; i < obj.evts.length; i++) {
                         eventsWithResult[i] = obj.evts[i];
                     }
-                    //compare to events in current list to events for which 
+                    //compare to events in current list to events for which
                     //results are announced.
                     comparePartEventList();
                 }
@@ -339,11 +337,12 @@ function editParticipant(print) {
                 $('#edit-participantAddResult').append("Same participant already exists");
                 $('#edit-participantAddResult').show();
             } else {
+                alert(data);
                 $('#edit-participantAddResult').removeClass("success");
                 $('#edit-participantAddResult').removeClass("error");
                 $('#edit-participantAddResult').addClass("error");
                 $('#edit-participantAddResult').empty();
-                $('#edit-participantAddResult').append("An Error occured while adding participant.");
+                $('#edit-participantAddResult').append("Could not add participant.");
                 $('#edit-participantAddResult').show();
             }
         });
