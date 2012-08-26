@@ -136,8 +136,8 @@ function saveParticipant(print) {
                     if (this.id != "part-school-name" && this.id != "part-school-id" && this.id != "part-items") $(this).val('');
                 });
                 if(print ==1){
-                   var url = "report/regcardgenerate.php?sid="+obj.sid;
-                   window.open(url);
+                    var url = "report/regcardgenerate.php?sid="+obj.sid;
+                    window.open(url);
                 }
             } else if (result == -1) {
                 $('#participantAddResult').removeClass("success");
@@ -167,6 +167,8 @@ function saveParticipant(print) {
 
 function getparticipantdetails() {
     eventsWithResult = null;
+    $('#part-participantid').val("");
+    $('#part-participantid').val($('#edit-participantid').val());
     $.post("addParticipant.php", {
         type: "getpartDetailsForEdit",
         pId: $('#edit-participantid').val()
@@ -180,6 +182,10 @@ function getparticipantdetails() {
             $('#edit-participantAddResult').empty();
             $('#edit-participantAddResult').append("Not a valid registration id");
             $('#edit-participantAddResult').show();
+            $('#edit-participantid').select();
+            $('#edit-saveParticipantForm').hide();
+            $('#edit-participantSave').hide();
+            $('#edit-participantSavePrint').hide();
         } else {
             $('#edit-participantAddResult').removeClass('error');
             $('#edit-participantAddResult').addClass('success');
@@ -317,8 +323,9 @@ function editParticipant(print) {
         },
 
         function (data) {
-            // alert(data);
-            if (data == 1) {
+            var obj = jQuery.parseJSON(data);
+            var result = obj.result;
+            if (result == 1) {
                 $('#edit-participantAddResult').removeClass("success");
                 $('#edit-participantAddResult').removeClass("error");
                 $('#edit-participantAddResult').addClass("success");
@@ -329,7 +336,18 @@ function editParticipant(print) {
                 $('#edit-partFields').find(':input').each(function () {
                     if (this.id != "part-school-name" && this.id != "part-school-id" && this.id != "part-items") $(this).val('');
                 });
-            } else if (data == 2) {
+                if(print ==1){
+                    var url = "report/regcardgenerate.php?sid="+obj.sid;
+                    window.open(url);
+                }
+            } else if (result == -1) {
+                $('#participantAddResult').removeClass("success");
+                $('#participantAddResult').removeClass("error");
+                $('#participantAddResult').addClass("error");
+                $('#participantAddResult').empty();
+                $('#participantAddResult').append("Cannot register senior and junior events for same participant");
+                $('#participantAddResult').show();
+            }else if (result == 2) {
                 $('#edit-participantAddResult').removeClass("success");
                 $('#edit-participantAddResult').removeClass("error");
                 $('#edit-participantAddResult').addClass("error");
@@ -337,7 +355,7 @@ function editParticipant(print) {
                 $('#edit-participantAddResult').append("Same participant already exists");
                 $('#edit-participantAddResult').show();
             } else {
-                alert(data);
+                alert(result);
                 $('#edit-participantAddResult').removeClass("success");
                 $('#edit-participantAddResult').removeClass("error");
                 $('#edit-participantAddResult').addClass("error");
