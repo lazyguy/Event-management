@@ -156,12 +156,21 @@
                     $('#edit-participantSave').hide();
                     $('#edit-participantSavePrint').hide();
                     $('#edit-participantAddResult').hide();
+                    $('#part-participantid').val("");
                     
                 });
                 $('#edit-participantid').on("keypress",function(e){
                     if ( e.keyCode == 13 ){
                         e.preventDefault();
                         getparticipantdetails();
+                    }
+                });
+                $('#edit-part-school-name').autocomplete({
+                    source: "get_school_list.php",
+                    minLength: 2,
+                    select: function( event, ui ){
+                        ui.item ? getSchools(ui.item.value):false;
+                        $('#edit-part-school-id').val(ui.item.id);
                     }
                 });
                 $('#edit-participantCancel').click(function(){  $('#edit-modal-add-participant').modal('hide')});

@@ -8,7 +8,7 @@ if (!$con) {
 } else {
     $db_selected = mysqli_select_db($con, 'BALOLSAV');
     if ($db_selected) {
-        if (strcmp($insertType, "addParticipant") == 0) {
+        if (strcmp($insertType, "addParticipant") == 0 || strcmp($insertType, "editParticipant") == 0) {
             $participantName = $_POST["participantName"];
             $participantName = mysqli_real_escape_string($con, $participantName);
             $DOB = $_POST["DOB"];
@@ -32,12 +32,16 @@ if (!$con) {
             $birthDate = explode("/", $DOB);
             //get age from date or birthdate
             $age = (date("md", date("U", mktime(0, 0, 0, $birthDate[0], $birthDate[1], $birthDate[2]))) > date("md") ? ((date("Y") - $birthDate[2]) - 1) : (date("Y") - $birthDate[2]));
-
-            $count = mysqli_query($con, "SELECT COUNT(*) FROM participant_master WHERE
+            if (strcmp($insertType, "editParticipant") != 0) {
+                $count = mysqli_query($con, "SELECT COUNT(*) FROM participant_master WHERE
                      student_name='$participantName' and dob=STR_TO_DATE('$DOB', '%m/%d/%Y') and school_id='$partSId'");
-            $count = mysqli_fetch_array($count);
+                $count = mysqli_fetch_array($count);
+            } else {
+                $count[0] = 0;
+            }
             if ($count[0] < 1) {
-                //$partItemsEscaped = mysqli_real_escape_string($con, $partItems[$index]);
+                // check for mixed events - assuming a participant can only register for one
+                // type of event senior/junior
                 $comma_separated = implode(",", $partItems);
                 $query1 = "SELECT COUNT( DISTINCT event_type ) FROM event_master WHERE event_id IN ( $comma_separated )";
                 $rsd = mysqli_query($con, $query1);
@@ -48,13 +52,27 @@ if (!$con) {
                     mysqli_close($con);
                     return;
                 }
-                $rsd = mysqli_query($con, "SELECT MAX( regn_number ) as nextid FROM participant_master where 1");
-                $rs = mysqli_fetch_array($rsd);
-                $regn_number = $rs['nextid'] + 1;   //get next allowed id;
-                if ($regn_number == 1) {  //start the reg id from 200
-                    $regn_number = 200;
-                }
                 mysqli_autocommit($con, FALSE);
+                if (strcmp($insertType, "editParticipant") != 0) {
+                    $rsd = mysqli_query($con, "SELECT MAX( regn_number ) as nextid FROM participant_master where 1");
+                    $rs = mysqli_fetch_array($rsd);
+                    $regn_number = $rs['nextid'] + 1;   //get next allowed id;
+                    if ($regn_number == 1) {  //start the reg id from 200
+                        $regn_number = 200;
+                    }
+                } else {    // check if edit participant, remove the entry and add again with new values
+                    $regn_number = $_POST["partId"];
+                    $query = "delete from participant_master where regn_number='$regn_number'";
+                    $result = mysqli_query($con, $query);
+                    if ($result === FALSE) {
+                        mysqli_rollback($con);  // if error, roll back transaction
+                        $result = array("result" => -10);   //returning some value other than 1(success), -1(senior/junior conflict) and 2(participant already exist incase of add)
+                        echo array_to_json($result);
+                        mysqli_close($con);
+                        return;
+                    }
+                }
+
                 $query = "INSERT INTO participant_master (regn_number,
                     student_name,age,dob,sex,school_id,parent_name,st_adress,
                     pa_mail_id,pa_phone_number) VALUES ('$regn_number',
@@ -69,19 +87,91 @@ if (!$con) {
                     mysqli_close($con);
                     return;
                 }
-                //now insert all items into the items table with student id.
-                //      $partId = mysqli_insert_id();
-                for ($index = 0; $index < count($partItems); $index++) {
-                    $partItemsEscaped = mysqli_real_escape_string($con, $partItems[$index]);
-                    $result = mysqli_query($con, "INSERT INTO event_trans(regn_number,event_id,fee_paid) VALUES
+                //for update of event_trans, there can be 3 operations
+                //insert new event or delete an existing event and change fee paid.
+                //to do this, we do 2 array diff ->
+                //lets say $partItems contains new item list from edit form
+                //and $evList contains item list previously entered
+                //array_diff($partItems, $evList); will give an array of
+                //items which needs to be added newly 
+                //array_diff($evList, $partItems); will give an array of
+                //items which needs to be deleted.
+                $evList = array();  //this is list of events for which participant already registered.
+                //$partItems is list of events from edit form.
+                if (strcmp($insertType, "editParticipant") == 0) {
+
+                    $query = "SELECT * FROM `event_trans` WHERE regn_number=$regn_number";
+                    $result2 = mysqli_query($con, $query);
+                    $feePaid = 0;
+                    while ($rs2 = mysqli_fetch_array($result2)) {
+                        array_push($evList, $rs2['event_id']);
+                        $feePaid = $rs2['fee_paid'];
+                    }
+                    /*
+                      print_r($evList);
+                      print_r($partItems);
+                      echo("to be added");
+                      print_r(array_values(array_diff($partItems,$evList)));    //newly added events array
+                      echo("to be deleted");
+                      print_r(array_values(array_diff($evList,$partItems)));    //deleted events array
+                      return;
+                     */
+                    $eventsToAdd = array_values(array_diff($partItems, $evList));
+                    $eventsToDelete = array_values(array_diff($evList, $partItems));
+
+                    $id_nums = implode(", ", $eventsToDelete);
+                    if (count($eventsToDelete) > 0) {
+                        $query = "delete from event_trans where event_id in ($id_nums)";
+                        $result = mysqli_query($con, $query);
+                        if ($result === FALSE) {
+                            mysqli_rollback($con);  // if error, roll back transaction
+                            $result = array("result" => -11);
+                            echo array_to_json($result);
+                            mysqli_close($con);
+                            return;
+                        }
+                    }
+                    if ($partFeePaid != $feePaid) {
+                        //need to update fee paid for all events..... 
+                        $query = "update event_trans set fee_paid = $partFeePaid where regn_number=$regn_number";
+                        $result = mysqli_query($con, $query);
+                        if ($result === FALSE) {
+                            mysqli_rollback($con);  // if error, roll back transaction
+                            $result = array("result" => -12);
+                            echo array_to_json($result);
+                            mysqli_close($con);
+                            return;
+                        }
+                    }
+                    if (count($eventsToAdd) > 0) {
+                        for ($index = 0; $index < count($eventsToAdd); $index++) {
+                            $partItemsEscaped = mysqli_real_escape_string($con, $eventsToAdd[$index]);
+                            $result = mysqli_query($con, "INSERT INTO event_trans(regn_number,event_id,fee_paid) VALUES
                             ('$regn_number','$partItemsEscaped', '$partFeePaid')");
-                    if ($result !== TRUE) {
-                        mysqli_rollback($con);  // if error, roll back transaction
-                        $result = array("result" => 0);
-                        echo array_to_json($result);
-                        ;
-                        mysqli_close($con);
-                        return;
+                            if ($result !== TRUE) {
+                                mysqli_rollback($con);  // if error, roll back transaction
+                                $result = array("result" => -13);
+                                echo array_to_json($result);
+                                mysqli_close($con);
+                                return;
+                            }
+                        }
+                    }
+                } else {
+                    //in case of new participant no problem, just
+                    //insert all items into the items table with student id.
+                    //      $partId = mysqli_insert_id();
+                    for ($index = 0; $index < count($partItems); $index++) {
+                        $partItemsEscaped = mysqli_real_escape_string($con, $partItems[$index]);
+                        $result = mysqli_query($con, "INSERT INTO event_trans(regn_number,event_id,fee_paid) VALUES
+                            ('$regn_number','$partItemsEscaped', '$partFeePaid')");
+                        if ($result !== TRUE) {
+                            mysqli_rollback($con);  // if error, roll back transaction
+                            $result = array("result" => 0);
+                            echo array_to_json($result);
+                            mysqli_close($con);
+                            return;
+                        }
                     }
                 }
                 mysqli_commit($con);

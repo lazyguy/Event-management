@@ -319,34 +319,46 @@ function editParticipant(print) {
             partAddress: partAddress,
             partMailid: partMailid,
             partPhNum: partPhNum,
-            partFeePaid: partFeePaid
+            partFeePaid: partFeePaid,
+            partId: $('#part-participantid').val()
         },
 
         function (data) {
+            //alert(data);
             var obj = jQuery.parseJSON(data);
             var result = obj.result;
+            //  alert(data+"result => "+result);
             if (result == 1) {
                 $('#edit-participantAddResult').removeClass("success");
                 $('#edit-participantAddResult').removeClass("error");
                 $('#edit-participantAddResult').addClass("success");
                 $('#edit-participantAddResult').empty();
-                $('#edit-participantAddResult').append("Participant added");
+                $('#edit-participantAddResult').append("Participant modified");
                 $('#edit-participantAddResult').show();
                 $(".chzn-select").val('').trigger("liszt:updated");
+                //reset all fields
                 $('#edit-partFields').find(':input').each(function () {
-                    if (this.id != "part-school-name" && this.id != "part-school-id" && this.id != "part-items") $(this).val('');
+                    $(this).val('');
                 });
+                $('#part-participantid').val("");
+                $('#edit-participantid').select();
+                $('#edit-saveParticipantForm').hide();
+                $('#edit-participantSave').hide();
+                $('#edit-participantSavePrint').hide();
+               // $('#edit-participantAddResult').hide();
+                $('#part-participantid').val("");
+                //check if reg card needs to be printed now.
                 if(print ==1){
                     var url = "report/regcardgenerate.php?sid="+obj.sid;
                     window.open(url);
                 }
             } else if (result == -1) {
-                $('#participantAddResult').removeClass("success");
-                $('#participantAddResult').removeClass("error");
-                $('#participantAddResult').addClass("error");
-                $('#participantAddResult').empty();
-                $('#participantAddResult').append("Cannot register senior and junior events for same participant");
-                $('#participantAddResult').show();
+                $('#edit-participantAddResult').removeClass("success");
+                $('#edit-participantAddResult').removeClass("error");
+                $('#edit-participantAddResult').addClass("error");
+                $('#edit-participantAddResult').empty();
+                $('#edit-participantAddResult').append("Cannot register senior and junior events for same participant");
+                $('#edit-participantAddResult').show();
             }else if (result == 2) {
                 $('#edit-participantAddResult').removeClass("success");
                 $('#edit-participantAddResult').removeClass("error");
@@ -355,7 +367,7 @@ function editParticipant(print) {
                 $('#edit-participantAddResult').append("Same participant already exists");
                 $('#edit-participantAddResult').show();
             } else {
-                alert(result);
+                //   alert(result);
                 $('#edit-participantAddResult').removeClass("success");
                 $('#edit-participantAddResult').removeClass("error");
                 $('#edit-participantAddResult').addClass("error");
