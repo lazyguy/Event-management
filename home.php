@@ -145,7 +145,8 @@
                 $("#DOB").datepicker({
                     changeMonth: true,
                     changeYear: true,
-                    yearRange: "c-20:c"
+                    yearRange: "c-20:c",
+                    dateFormat: "d/mm/yy"
                 });
                 $("#participantSave").on("click",function(){ saveParticipant(0)});
                 $("#participantSavePrint").on("click", function(){saveParticipant(1)});
@@ -175,6 +176,7 @@
                 });
                 $('#edit-participantCancel').click(function(){  $('#edit-modal-add-participant').modal('hide')});
                 $('#edit-participantSave').click(function(){ editParticipant(0);});
+                $('#edit-participantSavePrint').click(function(){ editParticipant(1);});
             });
 
         </script>

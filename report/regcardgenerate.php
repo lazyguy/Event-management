@@ -26,13 +26,6 @@ class PDF_AutoPrint extends PDF_JavaScript {
 
 }
 
-/*
-  $name = 'Sonu Lukose';
-  $dob = '11/06/1985';
-  $school = 'Public School Pattanakad';
-  $category = 'Senior';
-  $events = array('123', '456', '678');
- */
 if (isset($_GET['sid'])) {
     $pId = $_GET["sid"];
     $con = mysqli_connect("localhost", "root", "");
@@ -68,6 +61,8 @@ if (isset($_GET['sid'])) {
 
                 $name = $rs['student_name'];
                 $dob = $rs['dob'];
+                $date = explode('-', $dob);
+                $dob = $date[2] . '/' . $date[1] . '/' . $date[0];
                 $school = $school_name;
                 $category = getEventName($event_type);
                 $events = $evList;

@@ -122,6 +122,7 @@ function saveParticipant(print) {
         },
 
         function (data) {
+            alert(data);
             var obj = jQuery.parseJSON(data);
             var result = obj.result;
             if (result == 1) {
@@ -194,7 +195,7 @@ function getparticipantdetails() {
             var obj = jQuery.parseJSON(data);
             $('#edit-participantName').val(obj.student_name);
             var myarr = obj.dob.split("-");
-            var mydate = myarr[1] + '/' + myarr[2] + '/' + myarr[0];
+            var mydate = myarr[2] + '/' + myarr[1] + '/' + myarr[0];
             $('#edit-DOB').val(mydate);
             $('#edit-SEX').val(obj.sex);
             geteventnames(obj.events);
@@ -211,7 +212,8 @@ function getparticipantdetails() {
             $('#edit-participantSavePrint').show();
             $("#edit-DOB").datepicker({
                 changeMonth: true,
-                changeYear: true
+                changeYear: true,
+                dateFormat: "d/mm/yy"
             });
         }
     });
@@ -324,7 +326,7 @@ function editParticipant(print) {
         },
 
         function (data) {
-            //alert(data);
+            alert(data);
             var obj = jQuery.parseJSON(data);
             var result = obj.result;
             //  alert(data+"result => "+result);
@@ -372,7 +374,7 @@ function editParticipant(print) {
                 $('#edit-participantAddResult').removeClass("error");
                 $('#edit-participantAddResult').addClass("error");
                 $('#edit-participantAddResult').empty();
-                $('#edit-participantAddResult').append("Could not add participant.");
+                $('#edit-participantAddResult').append("Could not edit participant.");
                 $('#edit-participantAddResult').show();
             }
         });

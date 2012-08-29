@@ -34,7 +34,7 @@ if (!$con) {
             $age = (date("md", date("U", mktime(0, 0, 0, $birthDate[0], $birthDate[1], $birthDate[2]))) > date("md") ? ((date("Y") - $birthDate[2]) - 1) : (date("Y") - $birthDate[2]));
             if (strcmp($insertType, "editParticipant") != 0) {
                 $count = mysqli_query($con, "SELECT COUNT(*) FROM participant_master WHERE
-                     student_name='$participantName' and dob=STR_TO_DATE('$DOB', '%m/%d/%Y') and school_id='$partSId'");
+                     student_name='$participantName' and dob=STR_TO_DATE('$DOB', '%d/%m/%YY') and school_id='$partSId'");
                 $count = mysqli_fetch_array($count);
             } else {
                 $count[0] = 0;
@@ -76,8 +76,9 @@ if (!$con) {
                 $query = "INSERT INTO participant_master (regn_number,
                     student_name,age,dob,sex,school_id,parent_name,st_adress,
                     pa_mail_id,pa_phone_number) VALUES ('$regn_number',
-                    '$participantName','$age',STR_TO_DATE('$DOB', '%m/%d/%Y'),'$SEX','$partSId',
+                    '$participantName','$age',STR_TO_DATE('$DOB', '%d/%m/%YY'),'$SEX','$partSId',
                     '$partParentName','$partAddress','$partMailid','$partPhNum')";
+                
                 $result = mysqli_query($con, $query);
 
                 if ($result === FALSE) {
