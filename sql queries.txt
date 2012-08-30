@@ -1,0 +1,17 @@
+====================================
+total fee paid by all participants
+====================================
+SELECT sum(asset_sums) FROM (select avg(a.fee_paid) as asset_sums from event_trans a, participant_master b where b.regn_number = a.regn_number group by b.regn_number) inner_query
+
+
+====================================
+total fee paid by school
+====================================
+SELECT SUM( asset_sums ) ,school_id1
+FROM (
+SELECT b.school_id AS school_id1, AVG( a.fee_paid ) AS asset_sums
+FROM event_trans a, participant_master b
+WHERE b.regn_number = a.regn_number
+GROUP BY b.regn_number, b.school_id
+)inner_query
+GROUP BY school_id1

@@ -122,7 +122,7 @@ function saveParticipant(print) {
         },
 
         function (data) {
-            alert(data);
+            //alert(data);
             var obj = jQuery.parseJSON(data);
             var result = obj.result;
             if (result == 1) {

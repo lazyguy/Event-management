@@ -3,7 +3,7 @@
 <html lang="en">
     <head>
         <meta charset="utf-8">
-         <title>Balolsav <?php echo getYear() ?></title>
+        <title>Balolsav <?php echo getYear() ?></title>
         <meta name="description" content="">
         <meta name="author" content="">
 
@@ -20,6 +20,7 @@
                 padding-top: 60px;
             }
         </style>
+         <link rel="shortcut icon" href="images/logo.ico">
     </head>
 
     <body>
@@ -37,6 +38,10 @@
         <div class="container-fluid">
             <div class="sidebar" >
                 <div class="well">
+                    <h5>Participants</h5>
+                    <ul>
+                        <li><a id="printRegCard" href="report/printregcard.php">Print Registration card</a></li>
+                    </ul>
                     <h5>Results</h5>
                     <ul>
                         <li><a id="enterResult" href="report/resultentry.php">Enter/Edit Result</a></li>
@@ -46,7 +51,7 @@
                         <li><a href="#">Schools</a></li>
                         <li><a href="#">Items</a></li>
                         <li><a href="#">Participants</a></li>
-                        <li><a href="#">Certificate</a></li>
+                        <li><a href="report/summary.php">Summary of Registration</a></li>
                     </ul>
 
                 </div>

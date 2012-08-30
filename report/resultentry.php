@@ -30,6 +30,7 @@
                 padding-top: 60px;
             }
         </style>
+         <link rel="shortcut icon" href="../images/logo.ico">
     </head>
 
     <body>
@@ -248,6 +249,35 @@
                     if(score>=80) grade='A';
                     else if(score>=60&&score<80) grade='B';
                     else if(score<60) grade='C';
+                    var calcScore = $('#report-position-value').val();
+                    switch(calcScore){
+                        case '1':
+                            score = 25;
+                            grade = 'A';
+                            break;
+                        case '2':
+                            score = 20;
+                            grade = 'B';
+                            break;
+                        case '3':
+                            score = 15;
+                            grade = 'C';
+                            break;
+                        case '0':
+                        default:
+                            switch(grade){
+                                case 'A':
+                                    score= 10;
+                                    break;
+                                case 'B':
+                                    score= 5;
+                                    break;
+                                case 'C':
+                                    score= 3;
+                                    break;
+                            }
+                            break;
+                    }
                     if ( $('#report-position-value').val() == null) 
                         $('#report-position-value').val(0);
                     $.post("manageResult.php",{

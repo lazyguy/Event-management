@@ -120,6 +120,7 @@ if (!$con) {
 								st_adress       char(100) default NULL,
 								pa_mail_id      char(60) default NULL,
 								pa_phone_number int(12),
+                                                                category        char(1) NOT NULL,
 								PRIMARY KEY  (regn_number));")) {
                             die('Could not create table participant_master: ' . mysql_error());
                             $isSuccess = 0;

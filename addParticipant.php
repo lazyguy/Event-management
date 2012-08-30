@@ -52,6 +52,10 @@ if (!$con) {
                     mysqli_close($con);
                     return;
                 }
+                $query1 = "SELECT AVG( DISTINCT event_type ) FROM event_master WHERE event_id IN ( $comma_separated )";
+                $rsd = mysqli_query($con, $query1);
+                $category = mysqli_fetch_array($rsd);
+
                 mysqli_autocommit($con, FALSE);
                 if (strcmp($insertType, "editParticipant") != 0) {
                     $rsd = mysqli_query($con, "SELECT MAX( regn_number ) as nextid FROM participant_master where 1");
@@ -75,10 +79,10 @@ if (!$con) {
 
                 $query = "INSERT INTO participant_master (regn_number,
                     student_name,age,dob,sex,school_id,parent_name,st_adress,
-                    pa_mail_id,pa_phone_number) VALUES ('$regn_number',
+                    pa_mail_id,pa_phone_number,category) VALUES ('$regn_number',
                     '$participantName','$age',STR_TO_DATE('$DOB', '%d/%m/%YY'),'$SEX','$partSId',
-                    '$partParentName','$partAddress','$partMailid','$partPhNum')";
-                
+                    '$partParentName','$partAddress','$partMailid','$partPhNum','$category[0]]')";
+
                 $result = mysqli_query($con, $query);
 
                 if ($result === FALSE) {
@@ -193,6 +197,7 @@ if (!$con) {
             $count = mysqli_fetch_array($count);
             if ($count[0] < 1) {
                 echo -1;    //there is no participant present with that id
+                mysqli_close($con);
                 return;
             } else {
                 $partList = array();
@@ -220,6 +225,7 @@ if (!$con) {
                 array_push($partList, array("student_name" => $rs['student_name']
                     , "school_name" => $schoolName, "score" => $score, "grade" => $grade, "position" => $position));
                 echo array_to_json($partList);
+                mysqli_close($con);
                 return;
             }
         } else if (strcmp($insertType, "getpartDetailsForEdit") == 0) {
@@ -250,8 +256,9 @@ if (!$con) {
 
                 $partList = array('dob' => $rs['dob'], 'student_name' => $rs['student_name'], 'sex' => $rs['sex'], 'parent_name' => $rs['parent_name'],
                     'st_adress' => $rs['st_adress'], 'mail_id' => $rs['pa_mail_id'], 'phone_number' => $rs['pa_phone_number'],
-                    'school_name' => $school_name, 'events' => $evList, 'school_id' => $school_id, 'fee_paid' => $feePaid);
+                    'school_name' => $school_name, 'events' => $evList, 'school_id' => $school_id, 'fee_paid' => $feePaid, 'part_id' => $pId);
                 echo array_to_json($partList);
+                mysqli_close($con);
                 return;
             }
         } else if (strcmp($insertType, "getEventsResultEntered") == 0) {
@@ -260,6 +267,7 @@ if (!$con) {
             $count = mysqli_fetch_array($count);
             if ($count[0] < 1) {
                 echo -1;    //there is no participant present with that id
+                mysqli_close($con);
                 return;
             } else {
                 $evList = array();
@@ -270,6 +278,7 @@ if (!$con) {
                 }
                 $returnVal = array('evts' => $evList);
                 echo array_to_json($returnVal);
+                mysqli_close($con);
             }
         }
     }
