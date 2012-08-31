@@ -105,6 +105,9 @@
                                 </table>
                             </div>
                         </div>
+                        <div class="row" style="padding-top: 25px;padding-left: 375px">
+                            <a class="btn primary" id="printSummaryReport" href="printSummary.php" target="_blank">Print Summary </a>
+                        </div>     
                     </div>
                 </div>
                 <div id ="test1"></div>
@@ -119,7 +122,7 @@
                 $.post("reportManager.php", {
                     type: "getSummary"
                 }, function(data){                   
-                    /* 
+                    /*
                     $('#test1').empty();
                     $('#test1').html(data);
                      */
@@ -159,7 +162,7 @@
                     
                     $('#eventSummaryTable').dataTable({
                         "bLengthChange": false,
-                   //     "iDisplayLength": 6 ,
+                        //     "iDisplayLength": 6 ,
                         "bFilter": false,
                         "sScrollY": "170px",
                         "bPaginate": false,
