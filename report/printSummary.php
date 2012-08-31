@@ -72,7 +72,7 @@ class PDF extends PDF_JavaScript {
                 $this->Ln();
             } else {
                 $this->Cell($w[0], 6, $row[1], 'LR', 0, 'L', $fill);
-                $this->Cell($w[1], 6, number_format($row[2]), 'LR', 0, 'R', $fill);
+                $this->Cell($w[1], 6, $row[2], 'LR', 0, 'R', $fill);
                 $this->Cell($w[2], 6, number_format($row[3]), 'LR', 0, 'R', $fill);
                 $this->Ln();
             }
@@ -101,43 +101,43 @@ if (!$con) {
         $pdf->SetFont('Times', 'B', 12);
         $pdf->Cell(100, 6, 'Total Number of Participants :');
         $pdf->SetFont('Times', '', 12);
-        $pdf->Cell(15, 6, $d["participant"]["maleCount"] + $d["participant"]["femaleCount"], 15, 1,'R');
+        $pdf->Cell(15, 6, $d["participant"]["maleCount"] + $d["participant"]["femaleCount"], 15, 1, 'R');
         $pdf->Ln();
 
         $pdf->SetFont('Times', 'B', 12);
         $pdf->Cell(100, 6, 'Total Number of Male Participants :');
         $pdf->SetFont('Times', '', 12);
-        $pdf->Cell(15, 6, $d["participant"]["maleCount"], 0, 1,'R');
+        $pdf->Cell(15, 6, $d["participant"]["maleCount"], 0, 1, 'R');
         $pdf->Ln();
 
         $pdf->SetFont('Times', 'B', 12);
         $pdf->Cell(100, 6, 'Total Number of Feale Participants :');
         $pdf->SetFont('Times', '', 12);
-        $pdf->Cell(15, 6, $d["participant"]["femaleCount"], 0, 1,'R');
+        $pdf->Cell(15, 6, $d["participant"]["femaleCount"], 0, 1, 'R');
         $pdf->Ln();
 
         $pdf->SetFont('Times', 'B', 12);
         $pdf->Cell(100, 6, 'Total Number of Senior Participants :');
         $pdf->SetFont('Times', '', 12);
-        $pdf->Cell(15, 6, $d["participant"]["seniorCount"], 0, 1,'R');
+        $pdf->Cell(15, 6, $d["participant"]["seniorCount"], 0, 1, 'R');
         $pdf->Ln();
 
         $pdf->SetFont('Times', 'B', 12);
         $pdf->Cell(100, 6, 'Total Number of Junior Participants :');
         $pdf->SetFont('Times', '', 12);
-        $pdf->Cell(15, 6, $d["participant"]["juniorCount"], 0, 1,'R');
+        $pdf->Cell(15, 6, $d["participant"]["juniorCount"], 0, 1, 'R');
         $pdf->Ln();
 
         $pdf->SetFont('Times', 'B', 12);
         $pdf->Cell(100, 6, 'Total Number of Schools :');
         $pdf->SetFont('Times', '', 12);
-        $pdf->Cell(15, 6, $d["counts"]["schoolCount"], 0, 1,'R');
+        $pdf->Cell(15, 6, $d["counts"]["schoolCount"], 0, 1, 'R');
         $pdf->Ln();
 
         $pdf->SetFont('Times', 'B', 12);
         $pdf->Cell(100, 6, 'Total Number of Events :');
         $pdf->SetFont('Times', '', 12);
-        $pdf->Cell(15, 6, $d["counts"]["eventsCount"], 0, 1,'R');
+        $pdf->Cell(15, 6, $d["counts"]["eventsCount"], 0, 1, 'R');
         $pdf->Ln();
         $pdf->Ln();
 
@@ -146,7 +146,7 @@ if (!$con) {
         $pdf->SetFont('Times', 'B', 12);
         $pdf->Cell(100, 6, 'Total Fee Collected :');
         $pdf->SetFont('Times', '', 12);
-        $pdf->Cell(15, 6, number_format($d["counts"]["totalFeePaid"]), 0, 1,'R');
+        $pdf->Cell(15, 6, number_format($d["counts"]["totalFeePaid"]), 0, 1, 'R');
         $pdf->Cell(180, 0, '', 'T');
 
         $GLOBALS["titleg"] = "School Summary";
@@ -156,8 +156,8 @@ if (!$con) {
         $pdf->FancyTable(array_values($d["school"]), 1);
 
         $GLOBALS["titleg"] = "Event Summary";
-        $GLOBALS["width"] = array(130, 25, 25);
-        $GLOBALS["headerg"] = array('Event Name', 'Seniors', 'Juniors');
+        $GLOBALS["width"] = array(110, 30, 35);
+        $GLOBALS["headerg"] = array('Event Name', 'Category', 'Participants');
         $pdf->AddPage();
         $pdf->FancyTable(array_values($d["events"]), 2);
 
@@ -243,24 +243,24 @@ function getSummary($con) {
     }
 
     $eArray[] = array();
-    $query = "SELECT * from event_master";
+    $query = "SELECT * from event_master where 1 order by event_name asc";
     $rsd = mysql_query($query);
     $counter = 0;
     while ($result = mysql_fetch_array($rsd)) {
         $eId = $result["event_id"];
         $eName = $result["event_name"];
-        $eName = $eName . " - " . getEventName($result["event_type"]);
+        $eName = $eName;
         $query = "select count(*) from participant_master where regn_number IN(select regn_number from event_trans where event_id = $eId) and category = '1'";
         $rsd0 = mysql_query($query);
         $result0 = mysql_fetch_array($rsd0);
         $jCount = $result0[0];
 
-        $query = "select count(*) from participant_master where regn_number IN(select regn_number from event_trans where event_id = $eId) and category = '1'";
+        $query = "select count(*) from participant_master where regn_number IN(select regn_number from event_trans where event_id = $eId) and category = '2'";
         $rsd0 = mysql_query($query);
         $result0 = mysql_fetch_array($rsd0);
         $sCount = $result0[0];
 
-        $eArray[$counter] = array($eId, $eName, $jCount, $sCount);
+        $eArray[$counter] = array($eId, $eName, getEventName($result["event_type"]), $jCount + $sCount);
         $counter = $counter + 1;
     }
 

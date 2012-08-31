@@ -88,7 +88,7 @@ function getSummary($con) {
     }
 
     $eArray[] = array();
-    $query = "SELECT * from event_master";
+    $query = "SELECT * from event_master where 1 order by event_name asc";
     $rsd = mysqli_query($con, $query);
     $counter = 0;
     while ($result = mysqli_fetch_array($rsd)) {
@@ -100,12 +100,12 @@ function getSummary($con) {
         $result0 = mysqli_fetch_array($rsd0);
         $jCount = $result0[0];
 
-        $query = "select count(*) from participant_master where regn_number IN(select regn_number from event_trans where event_id = $eId) and category = '1'";
+        $query = "select count(*) from participant_master where regn_number IN(select regn_number from event_trans where event_id = $eId) and category = '2'";
         $rsd0 = mysqli_query($con, $query);
         $result0 = mysqli_fetch_array($rsd0);
         $sCount = $result0[0];
 
-        $eArray[$counter] = array("eId" => $eId, "eName" => $eName, "jCount" => $jCount, "sCount" => $sCount);
+        $eArray[$counter] = array("eId" => $eId, "eName" => $eName, "category" => getEventName($result["event_type"]), "count" => $sCount+$jCount);
         $counter = $counter + 1;
     }
 

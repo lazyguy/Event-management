@@ -95,9 +95,9 @@
                                 <table class="condensed-table bordered-table" id="eventSummaryTable">
                                     <thead>
                                         <tr>
-                                            <th width="70%"><b>Event Name</b></th>
-                                            <th width="15%"><b>Seniors</b></th>
-                                            <th width="15%"><b>Juniors</b></th>
+                                            <th width="55%"><b>Event Name</b></th>
+                                            <th width="20%"><b>Category</b></th>
+                                            <th width="25%"><b>Participants</b></th>
                                         </tr>
                                     </thead>
                                     <tbody id="eventSummaryBody">
@@ -149,7 +149,7 @@
                     $('#eventSummaryBody').empty();
                     for (var i = 0; i < obj.events.length; i++) { 
                         $('#eventSummaryBody').append("<tr>"+"<td>"+obj.events[i].eName+
-                            "</td>"+"<td>"+obj.events[i].sCount+"</td>"+"<td>"+obj.events[i].jCount+"</td>"+"</tr>");
+                            "</td>"+"<td>"+obj.events[i].category+"</td>"+"<td>"+obj.events[i].count+"</td>"+"</tr>");
                     }
                     $('#schoolSummaryTable').dataTable({
                         "bLengthChange": false,
