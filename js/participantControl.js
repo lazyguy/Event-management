@@ -8,6 +8,7 @@ function geteventnames(element) {
             phpFile = "get_event_list.php";
             break;
         case 2:
+        case 3:
             $('#report-eventName').empty();
             phpFile = "../get_event_list.php";
             break;
@@ -35,6 +36,14 @@ function geteventnames(element) {
                     $('#report-eventName').append(
                         $("<option></option>").attr("value", obj[i].id).text(obj[i].value + " - " + obj[i].label));
                     break;
+                case 3:
+                    if (i === 0) {
+                        $('#report-eventName').append("<option></option>");
+                        $('#report-eventName').append("<option value='999999'>All Events</option>");
+                    }
+                    $('#report-eventName').append(
+                        $("<option></option>").attr("value", obj[i].id).text(obj[i].value + " - " + obj[i].label));
+                    break;
                 default:
                     var j = 0;
                     for (j = 0; j < element.length; j++) {
@@ -58,6 +67,7 @@ function geteventnames(element) {
                 $("#part-items").trigger("liszt:updated");
                 break;
             case 2:
+            case 3:
                 $("#report-eventName").trigger("liszt:updated");
                 break;
             default:
@@ -130,7 +140,7 @@ function saveParticipant(print) {
                 $('#participantAddResult').removeClass("error");
                 $('#participantAddResult').addClass("success");
                 $('#participantAddResult').empty();
-                $('#participantAddResult').append("Participant added");
+                $('#participantAddResult').append("Participant added - Reg No."+obj.sid);
                 $('#participantAddResult').show();
                 $(".chzn-select").val('').trigger("liszt:updated");
                 $('#partFields').find(':input').each(function () {
@@ -347,7 +357,7 @@ function editParticipant(print) {
                 $('#edit-saveParticipantForm').hide();
                 $('#edit-participantSave').hide();
                 $('#edit-participantSavePrint').hide();
-               // $('#edit-participantAddResult').hide();
+                // $('#edit-participantAddResult').hide();
                 $('#part-participantid').val("");
                 //check if reg card needs to be printed now.
                 if(print ==1){

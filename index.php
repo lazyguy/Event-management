@@ -153,9 +153,22 @@ if (!$con) {
                             Print " event trans created <br />";
                             $isSuccess = 1;
                         }
+                        if (!mysql_query("CREATE TABLE IF NOT EXISTS `group_master` (
+                            `group_id` int(4) NOT NULL AUTO_INCREMENT,
+                            `regn_number` int(4) NOT NULL DEFAULT '0',
+                            `school_id` int(4) DEFAULT '0',
+                            `event_grade` char(1) DEFAULT NULL,
+                            `result` int(4) DEFAULT 0,
+                            PRIMARY KEY (`group_id`,`regn_number`));")) {
+                            die('Could not create table group_master: ' . mysql_error());
+                            $isSuccess = 0;
+                        } else {
+                            Print " Group Master created <br />";
+                            $isSuccess = 1;
+                        }
                     }
                 } else {
-                    Print "Database exist init done moving on";
+                    Print "Database exist. init done. moving on";
                     $isSuccess = 1;
                 }
             }

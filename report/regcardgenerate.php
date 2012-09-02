@@ -83,7 +83,7 @@ $pdf = new PDF_AutoPrint('P', 'mm', array(115, 153));
 $pdf->AliasNbPages();
 $pdf->AddPage();
 $pdf->Image('../images/reglogo.png', 7, 6, 100);
-$pdf->Ln(17);
+$pdf->Ln(15);
 $pdf->SetFont('Times', 'B', 12);
 $pdf->Cell(25, $lineheight, 'NAME:');
 $pdf->SetFont('Times', '', 12);
@@ -97,7 +97,12 @@ $pdf->Cell(0, $lineheight, $dob, 0, 1);
 $pdf->SetFont('Times', 'B', 12);
 $pdf->Cell(25, $lineheight, 'Category:');
 $pdf->SetFont('Times', '', 12);
-$pdf->Cell(0, $lineheight, $category, 0, 1);
+$pdf->Cell(25, $lineheight, $category, 0, 0);
+
+$pdf->SetFont('Times', 'B', 12);
+$pdf->Cell(25, $lineheight, 'Regn No:');
+$pdf->SetFont('Times', '', 12);
+$pdf->Cell(25, $lineheight, $pId, 0, 1);
 
 $pdf->SetFont('Times', 'B', 12);
 $pdf->Cell(25, $lineheight, 'School:');
@@ -108,12 +113,18 @@ $pdf->SetFont('Times', 'B', 12);
 $pdf->Cell(25, $lineheight, 'Events:', 0, 1);
 //$pdf->line(3,65,112,65);
 
-
+if(sizeof($events) <= 10){
+    $fontSize = 12;
+    $lineheight = 6;
+}else{
+    $fontSize = 10;
+    $lineheight = 4;
+}
 for ($i = 0; $i < sizeof($events); $i++) {
     $pdf->Cell(15);
-    $pdf->SetFont('Times', 'B', 14);
+    $pdf->SetFont('Times', 'B', $fontSize);
     $pdf->Cell(5, $lineheight, "\xBB");
-    $pdf->SetFont('Times', '', 12);
+    $pdf->SetFont('Times', '', $fontSize);
     $pdf->Cell(0, $lineheight, $events[$i], 0, 1);
 }
 

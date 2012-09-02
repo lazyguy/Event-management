@@ -20,9 +20,8 @@ function getEventType($eType) {
     return $eType;
 }
 
-
 function getEventName($eType) {
-    switch($eType) {
+    switch ($eType) {
         case 1:
             return "Junior";
             break;
@@ -31,6 +30,17 @@ function getEventName($eType) {
             break;
         case 3:
             return "Senior&Junior";
+            break;
+    }
+}
+
+function getSex($sType) {
+    switch ($sType) {
+        case '1':
+            return 'Male';
+            break;
+        case '2':
+            return 'Female';
             break;
     }
 }

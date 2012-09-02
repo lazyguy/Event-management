@@ -20,7 +20,7 @@
                 padding-top: 60px;
             }
         </style>
-         <link rel="shortcut icon" href="images/logo.ico">
+        <link rel="shortcut icon" href="images/logo.ico">
     </head>
 
     <body>
@@ -48,9 +48,7 @@
                     </ul>
                     <h5>Print Reports</h5>
                     <ul>
-                        <li><a href="#">Schools</a></li>
-                        <li><a href="#">Items</a></li>
-                        <li><a href="#">Participants</a></li>
+                        <li><a href="report/partByEvent.php">Participants</a></li>
                         <li><a href="report/summary.php">Summary of Registration</a></li>
                     </ul>
 
