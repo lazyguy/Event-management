@@ -147,6 +147,7 @@ function saveParticipant(print) {
                     if (this.id != "part-school-name" && this.id != "part-school-id" && this.id != "part-items") $(this).val('');
                 });
                 if(print ==1){
+                    alert("Remove auto fit to page option before printing");
                     var url = "report/regcardgenerate.php?sid="+obj.sid;
                     window.open(url);
                 }
@@ -361,6 +362,7 @@ function editParticipant(print) {
                 $('#part-participantid').val("");
                 //check if reg card needs to be printed now.
                 if(print ==1){
+                    alert("Remove auto fit to page option before printing");
                     var url = "report/regcardgenerate.php?sid="+obj.sid;
                     window.open(url);
                 }

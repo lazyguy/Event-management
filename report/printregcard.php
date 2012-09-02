@@ -148,6 +148,7 @@
                 $('#saveButtonMessage').hide(); 
             });
             $('#report-entry-save').on("click",function(){
+                alert("Remove auto fit to page option before printing");
                 var url = "regcardgenerate.php?sid="+$('#firstHasCorrectValue').val();
                 window.open(url);
             });

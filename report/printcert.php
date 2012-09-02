@@ -62,37 +62,44 @@
                             </select>
                             <input id="firstHasCorrectValue" type="hidden" value="0"/>
                         </div>
-                        <div class="span6">
-                            <a class="btn primary" id="printPartByEvent">Print</a>
-                            <a class="btn primary" id="printPartBySchool">Print - Sort by school</a>
-                        </div>
+
                     </div><!-- /clearfix -->
                 </form>
                 <div id="resultSet"  class="well" style="padding-top: 5px">
-                    <h4>Winners</h4>
-                    <div class ="span12" >
+                    <h4>Winners &nbsp;&nbsp;&nbsp;&nbsp;
+                        <a class="btn primary" id="printWinnerCert">Print All Winner Certificates</a>
+                    </h4>
+                    <div class ="span12" style="padding-top: 10px;">
                         <table class="condensed-table bordered-table " id="partByEventTable">
+                            <thead>
+                                <tr>
+                                    <th width="9%"><b>Rank</b></th>
+                                    <th width="12%"><b>Reg No</b></th>
+                                    <th width="25%"><b>Name</b></th>
+                                    <th width="40%"><b>School Name</b></th>
+                                    <th width="9%"><b>Sex</b></th>
+                                </tr>
+                            </thead>
+                            <tbody id="partByEventBody">
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
+                <div id="resultSet1"  class="well" style="padding-top: 5px">
+                    <h4>Participants &nbsp;&nbsp;&nbsp;&nbsp;
+                        <a class="btn primary" id="printParticipationCert">Print All Participation Certificates</a>
+                    </h4>
+                    <em><b>Data for participants whose points are not entered will not be shown</b></em>
+                    <div class ="span12" style="padding-top: 10px;">
+                        <table class="condensed-table bordered-table " id="allPartByEventTable">
                             <thead>
                                 <tr>
                                     <th width="12%"><b>Reg No</b></th>
                                     <th width="25%"><b>Name</b></th>
                                     <th width="40%"><b>School Name</b></th>
                                     <th width="9%"><b>Sex</b></th>
-                                    <th width="9%"><b>Age</b></th>
-                                </tr>
-                            </thead>
-                            <tbody id="partByEventBody">
-                            </tbody>
-                        </table>
-                        <table class="condensed-table bordered-table " id="allPartByEventTable">
-                            <thead>
-                                <tr>
-                                    <th><b>Event Name</b></th>
-                                    <th width="6%"><b>Reg No</b></th>
-                                    <th><b>Name</b></th>
-                                    <th><b>School Name</b></th>
-                                    <th width="8%"><b>Sex</b></th>
-                                    <th width="7%"><b>Age</b></th>
+                                    <th width="9%"><b>Grade/Points</b></th>
                                 </tr>
                             </thead>
                             <tbody id="allPartByEventBody">
@@ -100,9 +107,9 @@
                         </table>
                     </div>
                 </div>
-
-                <!--div id="errorSet"  class="well" style="padding-top: 25px"></div-->
-
+                <!--
+                                <div id="errorSet"  class="well" style="padding-top: 25px"></div>
+                -->
                 <footer>
                     <p>&copy; Rotary Club of Cherthala</p>
                 </footer>
@@ -113,97 +120,101 @@
             $(document).ready(function(){
                 geteventnames(2);
                 $('#resultSet').hide();
+                $('#resultSet1').hide();
                 $('#allPartByEventTable').hide();
                 $('#partByEventTable').hide();
-                $('#printPartByEvent').hide();
-                $('#printPartBySchool').hide();
-                $('#printPartByEvent').on("click",function(){
-                    var url = "printPartByEvent.php?eId="+$('#report-eventName').val();
+                $('#printWinnerCert').hide();
+                $('#printParticipationCert').hide();
+                $('#printWinnerCert').on("click",function(){
+                    alert("Remove auto fit to page option before printing");
+                    var url = "printcertbyevent.php?eId="+$('#report-eventName').val()+"&winner=1";
                     window.open(url);
                 });
-                $('#printPartBySchool').on("click",function(){
-                    var url = "printPartByEvent.php?eId="+$('#report-eventName').val()+"&sortby=1";
+                $('#printParticipationCert').on("click",function(){
+                    alert("Remove auto fit to page option before printing");
+                    var url = "printcertbyevent.php?eId="+$('#report-eventName').val()+"&winner=0";
                     window.open(url);
                 });
             });
             $(".chzn-select").chosen();
             $("#report-eventName").chosen().change(function(){
                 $('#resultSet').show();
+                $('#resultSet1').show();
                 $.post("getPartByType.php", {
-                    type: "byEvent",
+                    type: "byEventWinner",
                     eId: $('#report-eventName').val()
                 }, function(data){
                     /*
-                       $('#errorSet').empty();
-                        $('#errorSet').html(data);
+                    $('#errorSet').empty();
+                    $('#errorSet').html(data);
                      */
+                    $('#printWinnerCert').hide();
+                    $('#printParticipationCert').hide();
                     var oTable1 = $('#allPartByEventTable').dataTable();
                     oTable1.fnDestroy();
                     var oTable2 = $('#partByEventTable').dataTable();
                     oTable2.fnDestroy();
                     $('#allPartByEventTable').hide();
                     $('#partByEventTable').hide();
-                   
-                    if($('#report-eventName').val() != 999999){
-                        
-                        $('#partByEventTable').show();
-                        var obj = jQuery.parseJSON(data);
-                        var oTable = $('#partByEventTable').dataTable();
-                        oTable.fnClearTable();
-                        if(obj){
-                            for (var i = 0; i < obj.participants.length; i++) { 
-                                $('#partByEventBody').append("<tr>"+"<td>"+obj.participants[i].rNum+
-                                    "</td>"+"<td>"+obj.participants[i].name+"</td>"+"<td>"+obj.participants[i].school_name+"</td>"+"<td>"+obj.participants[i].sex+"</td>"+"<td>"+obj.participants[i].age+"</td>"+"</tr>");
-                            }
-                            $('#printPartByEvent').html('');
-                            $('#printPartByEvent').html('Print');
-                            $('#printPartByEvent').show();
-                            $('#printPartBySchool').hide();
+                    $('#partByEventTable').show();
+                    $('#allPartByEventTable').show();
+                    var obj = jQuery.parseJSON(data);
+                    var oTable = $('#partByEventTable').dataTable();
+                    oTable.fnClearTable();
+                    var oTable1 = $('#allPartByEventTable').dataTable();
+                    oTable1.fnClearTable();
+                    
+                    if(obj){
+                        for (var i = 0; i < obj.winners.length; i++) { 
+                            $('#partByEventBody').append("<tr>"+
+                                "<td>"+obj.winners[i].position+"</td>"+
+                                "<td>"+obj.winners[i].rNum+"</td>"+
+                                "<td>"+obj.winners[i].name+"</td>"+
+                                "<td>"+obj.winners[i].school_name+"</td>"+
+                                "<td>"+obj.winners[i].sex+"</td>"+
+                                "</tr>");
                         }
-                        $('#partByEventTable').dataTable({
-                            "bLengthChange": false,
-                            "bFilter": false,
-                            "oLanguage": {
-                                "sEmptyTable": "No Participants Registered for this Event"
-                            },
-                            "bPaginate": false,
-                            "bInfo":false,
-                            "bDestroy": true,
-                            "sScrollY": "80px"
-                        });
-                    }
-                    else {
-                        $('#allPartByEventTable').show();
-                        var obj = jQuery.parseJSON(data);
-                        var oTable = $('#allPartByEventTable').dataTable();
-                        oTable.fnClearTable();
-                        if(obj){
-                            for (var i = 0; i < obj.participants.length; i++) { 
-                                $('#allPartByEventBody').append("<tr>"+
-                                    "<td>"+obj.participants[i].ename+"</td>"+
-                                    "<td>"+obj.participants[i].rNum+"</td>"+
-                                    "<td>"+obj.participants[i].name+"</td>"+
-                                    "<td>"+obj.participants[i].school_name+"</td>"+
-                                    "<td>"+obj.participants[i].sex+"</td>"+
-                                    "<td>"+obj.participants[i].age+"</td>"+"</tr>");
-                            }
-                            $('#printPartByEvent').html('');
-                            $('#printPartByEvent').html('Print - Sort By Event');
-                            $('#printPartByEvent').show();
-                            $('#printPartBySchool').show();
+                        for (var i = 0; i < obj.participants.length; i++) { 
+                            $('#allPartByEventBody').append("<tr>"+
+                                "<td>"+obj.participants[i].rNum+"</td>"+
+                                "<td>"+obj.participants[i].name+"</td>"+
+                                "<td>"+obj.participants[i].school_name+"</td>"+
+                                "<td>"+obj.participants[i].sex+"</td>"+
+                                "<td>"+obj.participants[i].grade+"</td>"+
+                                "</tr>");
                         }
-                        $('#allPartByEventTable').dataTable({
-                            "bLengthChange": false,
-                            "bFilter": false,
-                            "oLanguage": {
-                                "sEmptyTable": "No Participants found"
-                            },
-                            "bPaginate": false,
-                            "bInfo":false,
-                            "bDestroy": true,
-                            "sScrollY": "250px"
-                        });
                     }
+                    
+                    $('#partByEventTable').dataTable({
+                        "bLengthChange": false,
+                        "bFilter": false,
+                        "oLanguage": {
+                            "sEmptyTable": "No Winners Entered"
+                        },
+                        "bPaginate": false,
+                        "bInfo":false,
+                        "bDestroy": true,
+                        "sScrollY": "80px"
+                    });
+                    if(obj.participants)
+                        var scrollLength = 27*obj.participants.length;
+                    else
+                        scrollLength = 30;
+                    $('#allPartByEventTable').dataTable({
+                        "bLengthChange": false,
+                        "bFilter": false,
+                        "oLanguage": {
+                            "sEmptyTable": "No Participants with grade/point found"
+                        },
+                        "bPaginate": false,
+                        "bInfo":false,
+                        "bDestroy": true,
+                        "sScrollY": scrollLength+"px"
+                    });
+                    if(obj.participants.length > 0)
+                        $('#printParticipationCert').show();
+                    if(obj.winners.length > 0)
+                        $('#printWinnerCert').show();
                 });
             });
             
