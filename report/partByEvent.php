@@ -64,7 +64,7 @@
                         </div>
                         <div class="span6">
                             <a class="btn primary" id="printPartByEvent">Print</a>
-                             <a class="btn primary" id="printPartBySchool">Print - Sort by school</a>
+                            <a class="btn primary" id="printPartBySchool">Print - Sort by school</a>
                         </div>
                     </div><!-- /clearfix -->
                 </form>
@@ -151,8 +151,13 @@
                         oTable.fnClearTable();
                         if(obj){
                             for (var i = 0; i < obj.participants.length; i++) { 
-                                $('#partByEventBody').append("<tr>"+"<td>"+obj.participants[i].rNum+
-                                    "</td>"+"<td>"+obj.participants[i].name+"</td>"+"<td>"+obj.participants[i].school_name+"</td>"+"<td>"+obj.participants[i].sex+"</td>"+"<td>"+obj.participants[i].age+"</td>"+"</tr>");
+                                $('#partByEventBody').append("<tr>"+
+                                    "<td>"+obj.participants[i].rNum+"</td>"+
+                                    "<td>"+obj.participants[i].name+"</td>"+
+                                    "<td>"+obj.participants[i].school_name+"</td>"+
+                                    "<td>"+obj.participants[i].sex+"</td>"+
+                                    "<td>"+obj.participants[i].age+"</td>"+
+                                    "</tr>");
                             }
                             $('#printPartByEvent').html('');
                             $('#printPartByEvent').html('Print');
@@ -168,7 +173,8 @@
                             "bPaginate": false,
                             "bInfo":false,
                             "bDestroy": true,
-                            "sScrollY": "170px"
+                            "sScrollY": "170px",
+                            "bScrollCollapse": true
                         });
                     }
                     else {
@@ -186,11 +192,15 @@
                                     "<td>"+obj.participants[i].sex+"</td>"+
                                     "<td>"+obj.participants[i].age+"</td>"+"</tr>");
                             }
-                             $('#printPartByEvent').html('');
+                            $('#printPartByEvent').html('');
                             $('#printPartByEvent').html('Print - Sort By Event');
                             $('#printPartByEvent').show();
                             $('#printPartBySchool').show();
                         }
+                        if(obj.participants)
+                            var scrollLength = 100*obj.participants.length;
+                        else
+                            scrollLength = 30;
                         $('#allPartByEventTable').dataTable({
                             "bLengthChange": false,
                             "bFilter": false,
@@ -200,7 +210,8 @@
                             "bPaginate": false,
                             "bInfo":false,
                             "bDestroy": true,
-                            "sScrollY": "250px"
+                            "sScrollY": scrollLength+"px",
+                            "bScrollCollapse": true
                         });
                     }
                 });

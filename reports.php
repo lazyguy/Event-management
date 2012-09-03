@@ -50,6 +50,7 @@
                     <ul>
                         <li><a href="report/partByEvent.php">Participants</a></li>
                         <li><a href="report/summary.php">Summary of Registration</a></li>
+                        <li><a href="report/printcert.php">Print Certificates</a></li>
                     </ul>
 
                 </div>
