@@ -45,6 +45,7 @@
                     <h5>Results</h5>
                     <ul>
                         <li><a id="enterResult" href="report/resultentry.php">Enter/Edit Result</a></li>
+                        <li><a id="winnerList" href="report/winners.php">Winners</a></li>
                     </ul>
                     <h5>Print Reports</h5>
                     <ul>

@@ -15,3 +15,8 @@ WHERE b.regn_number = a.regn_number
 GROUP BY b.regn_number, b.school_id
 )inner_query
 GROUP BY school_id1
+
+
+
+//winners by school
+select * from event_result where regn_number  in (select regn_number from event_trans where regn_number in (select regn_number from participant_master where school_id=4000)) and (position = 1 or position = 2 or  position =3)

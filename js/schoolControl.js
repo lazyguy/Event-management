@@ -120,7 +120,7 @@ function getSchools(e) {
             if(count >=1){
                 $('#schoolsTable').show();
                 if(parseInt(numofPages)>1){
-                    $('#schoolEditPages').show();                 
+                    $('#schoolEditPages').show();
                     $('#schoolNextPage').addClass('editimageptr');
                     $('#schoolPrevPage').addClass('disabled');
                     $('#schoolPrevPage').removeClass('editimageptr');
@@ -134,7 +134,7 @@ function getSchools(e) {
                 $('#schoolEditResult').show();
                 $('#schoolNameEdit').html("");
                 $('#schoolNameEdit').select();
-            }                            
+            }
             $.each(obj, function(index){
                 var item = obj[index+1];
                 $('#schoolsTable > tbody:last').append('<tr id="'+item.id+'"><td>'+item.id+'</td><td>'+item.value+
@@ -151,7 +151,7 @@ function getSchoolPrevPage(e){
 function getSchoolNextPage(e){
     getSchoolPage("Next");
 }
-                    
+
 function getSchoolPage(e){
     var type;
     var currentPage;
@@ -172,7 +172,7 @@ function getSchoolPage(e){
         currentPage:currentPage
     },
     function(data){
-                            
+
         $('#schoolsTable > tbody:last').empty();
         var obj = jQuery.parseJSON(data);
         var count = obj[0].totalcount;
@@ -181,7 +181,7 @@ function getSchoolPage(e){
         $('#schoolEditResult').hide();
         if(e=="Next"){
             currentPage = parseInt(currentPage) + 1;
-                        
+
         }
         else if (e=="Prev"){
             currentPage = parseInt(currentPage) -1;
@@ -201,7 +201,7 @@ function getSchoolPage(e){
             $('#schoolEditResult').show();
             $('#schoolNameEdit').html("");
             $('#schoolNameEdit').select();
-        }                            
+        }
         $.each(obj, function(index){
             var item = obj[index+1];
             $('#schoolsTable > tbody:last').append('<tr id="'+item.id+'"><td>'+item.id+'</td><td>'+item.value+
@@ -211,7 +211,7 @@ function getSchoolPage(e){
         });
     });
 }
-                            
+
 function setpageSchoolEnableDisable(currentPage,numofPages){
     if(numofPages == parseInt(currentPage)){
         $('#schoolNextPage').addClass('disabled');
@@ -223,7 +223,7 @@ function setpageSchoolEnableDisable(currentPage,numofPages){
     }
     if(parseInt(currentPage) <= 1){
         $('#schoolPrevPage').addClass('disabled');
-        $('#schoolPrevPage').removeClass('editimageptr');                                    
+        $('#schoolPrevPage').removeClass('editimageptr');
     }
     else{
         $('#schoolPrevPage').removeClass('disabled');
@@ -251,12 +251,12 @@ function editSchool(e) {
         $('#principalNameEdit').val(pName);
         $('#phoneNumberEdit').val(pNum);
         $('#emailIdEdit').val(pMail);
-            
+
         $('#modal-edit-save-school').modal({
-            backdrop: false, 
+            backdrop: false,
             keyboard:true
         });
-        
+
         $('#modal-edit-save-school').modal('show');
     });
 }
@@ -299,4 +299,49 @@ function editSchoolSave(e) {
             $('#schoolEditSaveResult').show();
         }
     });
+}
+
+function getschoolnames(element) {
+
+    var phpFile;
+    switch (element) {
+        case 0:
+            $('#report-schoolName').empty();
+            phpFile = "../get_school_list.php";
+            break;
+        default:
+            break;
+    }
+    $.get(phpFile, {
+        term: "######getallstuff##########" //I am too lazy to do stuff properly
+    },
+
+    function (data) {
+        var obj = jQuery.parseJSON(data);
+        for (i = 0; i < obj.length; i++) {
+            switch (element) {
+                case 0:
+                    if (i == 0) {
+                        $('#report-schoolName').append("<option></option>");
+                        $('#report-schoolName').append("<option value='999999'>All Schools</option>");
+                    }
+                    $('#report-schoolName').append(
+                        $("<option></option>").attr("value", obj[i].id).text(obj[i].value));
+                    break;
+
+                default:
+
+                    break;
+            }
+        }
+        switch (element) {
+            //call list updated to add the new data from ajax to the list
+            case 0:
+                $("#report-schoolName").trigger("liszt:updated");
+                break;
+            default:
+                break;
+        }
+    });
+
 }

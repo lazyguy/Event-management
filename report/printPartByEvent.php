@@ -33,6 +33,7 @@ class PDF extends PDF_JavaScript {
     }
 
     function Footer() {
+        $foot = $GLOBALS["foot"];
         $w = $GLOBALS["width"];
         //  if ($GLOBALS["type"] != 1)
         $this->Cell(array_sum($w), 0, '', 'T');
@@ -42,7 +43,7 @@ class PDF extends PDF_JavaScript {
         // Select Arial italic 8
         $this->SetFont('Arial', 'I', 8);
         // Print current and total page numbers
-        $this->Cell(0, 10, 'Page ' . $this->PageNo() . '/{nb}', 0, 0);
+        $this->Cell(0, 10, $foot . '-' . 'Page ' . $this->PageNo() . '/{nb}', 0, 0);
     }
 
     function FancyTable($data, $type, $sortby) {
@@ -65,7 +66,7 @@ class PDF extends PDF_JavaScript {
         } else {
             $eventName = $data[0][0]["ename"];
         }
-        $GLOBALS["titleg"] = "Rotary Balolsav - " . getYear() . " - " . $eventName;
+
         //$GLOBALS["titleg"] = "All Participants For " . $eventName;
         // $this->Header1();
 
@@ -81,10 +82,12 @@ class PDF extends PDF_JavaScript {
 
                     if ($type == 1 && $sortby == 1) {
                         $eventName = $row["school_name"];
+                        $GLOBALS["titleg"] = "All Participants From " . ucwords($eventName);
                     } else {
                         $eventName = $row["ename"];
+                        $GLOBALS["titleg"] = "Rotary Balolsav " . getYear() . " / " . $eventName;
                     }
-                    $GLOBALS["titleg"] = "All Participants For " . $eventName;
+
                     $this->AddPage();
                     $fill = false;
                 }
@@ -92,7 +95,10 @@ class PDF extends PDF_JavaScript {
                 $this->Cell($w[0], 9, '', 'LR', 0, 'L', $fill);
                 $this->Cell($w[1], 9, number_format($row["rNum"]), 'LR', 0, 'L', $fill);
                 $this->Cell($w[2], 9, $row["name"], 'LR', 0, 'L', $fill);
-                $this->Cell($w[3], 9, $row["school_name"], 'LR', 0, 'L', $fill);
+                if ($sortby == 1)
+                    $this->Cell($w[3], 9, $row["ename"], 'LR', 0, 'L', $fill);
+                else
+                    $this->Cell($w[3], 9, $row["school_name"], 'LR', 0, 'L', $fill);
                 $this->Cell($w[4], 9, $row["sex"], 'LR', 0, 'L', $fill);
                 $this->Cell($w[5], 9, $row["age"], 'LR', 0, 'R', $fill);
                 $this->Ln();
@@ -137,16 +143,22 @@ if (!$con) {
                 $sortby = 0;
 
             if ($type == 1 && $sortby == 1) {
+
+                $GLOBALS["foot"] = "Participants By School";
+                $GLOBALS["headerg"] = array('Chest No', 'Reg No', 'Name', 'Event Name', 'Sex', 'Age');
                 $eventName = $d["participants"][0]["school_name"];
+                $GLOBALS["titleg"] = "All Participants From " . ucwords($eventName);
             } else {
+
+                $GLOBALS["foot"] = "Participants By Event";
+                $GLOBALS["headerg"] = array('Chest No', 'Reg No', 'Name', 'School Name', 'Sex', 'Age');
                 $eventName = $d["participants"][0]["ename"];
+                $GLOBALS["titleg"] = "Rotary Balolsav " . getYear() . " / " . $eventName;
             }
-            $GLOBALS["titleg"] = "Rotary Balolsav - " . getYear() . " - " . $eventName;
 
             if ($sortby == 1) {
                 foreach ($d["participants"] as $key => $row) {
                     $dates[$key] = $row["school_name"];
-                    // of course, replace 0 with whatever is the date field's index
                 }
 
                 array_multisort($dates, SORT_DESC, $d["participants"]);
@@ -154,7 +166,11 @@ if (!$con) {
             $pdf->AddPage();
             $pdf->FancyTable(array_values($d), 1, $sortby);
         } else {
+            $GLOBALS["foot"] = "Participants By Event";
             $GLOBALS["type"] = 2;
+            $GLOBALS["headerg"] = array('Chest No', 'Reg No', 'Name', 'School Name', 'Sex', 'Age');
+            $eventName = $d["participants"][0]["ename"];
+            $GLOBALS["titleg"] = "Rotary Balolsav " . getYear() . " / " . $eventName;
             $pdf->AddPage();
             $pdf->FancyTable(array_values($d), 2, -1);
         }
