@@ -62,16 +62,18 @@
                             </select>
                             <input id="firstHasCorrectValue" type="hidden" value="0"/>
                         </div>
-                        <!--
-                        <div class="span6">
-                            <a class="btn primary" id="printWinnerBySchool">Print</a>
-                            <a class="btn primary" id="printPointsBySchool">Print - Sort by school</a>
-                        </div>
-                        -->
                     </div><!-- /clearfix -->
                 </form>
                 <div id="resultSet"  class="well" style="padding-top: 25px">
                     <div class ="span12" >
+                        <div  class="row">
+                            <div class="span3">
+                                <h4>Points by School</h4>
+                            </div>
+                            <div class="span3">
+                                <a class="btn primary" id="printPointsBySchool">Print</a>
+                            </div>
+                        </div>
                         <table class="condensed-table bordered-table " id="partByEventTable">
                             <thead>
                                 <tr>
@@ -84,6 +86,13 @@
                             </tbody>
                         </table>
                         <br /><br />
+                        <div class ="row">
+                            <div class="span3">
+                                <h4>Winners by School</h4></div>
+                            <div class="span4">
+                                <a class="btn primary" id="printWinnerBySchool">Print</a>
+                            </div>
+                        </div>
                         <table class="condensed-table bordered-table " id="allPartByEventTable">
                             <thead>
                                 <tr>
@@ -121,7 +130,7 @@
                     window.open(url);
                 });
                 $('#printPointsBySchool').on("click", function () {
-                    var url = "printwinnerbyschool.php?eId=" + $('#report-schoolName').val() + "&sortby=1";
+                    var url = "printwinnerbyschool.php?eId=999999&printall=1";
                     window.open(url);
                 });
             });
@@ -132,19 +141,14 @@
                     type: "bySchool",
                     eId: $('#report-schoolName').val()
                 }, function (data) {
-/*
+                    /*
                     $('#errorSet').empty();
                     $('#errorSet').html(data);
-*/
+                     */
                     var oTable1 = $('#allPartByEventTable').dataTable();
                     oTable1.fnDestroy();
                     var oTable2 = $('#partByEventTable').dataTable();
                     oTable2.fnDestroy();
-                    $('#allPartByEventTable').hide();
-                    $('#partByEventTable').hide();
-
-
-
                     $('#partByEventTable').show();
                     var obj = jQuery.parseJSON(data);
                     var oTable = $('#partByEventTable').dataTable();
@@ -172,16 +176,13 @@
                         "bInfo":false,
                         "bDestroy": true,
                         "sScrollY": "170px",
-                        "bScrollCollapse": true
+                        "bScrollCollapse": true,
+                        "aaSorting": [[2,'desc']]
                     });
-
-
-
-
                     $('#allPartByEventTable').show();
-                    var obj = jQuery.parseJSON(data);
-                    var oTable = $('#allPartByEventTable').dataTable();
-                    oTable.fnClearTable();
+                    // var obj1 = jQuery.parseJSON(data);
+                    var oTable1 = $('#allPartByEventTable').dataTable();
+                    oTable1.fnClearTable();
                     if (obj.participants) {
                         for (var i = 0; i < obj.participants.length; i++) {
                             $('#allPartByEventBody').append("<tr>" +
@@ -192,12 +193,12 @@
                                 "<td>" + obj.participants[i].position + "</td>" +
                                 "</tr>");
                         }
-                        $('#printWinnerBySchool').html('');
-                        $('#printWinnerBySchool').html('Print - Sort By Event');
-                        $('#printWinnerBySchool').show();
-                        $('#printPointsBySchool').show();
+                        if(obj.participants && obj.participants.length > 0)
+                            $('#printWinnerBySchool').show();
+                        else
+                            $('#printWinnerBySchool').hide();
+                        //  $('#printPointsBySchool').show();
                     }
-
                     $('#allPartByEventTable').dataTable({
                         "bLengthChange": false,
                         "bFilter": false,
@@ -208,9 +209,17 @@
                         "bInfo": false,
                         "bDestroy": true,
                         "sScrollY": "170px",
-                        "bScrollCollapse": true
+                        "bScrollCollapse": true,
+                        "aaSorting": [[2,'asc']]
                     });
-
+                    if(obj.participants && obj.participants.length > 0)
+                        $('#printWinnerBySchool').show();
+                    else
+                        $('#printWinnerBySchool').hide();
+                    if(obj.sum && obj.sum.length > 0)
+                        $('#printPointsBySchool').show();
+                    else
+                        $('#printPointsBySchool').hide();
                 });
             });
         </script>
