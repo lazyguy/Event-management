@@ -3,7 +3,7 @@
 <html lang="en">
     <head>
         <meta charset="utf-8">
-        <title>Balolsav <?php echo getYear() ?></title>
+        <title>Print Certificate - Balolsav <?php echo getYear() ?></title>
         <meta name="description" content="">
         <meta name="author" content="">
 
@@ -163,9 +163,9 @@
                     oTable.fnClearTable();
                     var oTable1 = $('#allPartByEventTable').dataTable();
                     oTable1.fnClearTable();
-                    
+
                     if(obj){
-                        for (var i = 0; i < obj.winners.length; i++) { 
+                        for (var i = 0; i < obj.winners.length; i++) {
                             $('#partByEventBody').append("<tr>"+
                                 "<td>"+obj.winners[i].position+"</td>"+
                                 "<td>"+obj.winners[i].rNum+"</td>"+
@@ -174,7 +174,7 @@
                                 "<td>"+obj.winners[i].sex+"</td>"+
                                 "</tr>");
                         }
-                        for (var i = 0; i < obj.participants.length; i++) { 
+                        for (var i = 0; i < obj.participants.length; i++) {
                             $('#allPartByEventBody').append("<tr>"+
                                 "<td>"+obj.participants[i].rNum+"</td>"+
                                 "<td>"+obj.participants[i].name+"</td>"+
@@ -184,7 +184,7 @@
                                 "</tr>");
                         }
                     }
-                    
+
                     $('#partByEventTable').dataTable({
                         "bLengthChange": false,
                         "bFilter": false,
@@ -217,8 +217,8 @@
                         $('#printWinnerCert').show();
                 });
             });
-            
-            
+
+
         </script>
     </body>
 </html>

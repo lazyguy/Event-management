@@ -46,12 +46,13 @@
                     <ul>
                         <li><a id="enterResult" href="report/resultentry.php">Enter/Edit Result</a></li>
                         <li><a id="winnerList" href="report/winners.php">Winners</a></li>
+                        <li><a href="report/printcert.php">Print Certificates</a></li>
                     </ul>
-                    <h5>Print Reports</h5>
+                    <h5>Reports</h5>
                     <ul>
                         <li><a href="report/partByEvent.php">Participants</a></li>
                         <li><a href="report/summary.php">Summary of Registration</a></li>
-                        <li><a href="report/printcert.php">Print Certificates</a></li>
+                        <li><a href="report/champion.php">Kala Thilakom/Prathibha</a></li>
                     </ul>
 
                 </div>

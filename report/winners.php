@@ -3,7 +3,7 @@
 <html lang="en">
     <head>
         <meta charset="utf-8">
-        <title>Balolsav <?php echo getYear() ?></title>
+        <title>Winners - Balolsav <?php echo getYear() ?></title>
         <meta name="description" content="">
         <meta name="author" content="">
 

@@ -3,7 +3,7 @@
 <html lang="en">
     <head>
         <meta charset="utf-8">
-        <title>Balolsav <?php echo getYear() ?></title>
+        <title>Participants - Balolsav <?php echo getYear() ?></title>
         <meta name="description" content="">
         <meta name="author" content="">
 
@@ -142,15 +142,15 @@
                     oTable2.fnDestroy();
                     $('#allPartByEventTable').hide();
                     $('#partByEventTable').hide();
-                   
+
                     if($('#report-eventName').val() != 999999){
-                        
+
                         $('#partByEventTable').show();
                         var obj = jQuery.parseJSON(data);
                         var oTable = $('#partByEventTable').dataTable();
                         oTable.fnClearTable();
                         if(obj){
-                            for (var i = 0; i < obj.participants.length; i++) { 
+                            for (var i = 0; i < obj.participants.length; i++) {
                                 $('#partByEventBody').append("<tr>"+
                                     "<td>"+obj.participants[i].rNum+"</td>"+
                                     "<td>"+obj.participants[i].name+"</td>"+
@@ -183,7 +183,7 @@
                         var oTable = $('#allPartByEventTable').dataTable();
                         oTable.fnClearTable();
                         if(obj){
-                            for (var i = 0; i < obj.participants.length; i++) { 
+                            for (var i = 0; i < obj.participants.length; i++) {
                                 $('#allPartByEventBody').append("<tr>"+
                                     "<td>"+obj.participants[i].ename+"</td>"+
                                     "<td>"+obj.participants[i].rNum+"</td>"+
@@ -216,8 +216,8 @@
                     }
                 });
             });
-            
-            
+
+
         </script>
     </body>
 </html>

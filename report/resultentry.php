@@ -3,7 +3,7 @@
 <html lang="en">
     <head>
         <meta charset="utf-8">
-        <title>Balolsav <?php echo getYear() ?></title>
+        <title>Result Entry - Balolsav <?php echo getYear() ?></title>
         <meta name="description" content="">
         <meta name="author" content="">
 
@@ -156,7 +156,7 @@
                 geteventnames(2);
                 $('#resultSet').hide();
                 $('#report-firstRegId-error').hide();
-                $('#saveButtonMessage').hide();                
+                $('#saveButtonMessage').hide();
                 $('#report-firstRegId').on("change keypress paste textInput input" ,function(e){
                     $('#report-firstPName').val("");
                     $('#report-firstSName').val("");
@@ -165,7 +165,7 @@
                     $('#report-firstRegId-error').show();
                     $('#firstHasCorrectValue').val("0");
                 });
-               
+
                 $('#report-firstRegId').on('keypress', function(e){
                     if ( e.keyCode == 13 ){
                         $.post("../addParticipant.php",{
@@ -226,7 +226,7 @@
                 $('#report-firstRegId-error').hide();
                 $('#report-secondRegId-error').hide();
                 $('#report-thirdRegId-error').hide();
-                $('#saveButtonMessage').hide(); 
+                $('#saveButtonMessage').hide();
             });
             $('#report-entry-save').on("click",function(){
                 var firstHasCorrectValue = $('#firstHasCorrectValue').val();
@@ -278,7 +278,7 @@
                             }
                             break;
                     }
-                    if ( $('#report-position-value').val() == null) 
+                    if ( $('#report-position-value').val() == null)
                         $('#report-position-value').val(0);
                     $.post("manageResult.php",{
                         type:"addResult2",
@@ -287,7 +287,7 @@
                         score:score,
                         grade:grade,
                         position:$('#report-position-value').val()
-                       
+
                     },function(data){
                         //alert(data);
                         if(data==1){

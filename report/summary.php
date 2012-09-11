@@ -3,7 +3,7 @@
 <html lang="en">
     <head>
         <meta charset="utf-8">
-        <title>Balolsav <?php echo getYear() ?></title>
+        <title>Summary - Balolsav <?php echo getYear() ?></title>
         <meta name="description" content="">
         <meta name="author" content="">
 
@@ -107,7 +107,7 @@
                         </div>
                         <div class="row" style="padding-top: 25px;padding-left: 375px">
                             <a class="btn primary" id="printSummaryReport" href="printSummary.php" target="_blank">Print Summary </a>
-                        </div>     
+                        </div>
                     </div>
                 </div>
                 <div id ="test1"></div>
@@ -121,7 +121,7 @@
             $(document).ready(function(){
                 $.post("reportManager.php", {
                     type: "getSummary"
-                }, function(data){                   
+                }, function(data){
                     /*
                     $('#test1').empty();
                     $('#test1').html(data);
@@ -142,12 +142,12 @@
                     $('#totalSchools').append(obj.counts.schoolCount);
                     $('#totalevents').append(obj.counts.eventsCount);
                     $('#schoolSummaryBody').empty();
-                    for (var i = 0; i < obj.school.length; i++) { 
+                    for (var i = 0; i < obj.school.length; i++) {
                         $('#schoolSummaryBody').append("<tr>"+"<td>"+obj.school[i].sName+
                             "</td>"+"<td>"+obj.school[i].sCount+"</td>"+"<td>"+obj.school[i].jCount+"</td>"+"<td>"+obj.school[i].sSum+"</td>"+"</tr>");
                     }
                     $('#eventSummaryBody').empty();
-                    for (var i = 0; i < obj.events.length; i++) { 
+                    for (var i = 0; i < obj.events.length; i++) {
                         $('#eventSummaryBody').append("<tr>"+"<td>"+obj.events[i].eName+
                             "</td>"+"<td>"+obj.events[i].category+"</td>"+"<td>"+obj.events[i].count+"</td>"+"</tr>");
                     }
@@ -159,7 +159,7 @@
                         "bPaginate": false,
                         "bInfo":false
                     });
-                    
+
                     $('#eventSummaryTable').dataTable({
                         "bLengthChange": false,
                         //     "iDisplayLength": 6 ,
@@ -169,10 +169,10 @@
                         "bInfo":false
                     });
                 });
-                
+
             });
-            
-           
+
+
         </script>
     </body>
 </html>

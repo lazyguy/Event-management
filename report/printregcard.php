@@ -3,7 +3,7 @@
 <html lang="en">
     <head>
         <meta charset="utf-8">
-        <title>Balolsav <?php echo getYear() ?></title>
+        <title>Print Reg Card - Balolsav <?php echo getYear() ?></title>
         <meta name="description" content="">
         <meta name="author" content="">
 
@@ -37,7 +37,7 @@
         <div class="topbar">
             <div class="topbar-inner">
                 <div class="container-fluid">
-                    <a class="brand" href="../index.php">Balolsav <?php echo getYear() ?></a>
+                    <a class="brand" href="../index.php">Balolsav&nbsp;<?php echo getYear()?></a>
                     <ul class="nav">
                         <li class="active"><a href="../home.php">Home</a></li>
                     </ul>
@@ -100,7 +100,7 @@
             $(document).ready(function(){
                 geteventnames(2);
                 $('#report-firstRegId-error').hide();
-                $('#saveButtonMessage').hide();                
+                $('#saveButtonMessage').hide();
                 $('#report-firstRegId').on("change keypress paste textInput input" ,function(e){
                     $('#report-firstPName').val("");
                     $('#report-firstSName').val("");
@@ -109,7 +109,7 @@
                     $('#report-firstRegId-error').show();
                     $('#firstHasCorrectValue').val("0");
                 });
-               
+
                 $('#report-firstRegId').on('keypress', function(e){
                     if ( e.keyCode == 13 ){
                         $.post("../addParticipant.php",{
@@ -141,11 +141,11 @@
                     }
                 });
             });
-            
+
             $('#report-entry-cancel').on("click",function(){
                 $('#resultentryform').find(':input').each(function(){ $(this).val('');});
-                $('#report-firstRegId-error').hide();                
-                $('#saveButtonMessage').hide(); 
+                $('#report-firstRegId-error').hide();
+                $('#saveButtonMessage').hide();
             });
             $('#report-entry-save').on("click",function(){
                 alert("Remove auto fit to page option before printing");
