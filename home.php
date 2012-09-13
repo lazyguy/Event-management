@@ -158,7 +158,7 @@
                     $('#edit-participantSavePrint').hide();
                     $('#edit-participantAddResult').hide();
                     $('#part-participantid').val("");
-                    
+
                 });
                 $('#edit-participantid').on("keypress",function(e){
                     if ( e.keyCode == 13 ){
@@ -220,7 +220,7 @@
                         Event&nbsp;&nbsp;&nbsp;</button><br/>
                     <br/>
                     <button data-controls-modal="modal-add-school" data-backdrop="static" data-keyboard="true" class="btn success">ADD
-                        School</button> 
+                        School</button>
                     <button data-controls-modal="modal-edit-school" data-backdrop="static" data-keyboard="true" class="btn primary">Edit
                         School&nbsp;</button>
                     <p></p>
@@ -233,7 +233,7 @@
 
                     <?php include_once "participantView.html"; ?>
                     <button data-controls-modal="modal-add-participant" data-backdrop="static" data-keyboard="true" class="btn success">ADD
-                        Participant</button> 
+                        Participant</button>
                     <button data-controls-modal="edit-modal-add-participant" data-backdrop="static" data-keyboard="true" class="btn primary">Edit
                         Participant</button>
                     <p></p>
@@ -255,11 +255,7 @@
             <div>
                 <br /><br /><br /><br /><br /><br /><br /><br /> <!-- Add few blank lines Not a great solution!!! -->
             </div>
-            <footer>
-                <p>
-                    &copy; Rotary Club of Cherthala
-                </p>
-            </footer>
+            <?php include_once "footer.html"?>
         </div> <!-- /container -->
 
     </body>

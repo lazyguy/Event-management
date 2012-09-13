@@ -7,11 +7,6 @@
         <meta name="description" content="">
         <meta name="author" content="">
 
-        <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
-        <!--[if lt IE 9]>
-          <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
-        <![endif]-->
-
         <!-- Le styles -->
         <link href="bootstrap.css" rel="stylesheet">
 
@@ -52,7 +47,7 @@
                     <ul>
                         <li><a href="report/partByEvent.php">Participants</a></li>
                         <li><a href="report/summary.php">Summary of Registration</a></li>
-                        <li><a href="report/champion.php">Kala Thilakom/Prathibha</a></li>
+                        <li><a href="report/pointstable.php">Points Table</a></li>
                     </ul>
 
                 </div>
@@ -64,17 +59,9 @@
                         <p>Use Links in side bar to enter results and print reports.</p>
                     </div>
                 </div>
-                <footer>
-                    <p>&copy; Rotary Club of Cherthala</p>
-                </footer>
+                <?php include_once "footer.html" ?>
             </div>
         </div>
-
-        <script type="text/javascript">
-            $(document).ready(function(){
-
-            });
-        </script>
     </body>
 </html>
 

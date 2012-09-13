@@ -159,9 +159,7 @@
                         </fieldset>
                     </form>
                 </div>
-                <footer>
-                    <p>&copy; Rotary Club of Cherthala</p>
-                </footer>
+                <?php include_once "../footer.html"?>
             </div>
         </div>
 
@@ -172,7 +170,7 @@
                 $('#report-firstRegId-error').hide();
                 $('#report-secondRegId-error').hide();
                 $('#report-thirdRegId-error').hide();
-                $('#saveButtonMessage').hide();                
+                $('#saveButtonMessage').hide();
                 $('#report-firstRegId').change( function(e){
                     $('#report-firstPName').val("");
                     $('#report-firstSName').val("");
@@ -305,7 +303,7 @@
                 $('#report-firstRegId-error').hide();
                 $('#report-secondRegId-error').hide();
                 $('#report-thirdRegId-error').hide();
-                $('#saveButtonMessage').hide(); 
+                $('#saveButtonMessage').hide();
             });
             $('#report-entry-save').on("click",function(){
                 var firstHasCorrectValue = $('#firstHasCorrectValue').val();

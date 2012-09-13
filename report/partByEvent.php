@@ -102,9 +102,7 @@
 
                 <!--div id="errorSet"  class="well" style="padding-top: 25px"></div-->
 
-                <footer>
-                    <p>&copy; Rotary Club of Cherthala</p>
-                </footer>
+                <?php include_once "../footer.html"?>
             </div>
         </div>
 
