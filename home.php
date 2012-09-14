@@ -194,8 +194,12 @@
                 $('#reinitConfirm').on("click",function(){
                     if (confirm('Are you sure you want to delete all data?')) {
                         $.post("reinit.php",
-                        {pass:$("#reinitPass").val()},
+                        {
+                            pass:$("#reinitPass").val()
+                        },
                         function(data){
+                            pass:$("#reinitPass").val('');
+                            alert(data);
                             switch (data){
                                 case '0': //wrong password
                                     $('#reinitallResult').html('Wrong password');
@@ -203,15 +207,17 @@
                                     break;
                                 case '1': // success
                                     alert('All data deleted and app reset; Redirecting to home page');
-                                     window.location.replace("index.php");
+                                    window.location.replace("index.php");
                                     break;
-                                    case '-2':
+                                case '-2':
                                     $('#reinitallResult').html('No data to delete');
                                     $('#reinitallResult').show();
+                                    window.location.replace("index.php");
                                     break;
                                 default: // some error
                                     $('#reinitallResult').html('An error has occured and could not reset data.');
                                     $('#reinitallResult').show();
+                                    window.location.replace("index.php");
                                     break;
                             }
                         });

@@ -6,34 +6,33 @@ $passhash = hash('sha256', $pass);
 if ($passhash == $origPass) {
 
 
-    $con = mysqli_connect("localhost", "root", "");
+    $con = mysql_connect("localhost", "root", "");
     if (!$con) {
         die('Could not connect: ' . mysqli_error($con));
         return;
     } else {
-        $db_selected = mysqli_select_db($con, 'BALOLSAV');
+        $db_selected = mysql_select_db('BALOLSAV');
         if ($db_selected) {
             backup_tables("localhost", "root", "", 'BALOLSAV');
             $query = "drop database BALOLSAV";
-            $result = mysqli_query($con, $query);
+            $result = mysql_query($query);
             if ($result) {
                 echo 1;
-                mysqli_close($con);
+                mysql_close($con);
                 return;
             } else {
                 echo -1;
-                mysqli_close($con);
+                mysql_close($con);
                 return;
             }
         } else {
             echo -2;
-            mysqli_close($con);
+            mysql_close($con);
             return;
         }
     }
 } else {
     echo 0;
-    mysqli_close($con);
     return;
 }
 
@@ -58,13 +57,13 @@ function backup_tables($host, $user, $pass, $name, $tables = '*') {
     } else {
         $tables = is_array($tables) ? $tables : explode(',', $tables);
     }
-
+    $return = null;
     //cycle through
     foreach ($tables as $table) {
         $result = mysql_query('SELECT * FROM ' . $table);
         $num_fields = mysql_num_fields($result);
 
-        $return.= 'DROP TABLE ' . $table . ';';
+        $return.= 'DROP TABLE IF EXISTS ' . $table . ';';
         $row2 = mysql_fetch_row(mysql_query('SHOW CREATE TABLE ' . $table));
         $return.= "\n\n" . $row2[1] . ";\n\n";
 
@@ -90,7 +89,7 @@ function backup_tables($host, $user, $pass, $name, $tables = '*') {
     }
 
     //save file
-    $handle = fopen('db-backup-' . time() . '-' . (md5(implode(',', $tables))) . '.sql', 'w+');
+    $handle = fopen('db-backup-' . date('Y-m-d_His') . '-' . '.sql', 'w+');
     fwrite($handle, $return);
     fclose($handle);
 }
