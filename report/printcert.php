@@ -185,7 +185,7 @@
 
                     $('#partByEventTable').dataTable({
                         "bLengthChange": false,
-                        "bFilter": false,
+                   //     "bFilter": false,
                         "oLanguage": {
                             "sEmptyTable": "No Winners Entered"
                         },
@@ -200,7 +200,7 @@
                         scrollLength = 30;
                     $('#allPartByEventTable').dataTable({
                         "bLengthChange": false,
-                        "bFilter": false,
+                  //      "bFilter": false,
                         "oLanguage": {
                             "sEmptyTable": "No Participants with grade/point found"
                         },

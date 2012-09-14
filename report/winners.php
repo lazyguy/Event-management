@@ -168,7 +168,7 @@
                     }
                     $('#partByEventTable').dataTable({
                         "bLengthChange": false,
-                        "bFilter": false,
+                 //       "bFilter": false,
                         "oLanguage": {
                             "sEmptyTable": "No Data found"
                         },
@@ -201,7 +201,7 @@
                     }
                     $('#allPartByEventTable').dataTable({
                         "bLengthChange": false,
-                        "bFilter": false,
+            //            "bFilter": false,
                         "oLanguage": {
                             "sEmptyTable": "No Data found"
                         },

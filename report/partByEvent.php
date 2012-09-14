@@ -164,7 +164,7 @@
                         }
                         $('#partByEventTable').dataTable({
                             "bLengthChange": false,
-                            "bFilter": false,
+                           // "bFilter": false,
                             "oLanguage": {
                                 "sEmptyTable": "No Participants Registered for this Event"
                             },
@@ -201,7 +201,7 @@
                             scrollLength = 30;
                         $('#allPartByEventTable').dataTable({
                             "bLengthChange": false,
-                            "bFilter": false,
+                          //  "bFilter": false,
                             "oLanguage": {
                                 "sEmptyTable": "No Participants found"
                             },

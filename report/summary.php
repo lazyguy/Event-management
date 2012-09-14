@@ -152,7 +152,7 @@
                     $('#schoolSummaryTable').dataTable({
                         "bLengthChange": false,
                         //     "iDisplayLength": 6 ,
-                        "bFilter": false,
+                  //      "bFilter": false,
                         "sScrollY": "170px",
                         "bPaginate": false,
                         "bInfo":false
@@ -161,7 +161,7 @@
                     $('#eventSummaryTable').dataTable({
                         "bLengthChange": false,
                         //     "iDisplayLength": 6 ,
-                        "bFilter": false,
+             //           "bFilter": false,
                         "sScrollY": "170px",
                         "bPaginate": false,
                         "bInfo":false

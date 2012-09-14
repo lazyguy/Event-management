@@ -138,7 +138,7 @@
                         }
                         $('#pointsTable').dataTable({
                             "bLengthChange": false,
-                            "bFilter": false,
+                        //    "bFilter": false,
                             "oLanguage": {
                                 "sEmptyTable": "No Data"
                             },
