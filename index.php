@@ -133,7 +133,7 @@ if (!$con) {
 								regn_number    int(4),
 								event_id       int(4),
                                                                 event_marks    int(4) default 0,
-                                                                event_grade    char(1) default NULL,
+                                                                event_grade    char(2) default NULL,
 								fee_paid       FLOAT,
 								primary key (regn_number,event_id ));")) {
                             die('Could not create table event_trans: ' . mysql_error());

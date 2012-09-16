@@ -190,7 +190,7 @@
                                 $('#report-grade').val('');
                                 $('#report-grade').val(obj[0].grade);
                                 $('#report-score').val('');
-                                $('#report-score').val(obj[0].score);
+                                //$('#report-score').val(obj[0].score);
                                 $('#report-position-value').val(obj[0].position);
                                 switch( obj[0].position){
                                     case '1':
@@ -244,34 +244,34 @@
                     $('#saveButtonMessage').hide();
                     var score = $('#report-score').val();
                     var grade = null;
-                    if(score>=80) grade='A';
-                    else if(score>=60&&score<80) grade='B';
-                    else if(score<60) grade='C';
+                    if(score>=80) grade='A+';
+                    else if(score>=60&&score<80) grade='A';
+                    else if(score<60) grade='B';
                     var calcScore = $('#report-position-value').val();
                     switch(calcScore){
                         case '1':
-                            score = 25;
-                            grade = 'A';
+                            score = 5;
+                            grade = 'A+';
                             break;
                         case '2':
-                            score = 20;
-                            grade = 'B';
+                            score = 3;
+                            grade = 'A+';
                             break;
                         case '3':
-                            score = 15;
-                            grade = 'C';
+                            score = 1;
+                            grade = 'A+';
                             break;
                         case '0':
                         default:
                             switch(grade){
+                                case 'A+':
+                                    score= 0;
+                                    break;
                                 case 'A':
-                                    score= 10;
+                                    score= 0;
                                     break;
                                 case 'B':
-                                    score= 5;
-                                    break;
-                                case 'C':
-                                    score= 3;
+                                    score= 0;
                                     break;
                             }
                             break;
@@ -334,9 +334,9 @@
             $('#report-score').on("change keypress paste textInput input" ,function(e){
                 var score = $('#report-score').val();
                 var grade = null;
-                if(score>=80) grade='A';
-                else if(score>=60&&score<80) grade='B';
-                else if(score<60) grade='C';
+                if(score>=80) grade='A+';
+                else if(score>=60&&score<80) grade='A';
+                else if(score<60) grade='B';
                 $('#report-grade').val(grade);
             });
         </script>
