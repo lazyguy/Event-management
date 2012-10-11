@@ -1,7 +1,7 @@
 <?php
 
 $pass = $_POST["pass"];
-$origPass = "4805052e6cbb52609d947ee0a0bc2496c8ee82dffb94ffdfb93e800e14b01638"; //sha256 hash for password
+$origPass = "e859a17c459ca78e615dcd3a79b6e1a8d3f86418c9a48921dcb5281c7853095a"; //sha256 hash for password
 $passhash = hash('sha256', $pass);
 if ($passhash == $origPass) {
 
@@ -72,7 +72,7 @@ function backup_tables($host, $user, $pass, $name, $tables = '*') {
                 $return.= 'INSERT INTO ' . $table . ' VALUES(';
                 for ($j = 0; $j < $num_fields; $j++) {
                     $row[$j] = addslashes($row[$j]);
-                    $row[$j] = ereg_replace("\n", "\\n", $row[$j]);
+                    $row[$j] = string_replace("\n", "\\n", $row[$j]);
                     if (isset($row[$j])) {
                         $return.= '"' . $row[$j] . '"';
                     } else {

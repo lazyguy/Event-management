@@ -77,7 +77,7 @@ function deleteEvent(e) {
             $('#eventNameEdit').html("");
             $('#eventNameEdit').select();
         }else{
-            alert(data);
+           // alert(data);
             $('#eventEditResult').append("ERROR:Cannot delete event");
             $('#eventEditResult').removeClass('warning success').addClass('error');
             $('#eventEditResult').show();
@@ -113,7 +113,7 @@ function getEvents(e) {
             if(count >=1){
                 $('#eventsTable').show();
                 if(parseInt(numofPages)>1){
-                    $('#eventEditPages').show();                 
+                    $('#eventEditPages').show();
                     $('#eventNextPage').addClass('editimageptr');
                     $('#eventPrevPage').addClass('disabled');
                     $('#eventPrevPage').removeClass('editimageptr');
@@ -127,7 +127,7 @@ function getEvents(e) {
                 $('#eventEditResult').show();
                 $('#eventNameEdit').html("");
                 $('#eventNameEdit').select();
-            }                            
+            }
             $.each(obj, function(index){
                 var item = obj[index+1];
                 var eType;
@@ -156,7 +156,7 @@ function getEventPrevPage(e){
 function getEventNextPage(e){
     getEventPage("Next");
 }
-                    
+
 function getEventPage(e){
     var type;
     var currentPage;
@@ -177,7 +177,7 @@ function getEventPage(e){
         currentPage:currentPage
     },
     function(data){
-                            
+
         $('#eventsTable > tbody:last').empty();
         var obj = jQuery.parseJSON(data);
         var count = obj[0].totalcount;
@@ -186,7 +186,7 @@ function getEventPage(e){
         $('#eventEditResult').hide();
         if(e=="Next"){
             currentPage = parseInt(currentPage) + 1;
-                        
+
         }
         else if (e=="Prev"){
             currentPage = parseInt(currentPage) -1;
@@ -206,7 +206,7 @@ function getEventPage(e){
             $('#eventEditResult').show();
             $('#eventNameEdit').html("");
             $('#eventNameEdit').select();
-        }                            
+        }
         $.each(obj, function(index){
             var item = obj[index+1];
             var eType;
@@ -228,7 +228,7 @@ function getEventPage(e){
         });
     });
 }
-                            
+
 function setpageEnableDisable(currentPage,numofPages){
     if(numofPages == parseInt(currentPage)){
         $('#eventNextPage').addClass('disabled');
@@ -240,7 +240,7 @@ function setpageEnableDisable(currentPage,numofPages){
     }
     if(parseInt(currentPage) <= 1){
         $('#eventPrevPage').addClass('disabled');
-        $('#eventPrevPage').removeClass('editimageptr');                                    
+        $('#eventPrevPage').removeClass('editimageptr');
     }
     else{
         $('#eventPrevPage').removeClass('disabled');
@@ -264,12 +264,12 @@ function editEvent(e) {
         $('#eventSaveName').val(eName);
         $('#eventSaveType').val(eType);
         $('#eventIdForEdit').val(eid);
-        
+
         $('modal-editSave-event').modal({
-            backdrop: true, 
+            backdrop: true,
             keyboard:true
         });
-        
+
         $('#modal-editSave-event').modal('show');
     });
 }

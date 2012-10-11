@@ -199,7 +199,7 @@
                         },
                         function(data){
                             pass:$("#reinitPass").val('');
-                            alert(data);
+                           // alert(data);
                             switch (data){
                                 case '0': //wrong password
                                     $('#reinitallResult').html('Wrong password');
