@@ -12,6 +12,10 @@ function geteventnames(element) {
             $('#report-eventName').empty();
             phpFile = "../get_event_list.php";
             break;
+        case 4:
+            $('#group_eventName').empty();
+            phpFile = "get_event_list.php";
+            break;
         default:
             $('#edit-part-items').empty();
             phpFile = "get_event_list.php";
@@ -44,6 +48,13 @@ function geteventnames(element) {
                     $('#report-eventName').append(
                         $("<option></option>").attr("value", obj[i].id).text(obj[i].value + " - " + obj[i].label));
                     break;
+                case 4:
+                    if (i === 0) {
+                        $('#group_eventName').append("<option></option>");
+                    }
+                    $('#group_eventName').append(
+                        $("<option></option>").attr("value", obj[i].id).text(obj[i].value + " - " + obj[i].label));
+                    break;
                 default:
                     var j = 0;
                     for (j = 0; j < element.length; j++) {
@@ -69,6 +80,9 @@ function geteventnames(element) {
             case 2:
             case 3:
                 $("#report-eventName").trigger("liszt:updated");
+                break;
+            case 4:
+                $("#group_eventName").trigger("liszt:updated");
                 break;
             default:
                 $("#edit-part-items").trigger("liszt:updated");
@@ -391,4 +405,41 @@ function editParticipant(print) {
             }
         });
     }
+}
+
+function geteventnames(element,schoolid,eventid) {
+    var phpFile;
+    switch (element) {
+        case 1:
+            $('#group_participants').empty();
+            phpFile = "get_participant_list.php";
+            break;
+        default:
+            break;
+    }
+
+    $.get(phpFile, {
+        schoolid:schoolid,
+        eventid:eventid
+    },function (data) {
+        var obj = jQuery.parseJSON(data);
+        for (i = 0; i < obj.length; i++) {
+            switch (element) {
+                case 1:
+                    if (i === 0) {
+                        $('#group_participants').append("<option></option>");
+                    }
+                    $('#group_participants').append(
+                        $("<option></option>").attr("value", obj[i].id).text(obj[i].value + " - " + obj[i].label));
+                    break;
+            }
+        }
+        switch (element) {
+            //call list updated to add the new data from ajax to the list
+            case 1:
+                $("#group_participants").trigger("liszt:updated");
+                break;
+        }
+
+    });
 }

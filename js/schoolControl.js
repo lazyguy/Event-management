@@ -309,14 +309,17 @@ function getschoolnames(element) {
             $('#report-schoolName').empty();
             phpFile = "../get_school_list.php";
             break;
+        case 1:
+            $('#group_schoolName').empty();
+            phpFile = "get_school_list.php";
+            break;
         default:
             break;
     }
+
     $.get(phpFile, {
         term: "######getallstuff##########" //I am too lazy to do stuff properly
-    },
-
-    function (data) {
+    },function (data) {
         var obj = jQuery.parseJSON(data);
         for (i = 0; i < obj.length; i++) {
             switch (element) {
@@ -328,7 +331,13 @@ function getschoolnames(element) {
                     $('#report-schoolName').append(
                         $("<option></option>").attr("value", obj[i].id).text(obj[i].value));
                     break;
-
+                case 1:
+                    if (i == 0) {
+                        $('#group_schoolName').append("<option></option>");
+                    }
+                    $('#group_schoolName').append(
+                        $("<option></option>").attr("value", obj[i].id).text(obj[i].value));
+                    break;
                 default:
 
                     break;
@@ -338,6 +347,9 @@ function getschoolnames(element) {
             //call list updated to add the new data from ajax to the list
             case 0:
                 $("#report-schoolName").trigger("liszt:updated");
+                break;
+            case 1:
+                $("#group_schoolName").trigger("liszt:updated");
                 break;
             default:
                 break;

@@ -278,14 +278,11 @@
 
                     <?php include_once "eventView.html"; ?>
                     <?php include_once "schoolView.html"; ?>
-                    <button data-controls-modal="modal-add-event" data-backdrop="static" data-keyboard="true" class="btn success">ADD
-                        Event&nbsp;&nbsp;</button> <button data-controls-modal="modal-edit-event" data-backdrop="static" data-keyboard="true" class="btn primary">Edit
-                        Event&nbsp;&nbsp;&nbsp;</button><br/>
-                    <br/>
-                    <button data-controls-modal="modal-add-school" data-backdrop="static" data-keyboard="true" class="btn success">ADD
-                        School</button>
-                    <button data-controls-modal="modal-edit-school" data-backdrop="static" data-keyboard="true" class="btn primary">Edit
-                        School&nbsp;</button>
+                    <button data-controls-modal="modal-add-event" data-backdrop="static" data-keyboard="true" class="btn success">ADD Event&nbsp;&nbsp;</button>
+                    <button data-controls-modal="modal-edit-event" data-backdrop="static" data-keyboard="true" class="btn primary">Edit Event&nbsp;&nbsp;&nbsp;</button>
+                    <br/><br/>
+                    <button data-controls-modal="modal-add-school" data-backdrop="static" data-keyboard="true" class="btn success">ADD School</button>
+                    <button data-controls-modal="modal-edit-school" data-backdrop="static" data-keyboard="true" class="btn primary">Edit School&nbsp;</button>
                     <p></p>
                     <p>
                         Use this page to add or remove events and schools
@@ -293,15 +290,16 @@
                 </div>
                 <div class="span-one-third">
                     <h2>Participant</h2>
-
                     <?php include_once "participantView.html"; ?>
-                    <button data-controls-modal="modal-add-participant" data-backdrop="static" data-keyboard="true" class="btn success">ADD
-                        Participant</button>
-                    <button data-controls-modal="edit-modal-add-participant" data-backdrop="static" data-keyboard="true" class="btn primary">Edit
-                        Participant</button>
+                    <?php include_once "groupView.html"; ?>
+                    <button data-controls-modal="modal-add-participant" data-backdrop="static" data-keyboard="true" class="btn success">ADD Participant</button>
+                    <button data-controls-modal="edit-modal-add-participant" data-backdrop="static" data-keyboard="true" class="btn primary">Edit Participant</button>
+                    <br/><br/>
+                    <button data-controls-modal="modal-add-group" data-backdrop="static" data-keyboard="true" class="btn success">&nbsp;&nbsp;&nbsp;ADD Group&nbsp;&nbsp;&nbsp;</button>
+                    <button data-controls-modal="modal-edit-group" data-backdrop="static" data-keyboard="true" class="btn primary">&nbsp;&nbsp;&nbsp;Edit Group&nbsp;&nbsp;&nbsp;&nbsp;</button>
                     <p></p>
                     <p>
-                        Use this page to add or remove participants
+                        Use this page to add or remove individual and group participants
                     </p>
                 </div>
                 <div class="span-one-third">

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<div id="modal-add-group" class="modal hide fade">
+    <div class="modal-header">
+        <a href="#" class="close">&times;</a>
+        <h3>Add group entry for an Event</h3>
+    </div>
+    <div class="modal-body">
+        <form id="saveGroupForm">
+            <fieldset id="groupFields">
+                <div class="clearfix">
+                    <label for="group_eventName">Event Name</label>
+                    <div class="input" style="padding-top: 5px;">
+                        <select id="group_eventName" data-placeholder="Choose the Event" class="chzn-select" style="width:275px;">
+                            <option value=""></option>
+                        </select>
+                    </div>
+                    <label style="padding-top: 15px;" for="group_schoolName">School Name</label>
+                    <div class="input" style="padding-top: 15px;">
+                        <select id="group_schoolName" data-placeholder="Choose the school" class="chzn-select" style="width:275px;">
+                            <option value=""></option>
+                        </select>
+                    </div>
+                    <label style="padding-top: 15px;" for="group_participants">Participants</label>
+                    <div class="input" style="padding-top: 15px;">
+                        <select id="group_participants" multiple data-placeholder="Choose participants" class="chzn-select" style="width:275px;">
+                            <option value=""></option>
+                        </select>
+                    </div>
+                </div><!-- /clearfix -->
+            </fieldset>
+            <a id="groupAddResult" class="alert-message error"></a>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <a id="groupCancel" class="btn secondary">Cancel</a>
+        <a id="groupSave" class="btn primary">Save</a>
+        <a id="groupSavePrint" class="btn primary">Save&AMP;Print</a>
+    </div>
+</div>
+
+<!-- name fields in below modal are not correct they are a copy of above save modal-->
+
+<div id="modal-edit-group" class="modal hide fade">
+    <div class="modal-header">
+        <a href="#" class="close">&times;</a>
+        <h3>Add group entry for an Event</h3>
+    </div>
+    <div class="modal-body">
+        <form id="saveGroupForm">
+            <fieldset id="groupFields">
+                <div class="clearfix">
+
+                </div><!-- /clearfix -->
+            </fieldset>
+        </form>
+    </div>
+    <a style="padding-right: 15px;">&nbsp;</a>
+    <a  id="edit-groupAddResult" class="alert-message error"  style="padding-bottom: 0px;padding-top: 2px;"></a>
+    <div class="modal-footer"  >
+        <a id="edit-groupCancel" class="btn secondary">Cancel</a>
+        <a id="edit-groupSave" class="btn primary">Save</a>
+        <a id="edit-groupSavePrint" class="btn primary">Save&AMP;Print</a>
+
+    </div>
+</div>
+<script type="text/javascript">
+    $(document).ready(function(){
+        $('#groupAddResult').hide();
+        $('#edit-groupAddResult').hide();
+        $('#groupCancel').click(function(){  $('#modal-add-group').modal('hide')});
+        $('#groupSave').click(function(){ /*editParticipant(0);*/});
+        $('#groupSavePrint').click(function(){ /*editParticipant(1);*/});
+        $('#edit-groupCancel').click(function(){  $('#modal-edit-group').modal('hide')});
+        $('#edit-groupSave').click(function(){ /*editParticipant(0);*/});
+        $('#edit-groupSavePrint').click(function(){ /*editParticipant(1);*/});
+
+        $('#modal-add-group').bind('shown', function(){
+            getschoolnames(1);
+            geteventnames(4);
+        });
+        $("#group_schoolName").chosen().change(function () {
+            if($('#group_eventName').val() != null)
+                geteventnames(1,$('#group_schoolName').val(),$('#group_eventName').val());
+        });
+        $("#group_eventName").chosen().change(function () {
+
+        });
+    });
+</script>
