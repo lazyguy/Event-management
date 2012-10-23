@@ -12,10 +12,16 @@ function saveEvent(e) {
         $('#eventName').html("");
         $('#eventName').select();
     } else {
+        var isgrp = 0;
+        if($('#isGroup').is(':checked'))
+            isgrp = 1;
+        else
+            isgrp = 0;
         $.post("insertdata.php",{
             type:"addEvent",
             eName:ename,
-            etype:etype
+            etype:etype,
+            isGroup:isgrp
         },
         function(data){
             $('#eventResult').empty();
@@ -264,7 +270,12 @@ function editEvent(e) {
         $('#eventSaveName').val(eName);
         $('#eventSaveType').val(eType);
         $('#eventIdForEdit').val(eid);
-
+        
+        if(obj[0].isGroup == 1){
+            $('.eventEditisGroup').prop('checked', true);
+        }else {
+            $('.eventEditisGroup').prop('checked', false);
+        }
         $('modal-editSave-event').modal({
             backdrop: true,
             keyboard:true
@@ -278,11 +289,17 @@ function editEventSave(e) {
     var eid =  $('#eventIdForEdit').val();
     var eType = $('#eventSaveType').val();
     var eName = $('#eventSaveName').val();
+     var isgrp = 0;
+        if($('#eventEditisGroup').is(':checked'))
+            isgrp = 1;
+        else
+            isgrp = 0;
     $.post("insertdata.php",{
         type:"eventModify",
         eid:eid,
         eType:eType,
-        eName:eName
+        eName:eName,
+        isGroup:isgrp
     },
     function(data){
         // alert(data);

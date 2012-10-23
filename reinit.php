@@ -72,7 +72,7 @@ function backup_tables($host, $user, $pass, $name, $tables = '*') {
                 $return.= 'INSERT INTO ' . $table . ' VALUES(';
                 for ($j = 0; $j < $num_fields; $j++) {
                     $row[$j] = addslashes($row[$j]);
-                    $row[$j] = string_replace("\n", "\\n", $row[$j]);
+                    $row[$j] = str_replace("\n", "\\n", $row[$j]);
                     if (isset($row[$j])) {
                         $return.= '"' . $row[$j] . '"';
                     } else {

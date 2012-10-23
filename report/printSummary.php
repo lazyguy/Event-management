@@ -260,7 +260,7 @@ function getSummary($con) {
         $result0 = mysql_fetch_array($rsd0);
         $sCount = $result0[0];
 
-        $eArray[$counter] = array($eId, $eName, getEventName($result["event_type"]), $jCount + $sCount);
+        $eArray[$counter] = array($eId, $eName, getEventName($result["event_type"],$result["isgroup"]), $jCount + $sCount);
         $counter = $counter + 1;
     }
 

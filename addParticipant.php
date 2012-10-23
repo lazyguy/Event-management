@@ -98,7 +98,7 @@ if (!$con) {
                 //lets say $partItems contains new item list from edit form
                 //and $evList contains item list previously entered
                 //array_diff($partItems, $evList); will give an array of
-                //items which needs to be added newly 
+                //items which needs to be added newly
                 //array_diff($evList, $partItems); will give an array of
                 //items which needs to be deleted.
                 $evList = array();  //this is list of events for which participant already registered.
@@ -137,7 +137,7 @@ if (!$con) {
                         }
                     }
                     if ($partFeePaid != $feePaid) {
-                        //need to update fee paid for all events..... 
+                        //need to update fee paid for all events.....
                         $query = "update event_trans set fee_paid = $partFeePaid where regn_number=$regn_number";
                         $result = mysqli_query($con, $query);
                         if ($result === FALSE) {
@@ -279,6 +279,51 @@ if (!$con) {
                 $returnVal = array('evts' => $evList);
                 echo array_to_json($returnVal);
                 mysqli_close($con);
+            }
+        } else if (strcmp($insertType, "getGroupParticipant") == 0) {
+            $regId = $_POST["regId"];
+            $regId = mysqli_real_escape_string($con, $regId);
+            $eid = $_POST["eid"];
+            $count = mysqli_query($con, "select count(*) from group_master where BINARY group_id='$regId' and event_id='$eid'");
+            $count = mysqli_fetch_array($count);
+            if ($count[0] < 1) {
+                echo -1;    //there is no participant present with that id
+                mysqli_close($con);
+                return;
+            } else {
+                $partList = array();
+                $query = "select * from group_trans where group_id='$regId' and event_id='$eid'";
+                $result = mysqli_query($con, $query);
+                $partName = "";
+                $sId = 0;
+                while ($rs = mysqli_fetch_array($result)) {
+                    $rId = $rs["regn_number"];
+                    $query = "select student_name,school_id from participant_master where regn_number='$rId'";
+                    $result1 = mysqli_query($con, $query);
+                    $rs1 = mysqli_fetch_array($result1);
+                    $sId = $rs1['school_id'];
+                    $partName = $partName . $rs1["student_name"] . ',';
+                }
+                if ($sId > 0) {
+                    $query = "select school_name from school_master where school_id='$sId'";
+                    $result2 = mysqli_query($con, $query);
+                    $rs2 = mysqli_fetch_array($result2);
+                    $schoolName = $rs2['school_name'];
+
+                    $query = "select * from group_result where event_id='$eid' and group_id='$regId'";
+                    $result3 = mysqli_query($con, $query);
+                    $rs3 = mysqli_fetch_array($result3);
+                    $grade = $rs3['grade'];
+                    $score = $rs3['marks'];
+                    $position = $rs3['result'];
+
+
+                    array_push($partList, array("student_name" => $partName
+                        , "school_name" => $schoolName, "score" => $score, "grade" => $grade, "position" => $position));
+                    echo array_to_json($partList);
+                }
+                mysqli_close($con);
+                return;
             }
         }
     }

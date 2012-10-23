@@ -64,7 +64,7 @@ if (isset($_GET['sid'])) {
                 $date = explode('-', $dob);
                 $dob = $date[2] . '/' . $date[1] . '/' . $date[0];
                 $school = $school_name;
-                $category = getEventName($event_type);
+                $category = getEventName($event_type,0);
                 $events = $evList;
             }
         }

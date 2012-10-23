@@ -19,20 +19,20 @@ if (!$con) {
             $result = mysqli_fetch_array($rs);
             $prathibhaPoints = $result["points"];
             $prathibhaRegNo = $result["reg"];
+            if ($prathibhaRegNo > 0) {
+                $query = "SELECT * from `participant_master` where regn_number = " . $prathibhaRegNo;
+                $rs = mysqli_query($con, $query);
+                $result = mysqli_fetch_array($rs);
+                $prathibhaName = $result["student_name"];
+                $prathibhaschool_id = $result["school_id"];
 
-            $query = "SELECT * from `participant_master` where regn_number = " . $prathibhaRegNo;
-            $rs = mysqli_query($con, $query);
-            $result = mysqli_fetch_array($rs);
-            $prathibhaName = $result["student_name"];
-            $prathibhaschool_id = $result["school_id"];
+                $query = "SELECT school_name from `school_master` where school_id = " . $prathibhaschool_id;
+                $rs = mysqli_query($con, $query);
+                $result = mysqli_fetch_array($rs);
+                $prathibhaSchoolName = $result["school_name"];
 
-            $query = "SELECT school_name from `school_master` where school_id = " . $prathibhaschool_id;
-            $rs = mysqli_query($con, $query);
-            $result = mysqli_fetch_array($rs);
-            $prathibhaSchoolName = $result["school_name"];
-
-            $prathibhaData = array("Name" => $prathibhaName, "regn_number" => $prathibhaRegNo, "points" => $prathibhaPoints, "school_name" => $prathibhaSchoolName);
-
+                $prathibhaData = array("Name" => $prathibhaName, "regn_number" => $prathibhaRegNo, "points" => $prathibhaPoints, "school_name" => $prathibhaSchoolName);
+            }
 
             $query = "SELECT SUM( event_marks ) AS points, regn_number AS reg
                 FROM event_trans WHERE regn_number IN ( SELECT regn_number FROM
@@ -45,21 +45,22 @@ if (!$con) {
 
             $query = "SELECT * from `participant_master` where regn_number = " . $thilakomRegNo;
             $rs = mysqli_query($con, $query);
-            $result = mysqli_fetch_array($rs);
-            $thilakomName = $result["student_name"];
-            $thilakomschool_id = $result["school_id"];
+            if ($thilakomRegNo > 0) {
+                $result = mysqli_fetch_array($rs);
+                $thilakomName = $result["student_name"];
+                $thilakomschool_id = $result["school_id"];
 
-            $query = "SELECT school_name from `school_master` where school_id = " . $thilakomschool_id;
-            $rs = mysqli_query($con, $query);
-            $result = mysqli_fetch_array($rs);
-            $thilakomSchoolName = $result["school_name"];
+                $query = "SELECT school_name from `school_master` where school_id = " . $thilakomschool_id;
+                $rs = mysqli_query($con, $query);
+                $result = mysqli_fetch_array($rs);
+                $thilakomSchoolName = $result["school_name"];
 
-            $thilakomData = array("Name" => $thilakomName, "regn_number" => $thilakomRegNo, "points" => $thilakomPoints, "school_name" => $thilakomSchoolName);
-
+                $thilakomData = array("Name" => $thilakomName, "regn_number" => $thilakomRegNo, "points" => $thilakomPoints, "school_name" => $thilakomSchoolName);
+            }
 
             $query = "SELECT * from `participant_master` where 1 ";
             $rs = mysqli_query($con, $query);
-            $result = mysqli_fetch_array($rs);
+            //   $result = mysqli_fetch_array($rs);
 
             $partArray[] = array();
             $counter = 0;
@@ -67,8 +68,7 @@ if (!$con) {
                 $regn_number = $result["regn_number"];
                 $name = $result["student_name"];
                 $school_id = $result["school_id"];
-
-                $query = "SELECT school_name from `school_master` where school_id = " . $thilakomschool_id;
+                $query = "SELECT school_name from `school_master` where school_id = " . $school_id;
                 $rs1 = mysqli_query($con, $query);
                 $result1 = mysqli_fetch_array($rs1);
                 $school_name = $result1["school_name"];
@@ -79,19 +79,36 @@ if (!$con) {
                 $points = $result1["points"];
                 if ($points == null)
                     $points = 0;
+                
+                $query = "select sum(marks) as points from group_result where group_id in (select group_id from group_master where school_id = $school_id)";
+                $rs1 = mysqli_query($con, $query);
+                $result1 = mysqli_fetch_array($rs1);
+                $points = $points + $result1["points"];
+                if($points == null)
+                    $points = 0;
+                
                 $partArray[$counter] = array("Name" => $name, "regn_number" => $regn_number, "points" => $points, "school_name" => $school_name);
                 $counter = $counter + 1;
             }
-
-            if ($thilakomRegNo != null && $prathibhaRegNo != null && $counter > 0) {
-                $returnJson = array("thilakom" => $thilakomData, "prathibha" => $prathibhaData, "participants" => $partArray);
-                echo array_to_json($returnJson);
-            } else if ($counter > 0) {
-                $returnJson = array("participants" => $partArray);
-                echo array_to_json($returnJson);
-            } else {
-                return 0;
-            }
+            /*
+              if ($thilakomRegNo != null && $prathibhaRegNo != null && $counter > 0) {
+              $returnJson = array("thilakom" => $thilakomData, "prathibha" => $prathibhaData, "participants" => $partArray);
+              echo array_to_json($returnJson);
+              } else if ($counter > 0) {
+              $returnJson = array("participants" => $partArray);
+              echo array_to_json($returnJson);
+              } else {
+              return 0;
+              }
+             */
+            $returnJson = array();
+            if (isset($thilakomData))
+                $returnJson["thilakom"] = $thilakomData;
+            if (isset($prathibhaData))
+                $returnJson["prathibha"] = $prathibhaData;
+            if (isset($partArray))
+                $returnJson["participants"] = $partArray;
+            echo array_to_json($returnJson);
         }
     }
 }

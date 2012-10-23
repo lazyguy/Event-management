@@ -1,6 +1,6 @@
 <?php
 
-include_once "include.php";
+    include_once "include.php";
 
 $con = mysql_connect("localhost", "root", "");
 if (!$con) {

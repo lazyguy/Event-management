@@ -118,7 +118,22 @@ if (!$con) {
 function getData($con) {
     $eId = $_GET["eId"];
     $winner = $_GET["winner"];
-    $query = "select * from event_trans where event_id = $eId";
+
+    $isGrp = 0;
+    //check if event is a group event or not
+    $query = "select * from event_master where event_id = $eId";
+
+    $rs = mysql_query($query);
+    $result = mysql_fetch_array($rs);
+    if ($result["isgroup"] == 1)
+        $isGrp = 1;
+    else
+        $isGrp = 0;
+    //need to get regn number, name, school name, sex, age
+    if ($isGrp == 1)
+        $query = "select * from group_master where event_id = $eId";
+    else
+        $query = "select * from event_trans where event_id = $eId";
 
     $rs = mysql_query($query);
 
@@ -126,52 +141,129 @@ function getData($con) {
     $winnerArray[] = array();
     $counter = 0;
     $winnercounter = 0;
+    $group_id = 0;
+    $gradePoint = 0;
+    $regn_number = 0;
+    $name = null;
+    $sex = null;
+    $age = 0;
+    $school_id = 0;
+                $counter2 = 0;
     while ($result = mysql_fetch_array($rs)) {
-        $regn_number = $result[0];
 
-        $query = "select * from participant_master where regn_number = $regn_number";
-        $rs1 = mysql_query($query);
-        $result1 = mysql_fetch_array($rs1);
+        if ($isGrp == 1) {
+            $group_id = $result["group_id"];
 
-        $name = $result1["student_name"];
-        $sex = $result1["sex"];
-        $sex = getSex($sex);
-        $age = $result1["age"];
-        $school_id = $result1["school_id"];
+            $query = "select regn_number from group_trans where group_id =$group_id and  event_id = $eId";
+            $rs1 = mysql_query($query);
+            $result1 = mysql_fetch_array($rs1);
+            $regn_number = $result1["regn_number"];
+            $query = "select * from participant_master where regn_number = $regn_number";
+            $rs1 = mysql_query($query);
+            $result1 = mysql_fetch_array($rs1);
 
+            $name = $result1["student_name"];
+            $sex = $result1["sex"];
+            $sex = getSex($sex);
+            $age = $result1["age"];
+            $school_id = $result1["school_id"];
+        } else {
+            $regn_number = $result["regn_number"];
+            $query = "select * from participant_master where regn_number = $regn_number";
+            $rs1 = mysql_query($query);
+            $result1 = mysql_fetch_array($rs1);
+
+            $name = $result1["student_name"];
+            $sex = $result1["sex"];
+            $sex = getSex($sex);
+            $age = $result1["age"];
+            $school_id = $result1["school_id"];
+        }
         $query = "select school_name from school_master where school_id = $school_id";
         $rs1 = mysql_query($query);
         $result1 = mysql_fetch_array($rs1);
 
         $school_name = $result1["school_name"];
-
-        $query = "select position from event_result where event_id = $eId and regn_number = $regn_number";
+        if ($isGrp == 1)
+            $query = "select * from group_result where event_id = $eId and group_id = $group_id";
+        else
+            $query = "select position from event_result where event_id = $eId and regn_number = $regn_number";
         $rs1 = mysql_query($query);
         $result1 = mysql_fetch_array($rs1);
 
-        $position = $result1["position"];
-        // $gradePoint = $result["event_grade"] . "/" . $result["event_marks"];
+        if ($isGrp == 1)
+            $position = $result1["result"];
+        else
+            $position = $result1["position"];
+        if ($isGrp == 1) {
+            $name_array = array();
+            $query = "select * from group_trans where group_id='$group_id' and event_id='$eId'";
+            $result11 = mysql_query($query);
+            $partName = "";
+            $student_name = "";
+            $count = 0;
+            while ($rs11 = mysql_fetch_array($result11)) {
+                $rId = $rs11["regn_number"];
+                $query = "select student_name,school_id from participant_master where regn_number='$rId'";
+                $result2 = mysql_query($query);
+                $rs2 = mysql_fetch_array($result2);
+                $sId = $rs2['school_id'];
+                $name_array[$count] = $rs2["student_name"];
+                $count = $count + 1;
+            }
+            $gradePoint = $result1["grade"]; // . "/" . $result1["marks"];
+        }
+        else
+            $gradePoint = $result["event_grade"]; // . "/" . $result["event_marks"];
+
+        $eGrade = null;
+        $eMarks = null;
+
+        if ($isGrp == 1) {
+            $eGrade = $result1["grade"];
+            $eMarks = $result1["marks"];
+            $regn_number = $group_id;
+        } else {
+            $eGrade = $result["event_grade"];
+            $eMarks = $result["event_marks"];
+        }
 
         $query = "select event_name from event_master where event_id = $eId";
         $rs2 = mysql_query($query);
         $result1 = mysql_fetch_array($rs2);
 
         $event_name = $result1["event_name"];
-
-        if ($result["event_grade"] != null && intval($result["event_marks"]) != 0) {
-            if (intval($position) == 1 || intval($position) == 2 || intval($position) == 3) {
-                $winnerArray[$winnercounter] = array("event_name" => $event_name, "rNum" => $regn_number, "name" => $name, "sex" => $sex, "position" => $position, "school_name" => $school_name);
-                $winnercounter = $winnercounter + 1;
-            } else {
-                $partArray[$counter] = array("event_name" => $event_name, "rNum" => $regn_number, "name" => $name, "sex" => $sex, "grade" => $result["event_grade"], "school_name" => $school_name);
-                $counter = $counter + 1;
+        if ($isGrp == 1) {
+            $counter1 = 0;
+            $winnercounter1 = 0;
+            while ($counter1 != $count) {
+                if ($eGrade != null) {
+                    if (intval($position) == 1 || intval($position) == 2 || intval($position) == 3) {
+                        $winnerArray[$winnercounter1] = array("event_name" => $event_name, "rNum" => $regn_number, "name" => $name_array[$counter1], "sex" => null, "position" => $position, "school_name" => $school_name);
+                        $winnercounter1 = $winnercounter1 + 1;
+                    } else {
+                        $partArray[$counter2] = array("event_name" => $event_name, "rNum" => $regn_number, "name" => $name_array[$counter1], "sex" => null, "grade" => $eGrade, "school_name" => $school_name);
+                        $counter2 = $counter2 + 1;
+                    }
+                }
+                $counter1 = $counter1 + 1;
+            }
+        } else {
+            if ($eGrade != null) {
+                if (intval($position) == 1 || intval($position) == 2 || intval($position) == 3) {
+                    $winnerArray[$winnercounter] = array("event_name" => $event_name, "rNum" => $regn_number, "name" => $name, "sex" => $sex, "position" => $position, "school_name" => $school_name);
+                    $winnercounter = $winnercounter + 1;
+                } else {
+                    $partArray[$counter] = array("event_name" => $event_name, "rNum" => $regn_number, "name" => $name, "sex" => $sex, "grade" => $eGrade, "school_name" => $school_name);
+                    $counter = $counter + 1;
+                }
             }
         }
     }
-    if ($winner == 1 && $winnercounter > 0) {
+    if ($winner == 1 && sizeof($winnerArray)>0) {
         return $winnerArray;
         // return array_to_json($returnJson);
-    } elseif ($winner == 0 && $counter > 0) {
+    } elseif ($winner == 0 && sizeof($partArray)>0) {
         return $partArray;
     } else {
         echo "0";

@@ -50,10 +50,54 @@ if (!$con) {
                 $counter = $counter + 1;
             }
 
+            //Group events
+            if ($eId == 999999) {
+                $query = "select * from group_result where 1 order by group_id";
+            } else {
+                $query = "select * from group_result where group_id  in
+                     (select group_id from group_master where school_id =$eId)";
+            }
+            $rs = mysqli_query($con, $query);
+            while ($result = mysqli_fetch_array($rs)) {
+                //need to return regn number,name,school name, event name, position
+                $event_id = $result["event_id"];
+                $regn_number = $result["group_id"];
+                $position = $result["result"];
+
+                $query = "select * from group_trans where group_id='$regn_number' and event_id='$event_id'";
+                $result1 = mysqli_query($con, $query);
+                $partName = "";
+                $student_name ="";
+                while ($rs1 = mysqli_fetch_array($result1)) {
+                    $rId = $rs1["regn_number"];
+                    $query = "select student_name,school_id from participant_master where regn_number='$rId'";
+                    $result2 = mysqli_query($con, $query);
+                    $rs2 = mysqli_fetch_array($result2);
+                    $sId = $rs2['school_id'];
+                    $student_name = $student_name . $rs2["student_name"] . ',';
+                }
+
+                $query = "select school_name from school_master where school_id = $sId";
+                $rs1 = mysqli_query($con, $query);
+                $result1 = mysqli_fetch_array($rs1);
+                $school_name = $result1["school_name"];
+
+                $query = "select event_name from event_master where event_id = $event_id";
+                $rs1 = mysqli_query($con, $query);
+                $result1 = mysqli_fetch_array($rs1);
+                $event_name = $result1["event_name"];
+
+                $returnArray[$counter] = array("regn_number" => $regn_number,
+                    "name" => $student_name, "school_name" => $school_name,
+                    "event_name" => $event_name, "position" => $position);
+                $counter = $counter + 1;
+            }
+
+
+            echo mysqli_error($con);
             $returnSumArray[] = array();
             $query = "select * from school_master where 1";
             $rs = mysqli_query($con, $query);
-            $returnSumArray[] = array();
             $counter1 = 0;
             while ($result = mysqli_fetch_array($rs)) {
                 //need to return regn number,name,school name, event name, position
@@ -64,9 +108,16 @@ if (!$con) {
                 $rs1 = mysqli_query($con, $query);
                 $result1 = mysqli_fetch_array($rs1);
                 $marks_sum = $result1["marks_sum"];
-                if($marks_sum == null)
+                if ($marks_sum == null)
                     $marks_sum = 0;
-                
+
+                $query = "select sum(marks) as marks_sum from group_result where group_id in (select group_id from group_master where school_id = $school_id)";
+                $rs1 = mysqli_query($con, $query);
+                $result1 = mysqli_fetch_array($rs1);
+                $marks_sum = $marks_sum + $result1["marks_sum"];
+                if ($marks_sum == null)
+                    $marks_sum = 0;
+
                 $returnSumArray[$counter1] = array("school_id" => $school_id,
                     "school_name" => $school_name, "marks_sum" => $marks_sum);
                 $counter1 = $counter1 + 1;

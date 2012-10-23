@@ -17,12 +17,13 @@ if (!$con) {
             $eType = $_POST["etype"];
             $year = getYear();
             $etype = getEventType($eType);
+            $isgroup = $_POST["isGroup"];
             //see if event exists already
             $count = mysql_query("SELECT COUNT(*) FROM event_master WHERE event_name='$ename' and event_type='$etype'");
             $count = mysql_fetch_array($count);
             if ($count[0] < 1) {
-                if (!mysql_query("INSERT INTO event_master (event_name, event_type, event_year)
-				VALUES ('$ename', '$etype', '$year')")) {
+                if (!mysql_query("INSERT INTO event_master (event_name, event_type, event_year, isgroup)
+				VALUES ('$ename', '$etype', '$year', '$isgroup')")) {
                     echo "0";
                 } else {
                     echo "1";
@@ -91,10 +92,10 @@ if (!$con) {
             $erroror = mysql_error();
             if (!$rsd) {
                 echo "0";
-                break;
+               return;
             }
             while ($rs = mysql_fetch_array($rsd)) {
-                array_push($result, array("id" => $rs['event_id'], "value" => $rs['event_name'], "event_type" => $rs['event_type']));
+                array_push($result, array("id" => $rs['event_id'], "value" => $rs['event_name'], "event_type" => $rs['event_type'],"isGroup" => $rs['isgroup']));
             }
             echo array_to_json($result);
             mysql_close($con);
@@ -103,13 +104,14 @@ if (!$con) {
             $eName = mysql_real_escape_string($eName);
             $eType = $_POST["eType"];
             $eid = $_POST["eid"];
+            $isgroup = $_POST["isGroup"];
             $eid = mysql_real_escape_string($eid);
             $year = getYear();
             $etype = getEventType($eType);
-            $count = mysql_query("SELECT COUNT(*) FROM event_master WHERE event_name='$eName' and event_type='$eType'");
+            $count = mysql_query("SELECT COUNT(*) FROM event_master WHERE event_name='$eName' and event_type='$eType' and isgroup='$isgroup'");
             $count = mysql_fetch_array($count);
             if ($count[0] < 1) {
-                if (!mysql_query("UPDATE event_master SET event_name='$eName',event_type='$eType' WHERE event_id='$eid'")) {
+                if (!mysql_query("UPDATE event_master SET event_name='$eName',event_type='$eType',isgroup='$isgroup' WHERE event_id='$eid'")) {
                     echo "0";
                 } else {
                     echo "1";

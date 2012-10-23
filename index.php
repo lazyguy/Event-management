@@ -101,6 +101,7 @@ if (!$con) {
 								event_name   char(100) default NULL,
 								event_type   int(1),
 								event_year   int(4),
+                                                                isgroup      INT( 1 ) NOT NULL DEFAULT  '0',
 								PRIMARY KEY  (event_id) )")) {
                             die('Could not create table event_master: ' . mysql_error());
                             $isSuccess = 0;
@@ -139,7 +140,7 @@ if (!$con) {
                             die('Could not create table event_trans: ' . mysql_error());
                             $isSuccess = 0;
                         } else {
-                            Print " event trans created <br />";
+                            Print "Event transaction table created <br />";
                             $isSuccess = 1;
                         }
                         if (!mysql_query("create table event_result (
@@ -150,28 +151,40 @@ if (!$con) {
                             die('Could not create table event_trans: ' . mysql_error());
                             $isSuccess = 0;
                         } else {
-                            Print " event trans created <br />";
+                            Print "Event Result Table created <br />";
                             $isSuccess = 1;
                         }
                         if (!mysql_query("CREATE TABLE IF NOT EXISTS `group_master` (
-                                                            `group_id` int(4) NOT NULL AUTO_INCREMENT,
-                                                            `regn_number` int(4) NOT NULL DEFAULT '0',
+                                                            `group_id` int(5) NOT NULL AUTO_INCREMENT,
+                                                            `event_id` int(4) NOT NULL DEFAULT '0',
                                                             `school_id` int(4) DEFAULT '0',
-                                                            PRIMARY KEY (`group_id`,`regn_number`));")) {
+                                                            PRIMARY KEY (`group_id`));")) {
                             die('Could not create table group_master: ' . mysql_error());
                             $isSuccess = 0;
                         } else {
-                            Print " Group Master created <br />";
+                            mysql_query("ALTER TABLE group_master AUTO_INCREMENT = 80000;");
+                            Print "Group Master Table created <br />";
                             $isSuccess = 1;
                         }
+                        if (!mysql_query("CREATE TABLE IF NOT EXISTS `group_trans` (
+                                                        `group_id` int(5) NOT NULL,
+                                                        `event_id` int(4) NOT NULL,
+                                                        `regn_number` int(4) NOT NULL,
+                                                        PRIMARY KEY (`group_id`,`regn_number`));")) {
+                            die('Could not create table group_trans: ' . mysql_error());
+                            $isSuccess = 0;
+                        }
                         if (!mysql_query("CREATE TABLE IF NOT EXISTS `group_result`
-                                                        (`group_id` int(4) NOT NULL AUTO_INCREMENT,
-                                                        `result` int(4) NOT NULL DEFAULT '0',
-                                                        `grade` char(2) DEFAULT NULL,PRIMARY KEY (`group_id`));")) {
+                                                    (`group_id` int(4) NOT NULL AUTO_INCREMENT,
+                                                    `event_id` int(4) NOT NULL DEFAULT '0',
+                                                    `grade` char(2) DEFAULT NULL,
+                                                    `marks` int(4) DEFAULT 0,
+                                                    `result` int(4) NOT NULL DEFAULT '0',
+                                                    PRIMARY KEY (`group_id`,`event_id`));")) {
                             die('Could not create table group_result: ' . mysql_error());
                             $isSuccess = 0;
                         } else {
-                            Print " Group Result created <br />";
+                            Print "Group Result Table created <br />";
                             $isSuccess = 1;
                         }
                     }

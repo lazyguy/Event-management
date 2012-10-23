@@ -107,15 +107,16 @@
                         </table>
                     </div>
                 </div>
-                <!--
-                                <div id="errorSet"  class="well" style="padding-top: 25px"></div>
-                -->
-                <?php include_once "../footer.html"?>
+
+                <div id="errorSet"  class="well" style="padding-top: 25px"></div>
+
+                <?php include_once "../footer.html" ?>
             </div>
         </div>
 
         <script type="text/javascript">
             $(document).ready(function(){
+                $('#errorSet').hide();
                 geteventnames(2);
                 $('#resultSet').hide();
                 $('#resultSet1').hide();
@@ -142,10 +143,10 @@
                     type: "byEventWinner",
                     eId: $('#report-eventName').val()
                 }, function(data){
-                    /*
+
                     $('#errorSet').empty();
                     $('#errorSet').html(data);
-                     */
+                    //$('#errorSet').show();
                     $('#printWinnerCert').hide();
                     $('#printParticipationCert').hide();
                     var oTable1 = $('#allPartByEventTable').dataTable();
@@ -185,14 +186,15 @@
 
                     $('#partByEventTable').dataTable({
                         "bLengthChange": false,
-                   //     "bFilter": false,
+                        //     "bFilter": false,
                         "oLanguage": {
                             "sEmptyTable": "No Winners Entered"
                         },
                         "bPaginate": false,
                         "bInfo":false,
                         "bDestroy": true,
-                        "sScrollY": "80px"
+                        "sScrollY": "80px",
+                        "bScrollCollapse": true
                     });
                     if(obj.participants)
                         var scrollLength = 27*obj.participants.length;
@@ -200,14 +202,15 @@
                         scrollLength = 30;
                     $('#allPartByEventTable').dataTable({
                         "bLengthChange": false,
-                  //      "bFilter": false,
+                        //      "bFilter": false,
                         "oLanguage": {
                             "sEmptyTable": "No Participants with grade/point found"
                         },
                         "bPaginate": false,
                         "bInfo":false,
                         "bDestroy": true,
-                        "sScrollY": scrollLength+"px"
+                        "sScrollY": scrollLength+"px",
+                        "bScrollCollapse": true
                     });
                     if(obj.participants.length > 0)
                         $('#printParticipationCert').show();

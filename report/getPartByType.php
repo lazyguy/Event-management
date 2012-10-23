@@ -39,11 +39,11 @@ if (!$con) {
                 $result1 = mysqli_fetch_array($rs1);
                 $school_name = $result1["school_name"];
                 if ($eId == 999999) {
-                    $query = "select event_name,event_type from event_master where event_id = $event_id";
+                    $query = "select event_name,event_type,isgroup from event_master where event_id = $event_id";
                     $rs1 = mysqli_query($con, $query);
                     $result1 = mysqli_fetch_array($rs1);
                     $event_name = $result1["event_name"];
-                    $event_name = $event_name . " - " . getEventName($result1["event_type"]);
+                    $event_name = $event_name . " - " . getEventName($result1["event_type"], $result1["isgroup"]);
                 }
                 if ($eId == 999999) {
                     $partArray[$counter] = array("rNum" => $regn_number, "ename" => $event_name, "name" => $name, "sex" => $sex, "age" => $age, "school_name" => $school_name);
@@ -61,9 +61,21 @@ if (!$con) {
             }
         } else if (strcmp($insertType, "byEventWinner") == 0) {
             $eId = $_POST["eId"];
-            //need to get regn number, name, school name, sex, age
+            $isGrp = 0;
+            //check if event is a group event or not
+            $query = "select * from event_master where event_id = $eId";
 
-            $query = "select * from event_trans where event_id = $eId";
+            $rs = mysqli_query($con, $query);
+            $result = mysqli_fetch_array($rs);
+            if ($result["isgroup"] == 1)
+                $isGrp = 1;
+            else
+                $isGrp = 0;
+            //need to get regn number, name, school name, sex, age
+            if ($isGrp == 1)
+                $query = "select * from group_trans where event_id = $eId";
+            else
+                $query = "select * from event_trans where event_id = $eId";
 
             $rs = mysqli_query($con, $query);
 
@@ -71,8 +83,13 @@ if (!$con) {
             $winnerArray[] = array();
             $counter = 0;
             $winnercounter = 0;
+            $group_id = 0;
+            $gradePoint = 0;
             while ($result = mysqli_fetch_array($rs)) {
-                $regn_number = $result[0];
+
+                $regn_number = $result["regn_number"];
+                if ($isGrp == 1)
+                    $group_id = $result["group_id"];
 
                 $query = "select * from participant_master where regn_number = $regn_number";
                 $rs1 = mysqli_query($con, $query);
@@ -88,17 +105,50 @@ if (!$con) {
                 $rs1 = mysqli_query($con, $query);
                 $result1 = mysqli_fetch_array($rs1);
                 $school_name = $result1["school_name"];
-
-                $query = "select position from event_result where event_id = $eId and regn_number = $regn_number";
+                if ($isGrp == 1)
+                    $query = "select * from group_result where event_id = $eId and group_id = $group_id";
+                else
+                    $query = "select position from event_result where event_id = $eId and regn_number = $regn_number";
                 $rs1 = mysqli_query($con, $query);
 
                 $result1 = mysqli_fetch_array($rs1);
-                $position = $result1["position"];
+                if ($isGrp == 1)
+                    $position = $result1["result"];
+                else
+                    $position = $result1["position"];
 
+                if ($isGrp == 1) {
+                    $name = null;
+                    $query = "select * from group_trans where group_id='$group_id' and event_id='$eId'";
+                    $result11 = mysqli_query($con, $query);
+                    $partName = "";
+                    $student_name = "";
+                    while ($rs11 = mysqli_fetch_array($result11)) {
+                        $rId = $rs11["regn_number"];
+                        $query = "select student_name,school_id from participant_master where regn_number='$rId'";
+                        $result2 = mysqli_query($con, $query);
+                        $rs2 = mysqli_fetch_array($result2);
+                        $sId = $rs2['school_id'];
+                        $name = $name . $rs2["student_name"] . ',';
+                    }
+                    $gradePoint = $result1["grade"];// . "/" . $result1["marks"];
+                }
+                else
+                    $gradePoint = $result["event_grade"];// . "/" . $result["event_marks"];
 
-                $gradePoint = $result["event_grade"] . "/" . $result["event_marks"];
+                $eGrade = null;
+                $eMarks = null;
 
-                if ($result["event_grade"] != null && intval($result["event_marks"]) != 0) {
+                if ($isGrp == 1) {
+                    $eGrade = $result1["grade"];
+                    $eMarks = $result1["marks"];
+                    $regn_number = $group_id;
+                } else {
+                    $eGrade = $result["event_grade"];
+                    $eMarks = $result["event_marks"];
+                }
+
+                if ($eGrade != null ) {
                     if (intval($position) == 1 || intval($position) == 2 || intval($position) == 3) {
                         $winnerArray[$winnercounter] = array("rNum" => $regn_number, "name" => $name, "sex" => $sex, "position" => $position, "school_name" => $school_name);
                         $winnercounter = $winnercounter + 1;

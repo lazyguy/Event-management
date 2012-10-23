@@ -22,7 +22,7 @@
                     </div>
                     <label style="padding-top: 15px;" for="group_participants">Participants</label>
                     <div class="input" style="padding-top: 15px;">
-                        <select id="group_participants" multiple data-placeholder="Choose participants" class="chzn-select" style="width:275px;">
+                        <select id="group_participants" data-placeholder="Choose participants" class="chzn-select" multiple style="width:275px;">
                             <option value=""></option>
                         </select>
                     </div>
@@ -34,7 +34,6 @@
     <div class="modal-footer">
         <a id="groupCancel" class="btn secondary">Cancel</a>
         <a id="groupSave" class="btn primary">Save</a>
-        <a id="groupSavePrint" class="btn primary">Save&AMP;Print</a>
     </div>
 </div>
 
@@ -46,10 +45,31 @@
         <h3>Add group entry for an Event</h3>
     </div>
     <div class="modal-body">
-        <form id="saveGroupForm">
-            <fieldset id="groupFields">
+        <form id="editGroupForm">
+            <label for="edit_event_id">Event Name</label>
+            <div class="input" style="padding-top: 5px;">
+                <input class="xlarge" id="edit_event_id" name="edit_event_id" type="text"  placeholder="Enter group id and press enter"/>
+            </div>
+            <fieldset id="edit_groupFields">
                 <div class="clearfix">
-
+                    <label for="edit_group_eventName">Event Name</label>
+                    <div class="input" style="padding-top: 5px;">
+                        <select id="edit_group_eventName" data-placeholder="Choose the Event" class="chzn-select" style="width:275px;">
+                            <option value=""></option>
+                        </select>
+                    </div>
+                    <label style="padding-top: 15px;" for="edit_group_schoolName">School Name</label>
+                    <div class="input" style="padding-top: 15px;">
+                        <select id="edit_group_schoolName" data-placeholder="Choose the school" class="chzn-select" style="width:275px;">
+                            <option value=""></option>
+                        </select>
+                    </div>
+                    <label style="padding-top: 15px;" for="edit_group_participants">Participants</label>
+                    <div class="input" style="padding-top: 15px;">
+                        <select id="edit_group_participants" data-placeholder="Choose participants" class="chzn-select" multiple style="width:275px;">
+                            <option value=""></option>
+                        </select>
+                    </div>
                 </div><!-- /clearfix -->
             </fieldset>
         </form>
@@ -59,7 +79,6 @@
     <div class="modal-footer"  >
         <a id="edit-groupCancel" class="btn secondary">Cancel</a>
         <a id="edit-groupSave" class="btn primary">Save</a>
-        <a id="edit-groupSavePrint" class="btn primary">Save&AMP;Print</a>
 
     </div>
 </div>
@@ -80,10 +99,35 @@
         });
         $("#group_schoolName").chosen().change(function () {
             if($('#group_eventName').val() != null)
-                geteventnames(1,$('#group_schoolName').val(),$('#group_eventName').val());
+                geteventnames_group(1,$('#group_schoolName').val(),$('#group_eventName').val());
         });
-        $("#group_eventName").chosen().change(function () {
-
-        });
+        
+        $('#edit_groupFields').hide();
     });
+    
+    $('#groupSave').on('click',function(){
+        $.post("get_participant_list.php", {
+            term:"addgroup",
+            evid:$('#group_eventName').val(),
+            schoolid:$('#group_schoolName').val(),
+            participants:$('#group_participants').val()
+        }, function(data){
+            // alert(data);
+            if(data!= -1){
+                $('#groupAddResult').removeClass('error');
+                $('#groupAddResult').addClass('success');
+                $('#groupAddResult').html('Group Was added succesfully. ID: '+data);
+                $('#groupAddResult').show();
+            }else{
+                $('#groupAddResult').removeClass('success');
+                $('#groupAddResult').addClass('error');
+                $('#groupAddResult').html('An Error occurred. Group was not created.');
+                $('#groupAddResult').show();
+            }
+        });
+        
+        
+       
+    });
+    
 </script>

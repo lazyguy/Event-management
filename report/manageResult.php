@@ -100,6 +100,60 @@ if (!$con) {
             }
             mysqli_commit($con);
             echo "1";
+        } else if (strcmp($insertType, "addGroupResult") == 0) {
+            $eid = $_POST["eid"];
+            $regId = $_POST["regId"];
+            $regId = mysqli_real_escape_string($con, $regId);
+            $score = $_POST["score"];
+            $score = mysqli_real_escape_string($con, $score);
+            $grade = $_POST["grade"];
+            $grade = mysqli_real_escape_string($con, $grade);
+            $position = $_POST["position"];
+            $position = mysqli_real_escape_string($con, $position);
+            $query = "SELECT count(*) from group_trans where event_id='$eid' and group_id='$regId'";
+            $result = mysqli_query($con, $query);
+            $result = mysqli_fetch_array($result);
+            if ($result[0] < 1) {
+                echo mysqli_error($con);
+//                echo "evid =".$event_id;
+//                echo "group_id =".$regId;
+                echo -4;
+                mysqli_close($con);
+                return;
+            }
+
+            mysqli_autocommit($con, FALSE);
+            //Delete previous entry if exists
+            $query = "DELETE from group_result where event_id='$eid' and group_id='$regId'";
+            $result = mysqli_query($con, $query);
+            if ($result === FALSE) {
+                mysqli_rollback($con);  // if error, roll back transaction
+                echo -1;
+                mysqli_close($con);
+                return;
+            }
+
+            $query = "INSERT INTO group_result VALUES ('$regId','$eid','$grade','$score','$position')";
+            $result = mysqli_query($con, $query);
+            if ($result === FALSE) {
+                mysqli_rollback($con);  // if error, roll back transaction
+                echo -2;
+                mysqli_close($con);
+                return;
+            }
+
+            /*
+              $query = "UPDATE `event_trans` SET event_marks='$score', event_grade='$grade' where event_id='$eid' and regn_number='$regId'";
+              $result = mysqli_query($con, $query);
+              if ($result === FALSE) {
+              mysqli_rollback($con);  // if error, roll back transaction
+              echo -3;
+              mysqli_close($con);
+              return;
+              }
+             */
+            mysqli_commit($con);
+            echo "1";
         }
     } else {
         echo "-1";

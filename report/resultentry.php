@@ -30,7 +30,7 @@
                 padding-top: 60px;
             }
         </style>
-         <link rel="shortcut icon" href="../images/logo.ico">
+        <link rel="shortcut icon" href="../images/logo.ico">
     </head>
 
     <body>
@@ -66,7 +66,7 @@
                         <fieldset id="resultSet"  class="well">
                             <div class="row">
                                 <div class="span6">
-                                    <label for="report-firstRegId" style="padding-top: 15px;">Registration Id</label>
+                                    <label for="report-firstRegId" style="padding-top: 15px;">Registration/Group Id</label>
                                     <div class="input" style="padding-top: 5px;">
                                         <input class="large" id="report-firstRegId" placeholder="Enter registration Id and press enter" name="report-firstRegId" type="text" />
                                     </div>
@@ -145,7 +145,7 @@
                         </fieldset>
                     </form>
                 </div>
-                <?php include_once "../footer.html"?>
+                <?php include_once "../footer.html" ?>
             </div>
         </div>
 
@@ -166,8 +166,13 @@
 
                 $('#report-firstRegId').on('keypress', function(e){
                     if ( e.keyCode == 13 ){
+                        if($('#report-firstRegId').val() >= 80000){
+                            var type = "getGroupParticipant";
+                        }else{
+                            var type = "getParticipant";
+                        }
                         $.post("../addParticipant.php",{
-                            type:"getParticipant",
+                            type:type,
                             regId:$('#report-firstRegId').val(),
                             eid:$('#report-eventName').val()
                         },function(data){
@@ -182,32 +187,34 @@
                                 $('#report-firstRegId').select();
                             }else{
                                 var obj = jQuery.parseJSON(data);
-                                $('#report-firstRegId-error').hide();
-                                $('#report-firstPName').empty();
-                                $('#report-firstPName').val(obj[0].student_name);
-                                $('#report-firstSName').empty();
-                                $('#report-firstSName').val(obj[0].school_name);
-                                $('#report-grade').val('');
-                                $('#report-grade').val(obj[0].grade);
-                                $('#report-score').val('');
-                                //$('#report-score').val(obj[0].score);
-                                $('#report-position-value').val(obj[0].position);
-                                switch( obj[0].position){
-                                    case '1':
-                                        $('#report-first-position').attr("checked","checked");
-                                        break;
-                                    case '2':
-                                        $('#report-second-position').attr("checked","checked");
-                                        break;
-                                    case '3':
-                                        $('#report-third-position').attr("checked","checked");
-                                        break;
-                                    default:
-                                        $('#report-no-position').attr("checked","checked");
-                                        break;
+                                if(obj){
+                                    $('#report-firstRegId-error').hide();
+                                    $('#report-firstPName').empty();
+                                    $('#report-firstPName').val(obj[0].student_name);
+                                    $('#report-firstSName').empty();
+                                    $('#report-firstSName').val(obj[0].school_name);
+                                    $('#report-grade').val('');
+                                    $('#report-grade').val(obj[0].grade);
+                                    $('#report-score').val('');
+                                    //$('#report-score').val(obj[0].score);
+                                    $('#report-position-value').val(obj[0].position);
+                                    switch( obj[0].position){
+                                        case '1':
+                                            $('#report-first-position').attr("checked","checked");
+                                            break;
+                                        case '2':
+                                            $('#report-second-position').attr("checked","checked");
+                                            break;
+                                        case '3':
+                                            $('#report-third-position').attr("checked","checked");
+                                            break;
+                                        default:
+                                            $('#report-no-position').attr("checked","checked");
+                                            break;
+                                    }
+                                    $('#firstHasCorrectValue').val("1");
+                                    $('#report-score').select();
                                 }
-                                $('#firstHasCorrectValue').val("1");
-                                $('#report-score').select();
                             }
                         });
                     }
@@ -238,7 +245,7 @@
                     $('#saveButtonMessage').removeClass('success');
                     $('#saveButtonMessage').addClass('error');
                     $('#saveButtonMessage').empty();
-                    $('#saveButtonMessage').append("Please enter poition or score or both ");
+                    $('#saveButtonMessage').append("Please enter position or score or both ");
                     $('#saveButtonMessage').show();
                 }else{
                     $('#saveButtonMessage').hide();
@@ -250,15 +257,24 @@
                     var calcScore = $('#report-position-value').val();
                     switch(calcScore){
                         case '1':
-                            score = 5;
+                            if($('#report-firstRegId').val() >= 80000)
+                                score = 10;
+                            else
+                                score = 5;
                             grade = 'A+';
                             break;
                         case '2':
-                            score = 3;
+                            if($('#report-firstRegId').val() >= 80000)
+                                score = 5;
+                            else
+                                score = 3;
                             grade = 'A+';
                             break;
                         case '3':
-                            score = 1;
+                            if($('#report-firstRegId').val() >= 80000)
+                                score = 3;
+                            else
+                                score = 1;
                             grade = 'A+';
                             break;
                         case '0':
@@ -278,8 +294,12 @@
                     }
                     if ( $('#report-position-value').val() == null)
                         $('#report-position-value').val(0);
+                    if($('#report-firstRegId').val() >=80000)
+                        var type ="addGroupResult";
+                    else
+                        var type ="addResult2";
                     $.post("manageResult.php",{
-                        type:"addResult2",
+                        type:type,
                         eid:$('#report-eventName').val(),
                         regId:$('#report-firstRegId').val(),
                         score:score,

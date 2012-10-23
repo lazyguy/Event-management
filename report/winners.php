@@ -109,7 +109,7 @@
                     </div>
                 </div>
 
-                <!--div id="errorSet"  class="well" style="padding-top: 25px"></div-->
+                <div id="errorSet"  class="well" style="padding-top: 25px"></div>
 
                 <footer>
                     <p>&copy; Rotary Club of Cherthala</p>
@@ -119,6 +119,7 @@
 
         <script type="text/javascript">
             $(document).ready(function () {
+                $('#errorSet').hide();
                 getschoolnames(0);
                 $('#resultSet').hide();
                 $('#allPartByEventTable').hide();
@@ -141,10 +142,10 @@
                     type: "bySchool",
                     eId: $('#report-schoolName').val()
                 }, function (data) {
-                    /*
+                    
                     $('#errorSet').empty();
                     $('#errorSet').html(data);
-                     */
+                    $('#errorSet').show();
                     var oTable1 = $('#allPartByEventTable').dataTable();
                     oTable1.fnDestroy();
                     var oTable2 = $('#partByEventTable').dataTable();
@@ -168,7 +169,7 @@
                     }
                     $('#partByEventTable').dataTable({
                         "bLengthChange": false,
-                 //       "bFilter": false,
+                        //       "bFilter": false,
                         "oLanguage": {
                             "sEmptyTable": "No Data found"
                         },
@@ -201,7 +202,7 @@
                     }
                     $('#allPartByEventTable').dataTable({
                         "bLengthChange": false,
-            //            "bFilter": false,
+                        //            "bFilter": false,
                         "oLanguage": {
                             "sEmptyTable": "No Data found"
                         },

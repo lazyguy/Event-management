@@ -296,7 +296,9 @@
                     <button data-controls-modal="edit-modal-add-participant" data-backdrop="static" data-keyboard="true" class="btn primary">Edit Participant</button>
                     <br/><br/>
                     <button data-controls-modal="modal-add-group" data-backdrop="static" data-keyboard="true" class="btn success">&nbsp;&nbsp;&nbsp;ADD Group&nbsp;&nbsp;&nbsp;</button>
+                    <!--  will implement when there is time
                     <button data-controls-modal="modal-edit-group" data-backdrop="static" data-keyboard="true" class="btn primary">&nbsp;&nbsp;&nbsp;Edit Group&nbsp;&nbsp;&nbsp;&nbsp;</button>
+                    -->
                     <p></p>
                     <p>
                         Use this page to add or remove individual and group participants

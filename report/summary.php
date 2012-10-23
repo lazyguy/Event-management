@@ -155,7 +155,8 @@
                   //      "bFilter": false,
                         "sScrollY": "170px",
                         "bPaginate": false,
-                        "bInfo":false
+                        "bInfo":false,
+                        "bScrollCollapse": true
                     });
 
                     $('#eventSummaryTable').dataTable({
@@ -164,7 +165,8 @@
              //           "bFilter": false,
                         "sScrollY": "170px",
                         "bPaginate": false,
-                        "bInfo":false
+                        "bInfo":false,
+                        "bScrollCollapse": true
                     });
                 });
 

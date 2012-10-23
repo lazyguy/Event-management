@@ -75,13 +75,13 @@ class PDF extends PDF_JavaScript {
                 $this->SetFont('Arial', '', 14);
                 $this->Cell($w[0], 9, number_format($row["school_id"]), 'LR', 0, 'L', $fill);
                 $this->Cell($w[1], 9, $row["school_name"], 'LR', 0, 'L', $fill);
-                $this->Cell($w[2], 9,  number_format($row["marks_sum"]), 'LR', 0, 'L', $fill);
+                $this->Cell($w[2], 9, number_format($row["marks_sum"]), 'LR', 0, 'L', $fill);
                 $this->Ln();
                 $fill = !$fill;
             }
         } else {
             for ($counter = 0; $counter < sizeof($data[0]); $counter++) {
-                 $row = $data[0][$counter];
+                $row = $data[0][$counter];
                 $this->SetFont('Arial', '', 14);
                 $this->Cell($w[0], 9, number_format($row["regn_number"]), 'LR', 0, 'L', $fill);
                 $this->Cell($w[1], 9, $row["name"], 'LR', 0, 'L', $fill);
@@ -93,6 +93,7 @@ class PDF extends PDF_JavaScript {
             }
         }
     }
+
 }
 
 $con = mysql_connect("localhost", "root", "");
@@ -123,7 +124,7 @@ if (!$con) {
         } else {
             $GLOBALS["foot"] = "Winners By School";
             $GLOBALS["headerg"] = array('Reg No', 'Name', 'School Name', 'Event Name', 'Position');
-            $GLOBALS["titleg"] = "Rotary Balolsav " . getYear() . " - Winners By School" ;
+            $GLOBALS["titleg"] = "Rotary Balolsav " . getYear() . " - Winners By School";
             $GLOBALS["width"] = array(20, 60, 110, 60, 20);
             $pdf->AddPage();
             $pdf->FancyTable(array_values($d), 2, -1);
@@ -175,10 +176,52 @@ function getData($con) {
         $counter = $counter + 1;
     }
 
+    //Group events
+    if ($eId == 999999) {
+        $query = "select * from group_result where 1 order by group_id";
+    } else {
+        $query = "select * from group_result where group_id  in
+                     (select group_id from group_master where school_id =$eId)";
+    }
+    $rs = mysql_query($query);
+    while ($result = mysql_fetch_array($rs)) {
+        //need to return regn number,name,school name, event name, position
+        $event_id = $result["event_id"];
+        $regn_number = $result["group_id"];
+        $position = $result["result"];
+
+        $query = "select * from group_trans where group_id='$regn_number' and event_id='$event_id'";
+        $result1 = mysql_query($query);
+        $partName = "";
+        $student_name = "";
+        while ($rs1 = mysql_fetch_array($result1)) {
+            $rId = $rs1["regn_number"];
+            $query = "select student_name,school_id from participant_master where regn_number='$rId'";
+            $result2 = mysql_query($query);
+            $rs1 = mysql_fetch_array($result2);
+            $sId = $rs1['school_id'];
+            $student_name = $student_name . $rs1["student_name"] . ',';
+        }
+
+        $query = "select school_name from school_master where school_id = $sId";
+        $rs1 = mysql_query($query);
+        $result1 = mysql_fetch_array($rs1);
+        $school_name = $result1["school_name"];
+
+        $query = "select event_name from event_master where event_id = $event_id";
+        $rs1 = mysql_query($query);
+        $result1 = mysql_fetch_array($rs1);
+        $event_name = $result1["event_name"];
+
+        $returnArray[$counter] = array("regn_number" => $regn_number,
+            "name" => $student_name, "school_name" => $school_name,
+            "event_name" => $event_name, "position" => $position);
+        $counter = $counter + 1;
+    }
+
     $returnSumArray[] = array();
     $query = "select * from school_master where 1";
     $rs = mysql_query($query);
-    $returnSumArray[] = array();
     $counter1 = 0;
     while ($result = mysql_fetch_array($rs)) {
         //need to return regn number,name,school name, event name, position
@@ -189,6 +232,13 @@ function getData($con) {
         $rs1 = mysql_query($query);
         $result1 = mysql_fetch_array($rs1);
         $marks_sum = $result1["marks_sum"];
+        if ($marks_sum == null)
+            $marks_sum = 0;
+
+        $query = "select sum(marks) as marks_sum from group_result where group_id in (select group_id from group_master where school_id = $school_id)";
+        $rs1 = mysql_query($query);
+        $result1 = mysql_fetch_array($rs1);
+        $marks_sum = $marks_sum + $result1["marks_sum"];
         if ($marks_sum == null)
             $marks_sum = 0;
 

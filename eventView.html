@@ -13,16 +13,23 @@
                         <input class="xlarge" id="eventName" name="eventName" size="30" type="text" />
                     </div>
                 </div><!-- /clearfix -->
-                <div class="clearfix">
-                    <label for="eventType">
-                        Event Type
-                    </label>
-                    <div class="input">
-                        <select class="xlarge" name="eventType" id="eventType">
-                            <option>Junior</option> <option>Senior</option> <!--<option>Junior and Senior</option> -->
-                        </select>
+                <div class="row">
+                    <div class="clearfix span4">
+                        <label for="eventType">
+                            Event Type
+                        </label>
+                        <div class="input">
+                            <select class="medium" name="eventType" id="eventType">
+                                <option>Junior</option> <option>Senior</option> <!--<option>Junior and Senior</option> -->
+                            </select>
+                        </div>
+                    </div><!-- /clearfix -->
+                    <div class="span3 offset1" style="padding-top: 5px;">
+                        &nbsp;&nbsp;
+                        <input type ="checkbox" id="isGroup">&nbsp;&nbsp;Group Event
+
                     </div>
-                </div><!-- /clearfix -->
+                </div>
             </fieldset>
         </form>
     </div>
@@ -106,16 +113,24 @@
                         <input class="xlarge" id="eventSaveName" name="eventSaveName" size="30" type="text" />
                     </div>
                 </div><!-- /clearfix -->
-                <div class="clearfix">
-                    <label for="eventSaveType">
-                        Event Type
-                    </label>
-                    <div class="input">
-                        <select class="xlarge" name="eventSaveType" id="eventSaveType">
-                            <option value="1">Junior</option> <option value="2">Senior</option> <option value="3">Junior and Senior</option>
-                        </select>
+                <div class="row">
+                    <div class="clearfix span4">
+                        <label for="eventSaveType">
+                            Event Type
+                        </label>
+                        <div class="input">
+                            <select class="medium" name="eventSaveType" id="eventSaveType">
+                                <option value="1">Junior</option> <option value="2">Senior</option>
+                            </select>
+                        </div>
+
+                    </div><!-- /clearfix -->
+                    <div class="span3 offset1" style="padding-top: 5px;">
+                        &nbsp;&nbsp;
+                        <input type ="checkbox" id="eventEditisGroup">&nbsp;&nbsp;Group Event
+
                     </div>
-                </div><!-- /clearfix -->
+                </div>
                 <input type="hidden" id="eventIdForEdit" value="NULL">
             </fieldset>
 

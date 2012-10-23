@@ -407,7 +407,7 @@ function editParticipant(print) {
     }
 }
 
-function geteventnames(element,schoolid,eventid) {
+function geteventnames_group(element,schoolid,eventid) {
     var phpFile;
     switch (element) {
         case 1:
@@ -419,9 +419,11 @@ function geteventnames(element,schoolid,eventid) {
     }
 
     $.get(phpFile, {
+        term:"getpart",
         schoolid:schoolid,
         eventid:eventid
     },function (data) {
+       // alert(data);
         var obj = jQuery.parseJSON(data);
         for (i = 0; i < obj.length; i++) {
             switch (element) {
@@ -430,7 +432,7 @@ function geteventnames(element,schoolid,eventid) {
                         $('#group_participants').append("<option></option>");
                     }
                     $('#group_participants').append(
-                        $("<option></option>").attr("value", obj[i].id).text(obj[i].value + " - " + obj[i].label));
+                        $("<option></option>").attr("value", obj[i].id).text(obj[i].value));
                     break;
             }
         }

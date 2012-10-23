@@ -94,7 +94,7 @@ function getSummary($con) {
     while ($result = mysqli_fetch_array($rsd)) {
         $eId = $result["event_id"];
         $eName = $result["event_name"];
-        $eName = $eName . " - " . getEventName($result["event_type"]);
+        $eName = $eName . " - " . getEventName($result["event_type"],$result["isgroup"]);
         $query = "select count(*) from participant_master where regn_number IN(select regn_number from event_trans where event_id = $eId) and category = '1'";
         $rsd0 = mysqli_query($con, $query);
         $result0 = mysqli_fetch_array($rsd0);
@@ -105,7 +105,7 @@ function getSummary($con) {
         $result0 = mysqli_fetch_array($rsd0);
         $sCount = $result0[0];
 
-        $eArray[$counter] = array("eId" => $eId, "eName" => $eName, "category" => getEventName($result["event_type"]), "count" => $sCount+$jCount);
+        $eArray[$counter] = array("eId" => $eId, "eName" => $eName, "category" => getEventName($result["event_type"],$result["isgroup"]), "count" => $sCount+$jCount);
         $counter = $counter + 1;
     }
 

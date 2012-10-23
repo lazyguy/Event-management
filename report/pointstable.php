@@ -95,7 +95,7 @@
                         </div>
                     </div>
                 </div>
-                <!--div id="errorSet"  class="well" style="padding-top: 25px"></div-->
+                <div id="errorSet"  class="well" style="padding-top: 25px"></div>
 
                 <?php include_once "../footer.html" ?>
             </div>
@@ -103,53 +103,59 @@
 
         <script type="text/javascript">
             $(document).ready(function () {
+                $('#errorSet').hide();
                 $('#thilakomDiv').hide();
                 $('#prathibhaDiv').hide();
                 $('#pointsTableDiv').hide();
                 $.post("getwinners.php",{
                     type:"getAll"
                 },function(data){
-                   // $('#errorSet').html(data);
+                    $('#errorSet').html(data);
+                    //$('#errorSet').show();
                     if(data != null){
                         var obj = jQuery.parseJSON(data);
                         if(!obj)
                             return;
-                        $('#thilakomName').html('<b>'+obj.thilakom.Name+'</b>');
-                        $('#thilakomPoints').html('<b>'+obj.thilakom.points+'</b>');
-                        $('#thilakomReg').html('<b>'+obj.thilakom.regn_number+'</b>');
-                        $('#thilakomSchool').html('<b>'+obj.thilakom.school_name+'</b>');
-
-                        $('#prathibhaName').html('<b>'+obj.prathibha.Name+'</b>');
-                        $('#prathibhaPoints').html('<b>'+obj.prathibha.points+'</b>');
-                        $('#prathibhaReg').html('<b>'+obj.prathibha.regn_number+'</b>');
-                        $('#prathibhaSchool').html('<b>'+obj.prathibha.school_name+'</b>');
-
-                        $('#thilakomDiv').show();
-                        $('#prathibhaDiv').show();
-                        $('#pointsTableDiv').show();
-                        var oTable = $('#pointsTable').dataTable();
-                        oTable.fnClearTable();
-                        for (var i = 0; i < obj.participants.length; i++) {
-                            $('#pointsTableBody').append("<tr>"+
-                                "<td>"+obj.participants[i].regn_number+"</td>"+
-                                "<td>"+obj.participants[i].Name+"</td>"+
-                                "<td>"+obj.participants[i].school_name+"</td>"+
-                                "<td>"+obj.participants[i].points+"</td>"+"</tr>");
+                        if(obj.thilakom){
+                            $('#thilakomName').html('<b>'+obj.thilakom.Name+'</b>');
+                            $('#thilakomPoints').html('<b>'+obj.thilakom.points+'</b>');
+                            $('#thilakomReg').html('<b>'+obj.thilakom.regn_number+'</b>');
+                            $('#thilakomSchool').html('<b>'+obj.thilakom.school_name+'</b>');
+                            $('#thilakomDiv').show();
                         }
-                        $('#pointsTable').dataTable({
-                            "bLengthChange": false,
-                        //    "bFilter": false,
-                            "oLanguage": {
-                                "sEmptyTable": "No Data"
-                            },
-                            "bPaginate": false,
-                            "bInfo":false,
-                            "bDestroy": true,
-                            "sScrollY": "170px",
-                            "bScrollCollapse": true,
-                            "aaSorting": [[3,'desc']]
-                        });
-
+                        if(obj.prathibha){
+                            $('#prathibhaName').html('<b>'+obj.prathibha.Name+'</b>');
+                            $('#prathibhaPoints').html('<b>'+obj.prathibha.points+'</b>');
+                            $('#prathibhaReg').html('<b>'+obj.prathibha.regn_number+'</b>');
+                            $('#prathibhaSchool').html('<b>'+obj.prathibha.school_name+'</b>');
+                            $('#prathibhaDiv').show();
+                        }
+                        
+                        if(obj.participants){
+                            $('#pointsTableDiv').show();
+                            var oTable = $('#pointsTable').dataTable();
+                            oTable.fnClearTable();
+                            for (var i = 0; i < obj.participants.length; i++) {
+                                $('#pointsTableBody').append("<tr>"+
+                                    "<td>"+obj.participants[i].regn_number+"</td>"+
+                                    "<td>"+obj.participants[i].Name+"</td>"+
+                                    "<td>"+obj.participants[i].school_name+"</td>"+
+                                    "<td>"+obj.participants[i].points+"</td>"+"</tr>");
+                            }
+                            $('#pointsTable').dataTable({
+                                "bLengthChange": false,
+                                //    "bFilter": false,
+                                "oLanguage": {
+                                    "sEmptyTable": "No Data"
+                                },
+                                "bPaginate": false,
+                                "bInfo":false,
+                                "bDestroy": true,
+                                "sScrollY": "170px",
+                                "bScrollCollapse": true,
+                                "aaSorting": [[3,'desc']]
+                            });
+                        }
                     }else{
                         alert("Could not retreive data");
                     }

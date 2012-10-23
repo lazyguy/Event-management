@@ -20,18 +20,21 @@ function getEventType($eType) {
     return $eType;
 }
 
-function getEventName($eType) {
+function getEventName($eType,$isgroup) {
     switch ($eType) {
         case 1:
-            return "Junior";
+            $eType = "Junior";
             break;
         case 2:
-            return "Senior";
+            $eType = "Senior";
             break;
         case 3:
-            return "Senior&Junior";
+            $eType = "Senior&Junior";
             break;
     }
+    if($isgroup == 1)
+        $eType = $eType."(Group Event)";
+    return $eType;
 }
 
 function getSex($sType) {

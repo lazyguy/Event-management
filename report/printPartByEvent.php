@@ -212,11 +212,11 @@ function getData($con) {
         $result1 = mysql_fetch_array($rs1);
         $school_name = $result1["school_name"];
 
-        $query = "select event_name,event_type from event_master where event_id = $event_id";
+        $query = "select event_name,event_type,isgroup from event_master where event_id = $event_id";
         $rs1 = mysql_query($query);
         $result1 = mysql_fetch_array($rs1);
         $event_name = $result1["event_name"];
-        $event_name = $event_name . " - " . getEventName($result1["event_type"]);
+        $event_name = $event_name . " - " . getEventName($result1["event_type"],$result1["isgroup"]);
 
         $partArray[$counter] = array("rNum" => $regn_number, "ename" => $event_name, "name" => $name, "sex" => $sex, "age" => $age, "school_name" => $school_name);
         $counter = $counter + 1;
