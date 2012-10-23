@@ -142,20 +142,20 @@
                                     "<td>"+obj.participants[i].school_name+"</td>"+
                                     "<td>"+obj.participants[i].points+"</td>"+"</tr>");
                             }
-                            $('#pointsTable').dataTable({
-                                "bLengthChange": false,
-                                //    "bFilter": false,
-                                "oLanguage": {
-                                    "sEmptyTable": "No Data"
-                                },
-                                "bPaginate": false,
-                                "bInfo":false,
-                                "bDestroy": true,
-                                "sScrollY": "170px",
-                                "bScrollCollapse": true,
-                                "aaSorting": [[3,'desc']]
-                            });
                         }
+                        $('#pointsTable').dataTable({
+                            "bLengthChange": false,
+                            //    "bFilter": false,
+                            "oLanguage": {
+                                "sEmptyTable": "No Data"
+                            },
+                            "bPaginate": false,
+                            "bInfo":false,
+                            "bDestroy": true,
+                            "sScrollY": "170px",
+                            "bScrollCollapse": true,
+                            "aaSorting": [[3,'desc']]
+                        });
                     }else{
                         alert("Could not retreive data");
                     }

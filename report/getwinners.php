@@ -62,7 +62,7 @@ if (!$con) {
             $rs = mysqli_query($con, $query);
             //   $result = mysqli_fetch_array($rs);
 
-            $partArray[] = array();
+            //$partArray[] = array();
             $counter = 0;
             while ($result = mysqli_fetch_array($rs)) {
                 $regn_number = $result["regn_number"];

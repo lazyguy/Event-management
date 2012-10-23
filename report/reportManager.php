@@ -90,7 +90,7 @@ function getSummary($con) {
     $eArray[] = array();
     $query = "SELECT * from event_master where 1 order by event_name asc";
     $rsd = mysqli_query($con, $query);
-    $counter = 0;
+    $counter1 = 0;
     while ($result = mysqli_fetch_array($rsd)) {
         $eId = $result["event_id"];
         $eName = $result["event_name"];
@@ -105,11 +105,15 @@ function getSummary($con) {
         $result0 = mysqli_fetch_array($rsd0);
         $sCount = $result0[0];
 
-        $eArray[$counter] = array("eId" => $eId, "eName" => $eName, "category" => getEventName($result["event_type"],$result["isgroup"]), "count" => $sCount+$jCount);
-        $counter = $counter + 1;
+        $eArray[$counter1] = array("eId" => $eId, "eName" => $eName, "category" => getEventName($result["event_type"],$result["isgroup"]), "count" => $sCount+$jCount);
+        $counter1 = $counter1 + 1;
     }
 
 //  
-    $returnJson = array("participant" => $partArray, "counts" => $countsArray, "school" => $sArray, "events" => $eArray);
+    $returnJson = array("participant" => $partArray, "counts" => $countsArray);//, "school" => $sArray, "events" => $eArray);
+    if($counter > 0)
+        $returnJson["school"] = $sArray;
+    if($counter1 > 0)
+        $returnJson["events"] = $eArray;
     return $returnJson;
 }

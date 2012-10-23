@@ -111,7 +111,7 @@
                     </div>
                 </div>
                 <div id ="test1"></div>
-                <?php include_once "../footer.html"?>
+                <?php include_once "../footer.html" ?>
             </div>
         </div>
 
@@ -120,10 +120,10 @@
                 $.post("reportManager.php", {
                     type: "getSummary"
                 }, function(data){
-                    /*
+                    
                     $('#test1').empty();
                     $('#test1').html(data);
-                     */
+                     
                     var obj = jQuery.parseJSON(data);
                     $('#maleCount').empty();
                     $('#femaleCount').empty();
@@ -140,19 +140,23 @@
                     $('#totalSchools').append(obj.counts.schoolCount);
                     $('#totalevents').append(obj.counts.eventsCount);
                     $('#schoolSummaryBody').empty();
-                    for (var i = 0; i < obj.school.length; i++) {
-                        $('#schoolSummaryBody').append("<tr>"+"<td>"+obj.school[i].sName+
-                            "</td>"+"<td>"+obj.school[i].sCount+"</td>"+"<td>"+obj.school[i].jCount+"</td>"+"<td>"+obj.school[i].sSum+"</td>"+"</tr>");
+                    if(obj.school){
+                        for (var i = 0; i < obj.school.length; i++) {
+                            $('#schoolSummaryBody').append("<tr>"+"<td>"+obj.school[i].sName+
+                                "</td>"+"<td>"+obj.school[i].sCount+"</td>"+"<td>"+obj.school[i].jCount+"</td>"+"<td>"+obj.school[i].sSum+"</td>"+"</tr>");
+                        }
                     }
                     $('#eventSummaryBody').empty();
-                    for (var i = 0; i < obj.events.length; i++) {
-                        $('#eventSummaryBody').append("<tr>"+"<td>"+obj.events[i].eName+
-                            "</td>"+"<td>"+obj.events[i].category+"</td>"+"<td>"+obj.events[i].count+"</td>"+"</tr>");
+                    if(obj.events){
+                        for (var i = 0; i < obj.events.length; i++) {
+                            $('#eventSummaryBody').append("<tr>"+"<td>"+obj.events[i].eName+
+                                "</td>"+"<td>"+obj.events[i].category+"</td>"+"<td>"+obj.events[i].count+"</td>"+"</tr>");
+                        }
                     }
                     $('#schoolSummaryTable').dataTable({
                         "bLengthChange": false,
                         //     "iDisplayLength": 6 ,
-                  //      "bFilter": false,
+                        //      "bFilter": false,
                         "sScrollY": "170px",
                         "bPaginate": false,
                         "bInfo":false,
@@ -162,7 +166,7 @@
                     $('#eventSummaryTable').dataTable({
                         "bLengthChange": false,
                         //     "iDisplayLength": 6 ,
-             //           "bFilter": false,
+                        //           "bFilter": false,
                         "sScrollY": "170px",
                         "bPaginate": false,
                         "bInfo":false,
