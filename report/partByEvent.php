@@ -100,9 +100,9 @@
                     </div>
                 </div>
 
-                <!--div id="errorSet"  class="well" style="padding-top: 25px"></div-->
+                <div id="errorSet"  class="well" style="padding-top: 25px"></div>
 
-                <?php include_once "../footer.html"?>
+                <?php include_once "../footer.html" ?>
             </div>
         </div>
 
@@ -149,8 +149,15 @@
                         oTable.fnClearTable();
                         if(obj){
                             for (var i = 0; i < obj.participants.length; i++) {
+                                if(obj.participants[i].rNum)
+                                    var rNum = obj.participants[i].rNum;
+                                else{
+                                    var rNum = "NoGrpId";
+                                    $('#errorSet').empty();
+                                    $('#errorSet').html("<b><em>NoGrpId means - Student was registered for this event but student was not added to any group</em></b>");
+                                }
                                 $('#partByEventBody').append("<tr>"+
-                                    "<td>"+obj.participants[i].rNum+"</td>"+
+                                    "<td>"+rNum+"</td>"+
                                     "<td>"+obj.participants[i].name+"</td>"+
                                     "<td>"+obj.participants[i].school_name+"</td>"+
                                     "<td>"+obj.participants[i].sex+"</td>"+
@@ -164,7 +171,7 @@
                         }
                         $('#partByEventTable').dataTable({
                             "bLengthChange": false,
-                           // "bFilter": false,
+                            // "bFilter": false,
                             "oLanguage": {
                                 "sEmptyTable": "No Participants Registered for this Event"
                             },
@@ -182,9 +189,16 @@
                         oTable.fnClearTable();
                         if(obj){
                             for (var i = 0; i < obj.participants.length; i++) {
+                                if(obj.participants[i].rNum)
+                                    var rNum = obj.participants[i].rNum;
+                                else{
+                                    var rNum = "NoGrpId";
+                                    $('#errorSet').empty();
+                                    $('#errorSet').html("<b><em>NoGrpId means - Student was registered for this event but student was not added to any group</em></b>");
+                                }
                                 $('#allPartByEventBody').append("<tr>"+
                                     "<td>"+obj.participants[i].ename+"</td>"+
-                                    "<td>"+obj.participants[i].rNum+"</td>"+
+                                    "<td>"+rNum+"</td>"+
                                     "<td>"+obj.participants[i].name+"</td>"+
                                     "<td>"+obj.participants[i].school_name+"</td>"+
                                     "<td>"+obj.participants[i].sex+"</td>"+
@@ -201,7 +215,7 @@
                             scrollLength = 30;
                         $('#allPartByEventTable').dataTable({
                             "bLengthChange": false,
-                          //  "bFilter": false,
+                            //  "bFilter": false,
                             "oLanguage": {
                                 "sEmptyTable": "No Participants found"
                             },

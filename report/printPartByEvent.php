@@ -73,11 +73,14 @@ class PDF extends PDF_JavaScript {
         for ($counter = 0; $counter < sizeof($data[0]); $counter++) {
             $row = $data[0][$counter];
             if ($type == 1) {
+
                 if ($type == 1 && $sortby == 1)
                     $compareThis = $row["school_name"];
                 else
                     $compareThis = $row["ename"];
-                if (strcmp($eventName, $compareThis) != 0) {
+
+                //$compareThis
+                if (strpos($GLOBALS["titleg"], $compareThis) == 0) {
                     //  $this->Cell(array_sum($w), 0, '', 'T');
 
                     if ($type == 1 && $sortby == 1) {
@@ -153,7 +156,7 @@ if (!$con) {
                 $GLOBALS["foot"] = "Participants By Event";
                 $GLOBALS["headerg"] = array('Chest No', 'Reg No', 'Name', 'School Name', 'Sex', 'Age');
                 $eventName = $d["participants"][0]["ename"];
-                $GLOBALS["titleg"] = "Rotary Balolsav " . getYear() . " / " . $eventName;
+               // $GLOBALS["titleg"] = "Rotary Balolsav " . getYear() . " / " . $eventName;
             }
 
             if ($sortby == 1) {
@@ -163,15 +166,15 @@ if (!$con) {
 
                 array_multisort($dates, SORT_DESC, $d["participants"]);
             }
-            $pdf->AddPage();
+           // $pdf->AddPage();
             $pdf->FancyTable(array_values($d), 1, $sortby);
         } else {
             $GLOBALS["foot"] = "Participants By Event";
             $GLOBALS["type"] = 2;
             $GLOBALS["headerg"] = array('Chest No', 'Reg No', 'Name', 'School Name', 'Sex', 'Age');
             $eventName = $d["participants"][0]["ename"];
-            $GLOBALS["titleg"] = "Rotary Balolsav " . getYear() . " / " . $eventName;
-            $pdf->AddPage();
+           // $GLOBALS["titleg"] = "Rotary Balolsav " . getYear() . " / " . $eventName;
+           // $pdf->AddPage();
             $pdf->FancyTable(array_values($d), 2, -1);
         }
         $pdf->AutoPrint(true);
@@ -216,7 +219,7 @@ function getData($con) {
         $rs1 = mysql_query($query);
         $result1 = mysql_fetch_array($rs1);
         $event_name = $result1["event_name"];
-        $event_name = $event_name . " - " . getEventName($result1["event_type"],$result1["isgroup"]);
+        $event_name = $event_name . " - " . getEventName($result1["event_type"], $result1["isgroup"]);
 
         $partArray[$counter] = array("rNum" => $regn_number, "ename" => $event_name, "name" => $name, "sex" => $sex, "age" => $age, "school_name" => $school_name);
         $counter = $counter + 1;

@@ -44,6 +44,24 @@ if (!$con) {
                     $result1 = mysqli_fetch_array($rs1);
                     $event_name = $result1["event_name"];
                     $event_name = $event_name . " - " . getEventName($result1["event_type"], $result1["isgroup"]);
+                    if ($result1["isgroup"] == 1) {
+                        $query = "select group_id from group_trans where event_id = $event_id and regn_number=$regn_number ";
+                        $rs3 = mysqli_query($con, $query);
+                        $result3 = mysqli_fetch_array($rs3);
+                        $group_id = $result3["group_id"];
+                        $regn_number = $group_id;
+                    }
+                } else {
+                    $query = "select event_name,event_type,isgroup from event_master where event_id = $eId";
+                    $rs1 = mysqli_query($con, $query);
+                    $result1 = mysqli_fetch_array($rs1);
+                    if ($result1["isgroup"] == 1) {
+                        $query = "select group_id from group_trans where event_id = $eId and regn_number=$regn_number ";
+                        $rs3 = mysqli_query($con, $query);
+                        $result3 = mysqli_fetch_array($rs3);
+                        $group_id = $result3["group_id"];
+                        $regn_number = $group_id;
+                    }
                 }
                 if ($eId == 999999) {
                     $partArray[$counter] = array("rNum" => $regn_number, "ename" => $event_name, "name" => $name, "sex" => $sex, "age" => $age, "school_name" => $school_name);
@@ -131,10 +149,10 @@ if (!$con) {
                         $sId = $rs2['school_id'];
                         $name = $name . $rs2["student_name"] . ',';
                     }
-                    $gradePoint = $result1["grade"];// . "/" . $result1["marks"];
+                    $gradePoint = $result1["grade"]; // . "/" . $result1["marks"];
                 }
                 else
-                    $gradePoint = $result["event_grade"];// . "/" . $result["event_marks"];
+                    $gradePoint = $result["event_grade"]; // . "/" . $result["event_marks"];
 
                 $eGrade = null;
                 $eMarks = null;
@@ -148,7 +166,7 @@ if (!$con) {
                     $eMarks = $result["event_marks"];
                 }
 
-                if ($eGrade != null ) {
+                if ($eGrade != null) {
                     if (intval($position) == 1 || intval($position) == 2 || intval($position) == 3) {
                         $winnerArray[$winnercounter] = array("rNum" => $regn_number, "name" => $name, "sex" => $sex, "position" => $position, "school_name" => $school_name);
                         $winnercounter = $winnercounter + 1;

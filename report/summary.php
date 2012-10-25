@@ -122,7 +122,7 @@
                 }, function(data){
                     
                     $('#test1').empty();
-                    $('#test1').html(data);
+                  //  $('#test1').html(data);
                      
                     var obj = jQuery.parseJSON(data);
                     $('#maleCount').empty();

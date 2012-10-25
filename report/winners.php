@@ -144,8 +144,8 @@
                 }, function (data) {
                     
                     $('#errorSet').empty();
-                    $('#errorSet').html(data);
-                    $('#errorSet').show();
+                 //   $('#errorSet').html(data);
+                 //   $('#errorSet').show();
                     var oTable1 = $('#allPartByEventTable').dataTable();
                     oTable1.fnDestroy();
                     var oTable2 = $('#partByEventTable').dataTable();
