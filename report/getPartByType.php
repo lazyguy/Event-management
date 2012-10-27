@@ -120,9 +120,9 @@ if (!$con) {
                     $query = "select * from participant_master where regn_number = $regn_number";
                     $rs1 = mysqli_query($con, $query);
                     if (!$rs1) {
-                       // echo $query;
-                       // echo $regn_number;
-                       // echo mysqli_error($con);
+                        // echo $query;
+                        // echo $regn_number;
+                        // echo mysqli_error($con);
                         continue;
                     }
                     $result1 = mysqli_fetch_array($rs1);
@@ -146,7 +146,8 @@ if (!$con) {
                 }
                 $query = "select school_name from school_master where school_id = $school_id";
                 $rs1 = mysqli_query($con, $query);
-
+                if ($school_id <= 0)
+                    continue;
                 $result1 = mysqli_fetch_array($rs1);
 
                 $school_name = $result1["school_name"];

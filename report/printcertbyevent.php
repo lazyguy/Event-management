@@ -184,6 +184,8 @@ function getData($con) {
         }
         $query = "select school_name from school_master where school_id = $school_id";
         $rs1 = mysql_query($query);
+        if ($school_id <= 0)
+            continue;
         $result1 = mysql_fetch_array($rs1);
 
         $school_name = $result1["school_name"];
