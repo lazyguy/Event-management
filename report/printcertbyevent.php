@@ -148,7 +148,7 @@ function getData($con) {
     $sex = null;
     $age = 0;
     $school_id = 0;
-                $counter2 = 0;
+    $counter2 = 0;
     while ($result = mysql_fetch_array($rs)) {
 
         if ($isGrp == 1) {
@@ -160,6 +160,9 @@ function getData($con) {
             $regn_number = $result1["regn_number"];
             $query = "select * from participant_master where regn_number = $regn_number";
             $rs1 = mysql_query($query);
+            if (!$rs1) {
+                continue;
+            }
             $result1 = mysql_fetch_array($rs1);
 
             $name = $result1["student_name"];
@@ -260,10 +263,10 @@ function getData($con) {
             }
         }
     }
-    if ($winner == 1 && sizeof($winnerArray)>0) {
+    if ($winner == 1 && sizeof($winnerArray) > 0) {
         return $winnerArray;
         // return array_to_json($returnJson);
-    } elseif ($winner == 0 && sizeof($partArray)>0) {
+    } elseif ($winner == 0 && sizeof($partArray) > 0) {
         return $partArray;
     } else {
         echo "0";

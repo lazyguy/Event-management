@@ -175,7 +175,7 @@ if (!$con) {
                             $isSuccess = 0;
                         }
                         if (!mysql_query("CREATE TABLE IF NOT EXISTS `group_result`
-                                                    (`group_id` int(4) NOT NULL AUTO_INCREMENT,
+                                                    (`group_id` int(4) NOT NULL,
                                                     `event_id` int(4) NOT NULL DEFAULT '0',
                                                     `grade` char(2) DEFAULT NULL,
                                                     `marks` int(4) DEFAULT 0,

@@ -21,8 +21,13 @@ function geteventnames(element) {
             phpFile = "get_event_list.php";
             break;
     }
+    if( element == 4){
+        var term = "#########getgroupevents##############" 
+    }else{
+        var  term = "######getallstuff##########" //Not a good solution, but it works. and that's all that matters
+    }
     $.get(phpFile, {
-        term: "######getallstuff##########" //I am too lazy to do stuff properly
+        term: term
     },
 
     function (data) {
@@ -423,7 +428,7 @@ function geteventnames_group(element,schoolid,eventid) {
         schoolid:schoolid,
         eventid:eventid
     },function (data) {
-       // alert(data);
+        // alert(data);
         var obj = jQuery.parseJSON(data);
         for (i = 0; i < obj.length; i++) {
             switch (element) {

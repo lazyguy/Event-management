@@ -106,6 +106,13 @@
     });
     
     $('#groupSave').on('click',function(){
+        if(!($('#group_eventName').val()!=null && $('#group_schoolName').val() != null && $('#group_participants').val()!=null)){
+            $('#groupAddResult').removeClass('success');
+            $('#groupAddResult').addClass('error');
+            $('#groupAddResult').html('All fields are mandatory to add a group');
+            $('#groupAddResult').show();
+            return;
+        }
         $.post("get_participant_list.php", {
             term:"addgroup",
             evid:$('#group_eventName').val(),
