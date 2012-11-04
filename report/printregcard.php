@@ -37,7 +37,7 @@
         <div class="topbar">
             <div class="topbar-inner">
                 <div class="container-fluid">
-                    <a class="brand" href="../index.php">Balolsav&nbsp;<?php echo getYear()?></a>
+                    <a class="brand" href="../index.php">Balolsav&nbsp;<?php echo getYear() ?></a>
                     <ul class="nav">
                         <li class="active"><a href="../home.php">Home</a></li>
                     </ul>
@@ -90,7 +90,65 @@
                         </fieldset>
                     </form>
                 </div>
-                <?php include_once "../footer.html"?>
+
+
+                <div id="reportContentsrange" class="row" >
+                    <form id="resultentryformrange">
+                        <fieldset id="resultSetrange"  class="well">
+                            <H3>Print Report By Registration ID Range</H3>
+
+                            <div class="row" >
+                                <div class="span6">
+                                    <label for="report-rangestart" style="padding-top: 15px;">Starting Id</label>
+                                    <div class="input" style="padding-top: 5px;">
+                                        <input class="large" id="report-rangestart" name="report-rangestart" type="text"  />
+                                    </div>
+                                </div>
+                                <div class="span6">
+                                    <label for="report-rangeend" style="padding-top: 15px;">Finishing Id</label>
+                                    <div class="input" style="padding-top: 5px;">
+                                        <input class="large" id="report-rangeend" name="report-rangeend" type="text" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="clearfix" style="padding-top: 10px;">
+                                    <input id="report-range-value" type="hidden" value="0"/>
+                                    <label id="optionsRadio">Print All</label>
+                                    <div class="input">
+                                        <ul class="inputs-list">
+                                            <li>
+                                                <label>
+                                                    <input type="radio" name="report-range" id="report-range-junior" value="1" />
+                                                    <span>Juniors</span>
+                                                </label>
+                                            </li>
+                                            <li>
+                                                <label>
+                                                    <input type="radio" name="report-range" id="report-range-senior" value="2" />
+                                                    <span>Seniors</span>
+                                                </label>
+                                            </li>
+
+                                        </ul>
+                                    </div>
+                                </div><!-- /clearfix -->
+                            </div>
+                            <div class="row" id="resultSaveButtonsrange" style="padding-top: 25px;">
+                                <div class="span3" >
+                                    <a id="report-entry-cancelrange" class="btn error">Reset</a>
+                                    <a id="report-entry-saverange" class="btn primary">Print</a>
+                                </div>
+                                <div id="saveButtonMessagerange" class="span7 alert-message error"></div>
+                            </div>
+                        </fieldset>
+                    </form>
+                </div>
+
+
+
+
+                <?php include_once "../footer.html" ?>
             </div>
         </div>
 
@@ -125,7 +183,7 @@
                                 $('#firstHasCorrectValue').val("0");
                                 $('#report-firstRegId').select();
                             }else{
-                              //  alert(data);
+                                //  alert(data);
                                 var obj = jQuery.parseJSON(data);
                                 $('#report-firstRegId-error').hide();
                                 $('#report-firstPName').empty();
@@ -138,6 +196,11 @@
                         });
                     }
                 });
+                
+                $('#saveButtonMessagerange').hide();
+                $("input:radio[name=report-range]").click(function() {
+                    $('#report-range-value').val($(this).val());
+                });
             });
 
             $('#report-entry-cancel').on("click",function(){
@@ -149,6 +212,28 @@
                 alert("Remove auto fit to page option before printing");
                 var url = "regcardgenerate.php?sid="+$('#firstHasCorrectValue').val();
                 window.open(url);
+            });
+            $('#report-entry-cancelrange').on("click",function(){
+                $('#resultentryformrange').find(':input').each(function(){ $(this).val('');});
+                $('#saveButtonMessagerange').hide();
+                $('#saveButtonMessagerange').hide();
+            });
+            $('#report-entry-saverange').on("click",function(){
+                var printwhat =   $('#report-range-value').val();
+                var startId = $('#report-rangestart').val();
+                var endId = $('#report-rangeend').val();
+                if(startId <=0 ||endId <=0||(endId<=startId) || startId==null || endId==null){
+                    $('#saveButtonMessagerange').html("Please check values, starting id should be less than ending id");
+                    $('#saveButtonMessagerange').show();
+                }else if(printwhat<=0 ){
+                    $('#saveButtonMessagerange').html("Please select junior/senior");
+                    $('#saveButtonMessagerange').show();
+                }else{
+                    $('#saveButtonMessagerange').hide();
+                    alert("Remove auto fit to page option before printing");
+                      var url = "regcardgeneraterange.php?sid="+startId+"&eid="+endId+"&printwhat="+printwhat;
+                      window.open(url);
+                }
             });
         </script>
     </body>

@@ -223,7 +223,15 @@
                             "bInfo":false,
                             "bDestroy": true,
                             "sScrollY": scrollLength+"px",
-                            "bScrollCollapse": true
+                            "bScrollCollapse": true,
+                            "aoColumns": [
+                                null,
+                                { "sType": "numeric" },
+                                null,
+                                null,                                
+                                null,
+                                null
+                            ]
                         });
                     }
                 });

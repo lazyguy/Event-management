@@ -156,7 +156,7 @@ if (!$con) {
                 $GLOBALS["foot"] = "Participants By Event";
                 $GLOBALS["headerg"] = array('Chest No', 'Reg No', 'Name', 'School Name', 'Sex', 'Age');
                 $eventName = $d["participants"][0]["ename"];
-               // $GLOBALS["titleg"] = "Rotary Balolsav " . getYear() . " / " . $eventName;
+                // $GLOBALS["titleg"] = "Rotary Balolsav " . getYear() . " / " . $eventName;
             }
 
             if ($sortby == 1) {
@@ -166,15 +166,15 @@ if (!$con) {
 
                 array_multisort($dates, SORT_DESC, $d["participants"]);
             }
-           // $pdf->AddPage();
+            // $pdf->AddPage();
             $pdf->FancyTable(array_values($d), 1, $sortby);
         } else {
             $GLOBALS["foot"] = "Participants By Event";
             $GLOBALS["type"] = 2;
             $GLOBALS["headerg"] = array('Chest No', 'Reg No', 'Name', 'School Name', 'Sex', 'Age');
             $eventName = $d["participants"][0]["ename"];
-           // $GLOBALS["titleg"] = "Rotary Balolsav " . getYear() . " / " . $eventName;
-           // $pdf->AddPage();
+             $GLOBALS["titleg"] = "Rotary Balolsav " . getYear() . " / " . $eventName;
+             $pdf->AddPage();
             $pdf->FancyTable(array_values($d), 2, -1);
         }
         $pdf->AutoPrint(true);

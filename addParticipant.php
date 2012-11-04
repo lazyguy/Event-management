@@ -72,6 +72,7 @@ if (!$con) {
                         mysqli_rollback($con);  // if error, roll back transaction
                         $result = array("result" => -10);   //returning some value other than 1(success), -1(senior/junior conflict) and 2(participant already exist incase of add)
                         echo array_to_json($result);
+                        mysqli_autocommit($con, TRUE);
                         mysqli_close($con);
                         return;
                     }
@@ -89,6 +90,7 @@ if (!$con) {
                     mysqli_rollback($con);  // if error, roll back transaction
                     $result = array("result" => 0);
                     echo array_to_json($result);
+                    mysqli_autocommit($con, TRUE);
                     mysqli_close($con);
                     return;
                 }
@@ -132,6 +134,7 @@ if (!$con) {
                             mysqli_rollback($con);  // if error, roll back transaction
                             $result = array("result" => -11);
                             echo array_to_json($result);
+                            mysqli_autocommit($con, TRUE);
                             mysqli_close($con);
                             return;
                         }
@@ -144,6 +147,7 @@ if (!$con) {
                             mysqli_rollback($con);  // if error, roll back transaction
                             $result = array("result" => -12);
                             echo array_to_json($result);
+                            mysqli_autocommit($con, TRUE);
                             mysqli_close($con);
                             return;
                         }
@@ -157,6 +161,7 @@ if (!$con) {
                                 mysqli_rollback($con);  // if error, roll back transaction
                                 $result = array("result" => -13);
                                 echo array_to_json($result);
+                                mysqli_autocommit($con, TRUE);
                                 mysqli_close($con);
                                 return;
                             }
@@ -174,12 +179,14 @@ if (!$con) {
                             mysqli_rollback($con);  // if error, roll back transaction
                             $result = array("result" => 0);
                             echo array_to_json($result);
+                            mysqli_autocommit($con, TRUE);
                             mysqli_close($con);
                             return;
                         }
                     }
                 }
                 mysqli_commit($con);
+                mysqli_autocommit($con, TRUE);
                 $result = array("result" => 1, "sid" => $regn_number);
                 echo array_to_json($result);
                 //  echo "1";

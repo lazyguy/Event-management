@@ -23,6 +23,7 @@ if (!$con) {
             if ($result === FALSE) {
                 mysqli_rollback($con);  // if error, roll back transaction
                 echo 0;
+                mysqli_autocommit($con, TRUE);
                 mysqli_close($con);
                 return;
             }
@@ -30,6 +31,7 @@ if (!$con) {
             if ($result === FALSE) {
                 mysqli_rollback($con);  // if error, roll back transaction
                 echo 0;
+                mysqli_autocommit($con, TRUE);
                 mysqli_close($con);
                 return;
             }
@@ -38,6 +40,7 @@ if (!$con) {
             if ($result === FALSE) {
                 mysqli_rollback($con);  // if error, roll back transaction
                 echo 0;
+                mysqli_autocommit($con, TRUE);
                 mysqli_close($con);
                 return;
             }
@@ -46,10 +49,13 @@ if (!$con) {
             if ($result === FALSE) {
                 mysqli_rollback($con);  // if error, roll back transaction
                 echo 0;
+                mysqli_autocommit($con, TRUE);
                 mysqli_close($con);
                 return;
             }
             mysqli_commit($con);
+            mysqli_autocommit($con, TRUE);
+            mysqli_close($con);
             echo "1";
         } else if (strcmp($insertType, "addResult2") == 0) {
             $eid = $_POST["eid"];
@@ -77,6 +83,7 @@ if (!$con) {
             if ($result === FALSE) {
                 mysqli_rollback($con);  // if error, roll back transaction
                 echo -1;
+                mysqli_autocommit($con, TRUE);
                 mysqli_close($con);
                 return;
             }
@@ -86,6 +93,7 @@ if (!$con) {
                 if ($result === FALSE) {
                     mysqli_rollback($con);  // if error, roll back transaction
                     echo -2;
+                    mysqli_autocommit($con, TRUE);
                     mysqli_close($con);
                     return;
                 }
@@ -95,10 +103,13 @@ if (!$con) {
             if ($result === FALSE) {
                 mysqli_rollback($con);  // if error, roll back transaction
                 echo -3;
+                mysqli_autocommit($con, TRUE);
                 mysqli_close($con);
                 return;
             }
             mysqli_commit($con);
+            mysqli_autocommit($con, TRUE);
+            mysqli_close($con);
             echo "1";
         } else if (strcmp($insertType, "addGroupResult") == 0) {
             $eid = $_POST["eid"];
@@ -129,6 +140,7 @@ if (!$con) {
             if ($result === FALSE) {
                 mysqli_rollback($con);  // if error, roll back transaction
                 echo -1;
+                mysqli_autocommit($con, TRUE);
                 mysqli_close($con);
                 return;
             }
@@ -138,6 +150,7 @@ if (!$con) {
             if ($result === FALSE) {
                 mysqli_rollback($con);  // if error, roll back transaction
                 echo -2;
+                mysqli_autocommit($con, TRUE);
                 mysqli_close($con);
                 return;
             }
@@ -153,6 +166,7 @@ if (!$con) {
               }
              */
             mysqli_commit($con);
+            mysqli_autocommit($con, TRUE);
             echo "1";
         }
     } else {
