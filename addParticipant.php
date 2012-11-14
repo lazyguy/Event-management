@@ -56,7 +56,7 @@ if (!$con) {
                 $rsd = mysqli_query($con, $query1);
                 $category = mysqli_fetch_array($rsd);
 
-                mysqli_autocommit($con, FALSE);
+//                mysqli_autocommit($con, FALSE);
                 if (strcmp($insertType, "editParticipant") != 0) {
                     $rsd = mysqli_query($con, "SELECT MAX( regn_number ) as nextid FROM participant_master where 1");
                     $rs = mysqli_fetch_array($rsd);
@@ -69,10 +69,10 @@ if (!$con) {
                     $query = "delete from participant_master where regn_number='$regn_number'";
                     $result = mysqli_query($con, $query);
                     if ($result === FALSE) {
-                        mysqli_rollback($con);  // if error, roll back transaction
+     //                   mysqli_rollback($con);  // if error, roll back transaction
                         $result = array("result" => -10);   //returning some value other than 1(success), -1(senior/junior conflict) and 2(participant already exist incase of add)
                         echo array_to_json($result);
-                        mysqli_autocommit($con, TRUE);
+     //                   mysqli_autocommit($con, TRUE);
                         mysqli_close($con);
                         return;
                     }
@@ -87,10 +87,10 @@ if (!$con) {
                 $result = mysqli_query($con, $query);
 
                 if ($result === FALSE) {
-                    mysqli_rollback($con);  // if error, roll back transaction
+  //                  mysqli_rollback($con);  // if error, roll back transaction
                     $result = array("result" => 0);
                     echo array_to_json($result);
-                    mysqli_autocommit($con, TRUE);
+    //                mysqli_autocommit($con, TRUE);
                     mysqli_close($con);
                     return;
                 }
@@ -131,10 +131,10 @@ if (!$con) {
                         $query = "delete from event_trans where event_id in ($id_nums)";
                         $result = mysqli_query($con, $query);
                         if ($result === FALSE) {
-                            mysqli_rollback($con);  // if error, roll back transaction
+                            //mysqli_rollback($con);  // if error, roll back transaction
                             $result = array("result" => -11);
                             echo array_to_json($result);
-                            mysqli_autocommit($con, TRUE);
+     //                       mysqli_autocommit($con, TRUE);
                             mysqli_close($con);
                             return;
                         }
@@ -144,10 +144,10 @@ if (!$con) {
                         $query = "update event_trans set fee_paid = $partFeePaid where regn_number=$regn_number";
                         $result = mysqli_query($con, $query);
                         if ($result === FALSE) {
-                            mysqli_rollback($con);  // if error, roll back transaction
+                            //mysqli_rollback($con);  // if error, roll back transaction
                             $result = array("result" => -12);
                             echo array_to_json($result);
-                            mysqli_autocommit($con, TRUE);
+ //                           mysqli_autocommit($con, TRUE);
                             mysqli_close($con);
                             return;
                         }
@@ -158,10 +158,10 @@ if (!$con) {
                             $result = mysqli_query($con, "INSERT INTO event_trans(regn_number,event_id,fee_paid) VALUES
                             ('$regn_number','$partItemsEscaped', '$partFeePaid')");
                             if ($result !== TRUE) {
-                                mysqli_rollback($con);  // if error, roll back transaction
+                                //mysqli_rollback($con);  // if error, roll back transaction
                                 $result = array("result" => -13);
                                 echo array_to_json($result);
-                                mysqli_autocommit($con, TRUE);
+   //                             mysqli_autocommit($con, TRUE);
                                 mysqli_close($con);
                                 return;
                             }
@@ -176,17 +176,17 @@ if (!$con) {
                         $result = mysqli_query($con, "INSERT INTO event_trans(regn_number,event_id,fee_paid) VALUES
                             ('$regn_number','$partItemsEscaped', '$partFeePaid')");
                         if ($result !== TRUE) {
-                            mysqli_rollback($con);  // if error, roll back transaction
+                            //mysqli_rollback($con);  // if error, roll back transaction
                             $result = array("result" => 0);
                             echo array_to_json($result);
-                            mysqli_autocommit($con, TRUE);
+   //                         mysqli_autocommit($con, TRUE);
                             mysqli_close($con);
                             return;
                         }
                     }
                 }
                 mysqli_commit($con);
-                mysqli_autocommit($con, TRUE);
+ //               mysqli_autocommit($con, TRUE);
                 $result = array("result" => 1, "sid" => $regn_number);
                 echo array_to_json($result);
                 //  echo "1";

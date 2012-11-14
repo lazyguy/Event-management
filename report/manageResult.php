@@ -16,45 +16,45 @@ if (!$con) {
             $secondregId = mysqli_real_escape_string($con, $secondregId);
             $thirdregId = $_POST["thirdregId"];
             $thirdregId = mysqli_real_escape_string($con, $thirdregId);
-            mysqli_autocommit($con, FALSE);
+//            mysqli_autocommit($con, FALSE);
             $query = "DELETE from event_result where event_id='$eid'";
             $result = mysqli_query($con, $query);
             $query = "INSERT INTO event_result VALUES ('$firstregId','$eid',1)";
             if ($result === FALSE) {
-                mysqli_rollback($con);  // if error, roll back transaction
+                //mysqli_rollback($con);  // if error, roll back transaction
                 echo 0;
-                mysqli_autocommit($con, TRUE);
+ //               mysqli_autocommit($con, TRUE);
                 mysqli_close($con);
                 return;
             }
             $result = mysqli_query($con, $query);
             if ($result === FALSE) {
-                mysqli_rollback($con);  // if error, roll back transaction
+                //mysqli_rollback($con);  // if error, roll back transaction
                 echo 0;
-                mysqli_autocommit($con, TRUE);
+ //               mysqli_autocommit($con, TRUE);
                 mysqli_close($con);
                 return;
             }
             $query = "INSERT INTO event_result VALUES ('$secondregId','$eid',2)";
             $result = mysqli_query($con, $query);
             if ($result === FALSE) {
-                mysqli_rollback($con);  // if error, roll back transaction
+                //mysqli_rollback($con);  // if error, roll back transaction
                 echo 0;
-                mysqli_autocommit($con, TRUE);
+  //              mysqli_autocommit($con, TRUE);
                 mysqli_close($con);
                 return;
             }
             $query = "INSERT INTO event_result VALUES ('$thirdregId','$eid',3)";
             $result = mysqli_query($con, $query);
             if ($result === FALSE) {
-                mysqli_rollback($con);  // if error, roll back transaction
+                //mysqli_rollback($con);  // if error, roll back transaction
                 echo 0;
-                mysqli_autocommit($con, TRUE);
+ //               mysqli_autocommit($con, TRUE);
                 mysqli_close($con);
                 return;
             }
             mysqli_commit($con);
-            mysqli_autocommit($con, TRUE);
+//            mysqli_autocommit($con, TRUE);
             mysqli_close($con);
             echo "1";
         } else if (strcmp($insertType, "addResult2") == 0) {
@@ -76,14 +76,14 @@ if (!$con) {
                 return;
             }
 
-            mysqli_autocommit($con, FALSE);
+ //           mysqli_autocommit($con, FALSE);
             //Delete previous entry if exists
             $query = "DELETE from event_result where event_id='$eid' and regn_number='$regId'";
             $result = mysqli_query($con, $query);
             if ($result === FALSE) {
-                mysqli_rollback($con);  // if error, roll back transaction
+                //mysqli_rollback($con);  // if error, roll back transaction
                 echo -1;
-                mysqli_autocommit($con, TRUE);
+  //              mysqli_autocommit($con, TRUE);
                 mysqli_close($con);
                 return;
             }
@@ -91,9 +91,9 @@ if (!$con) {
                 $query = "INSERT INTO event_result VALUES ('$regId','$eid','$position')";
                 $result = mysqli_query($con, $query);
                 if ($result === FALSE) {
-                    mysqli_rollback($con);  // if error, roll back transaction
+                    //mysqli_rollback($con);  // if error, roll back transaction
                     echo -2;
-                    mysqli_autocommit($con, TRUE);
+   //                 mysqli_autocommit($con, TRUE);
                     mysqli_close($con);
                     return;
                 }
@@ -101,14 +101,14 @@ if (!$con) {
             $query = "UPDATE `event_trans` SET event_marks='$score', event_grade='$grade' where event_id='$eid' and regn_number='$regId'";
             $result = mysqli_query($con, $query);
             if ($result === FALSE) {
-                mysqli_rollback($con);  // if error, roll back transaction
+                //mysqli_rollback($con);  // if error, roll back transaction
                 echo -3;
-                mysqli_autocommit($con, TRUE);
+ //               mysqli_autocommit($con, TRUE);
                 mysqli_close($con);
                 return;
             }
             mysqli_commit($con);
-            mysqli_autocommit($con, TRUE);
+ //           mysqli_autocommit($con, TRUE);
             mysqli_close($con);
             echo "1";
         } else if (strcmp($insertType, "addGroupResult") == 0) {
@@ -133,14 +133,14 @@ if (!$con) {
                 return;
             }
 
-            mysqli_autocommit($con, FALSE);
+ //           mysqli_autocommit($con, FALSE);
             //Delete previous entry if exists
             $query = "DELETE from group_result where event_id='$eid' and group_id='$regId'";
             $result = mysqli_query($con, $query);
             if ($result === FALSE) {
-                mysqli_rollback($con);  // if error, roll back transaction
+                //mysqli_rollback($con);  // if error, roll back transaction
                 echo -1;
-                mysqli_autocommit($con, TRUE);
+ //               mysqli_autocommit($con, TRUE);
                 mysqli_close($con);
                 return;
             }
@@ -148,9 +148,9 @@ if (!$con) {
             $query = "INSERT INTO group_result VALUES ('$regId','$eid','$grade','$score','$position')";
             $result = mysqli_query($con, $query);
             if ($result === FALSE) {
-                mysqli_rollback($con);  // if error, roll back transaction
+                //mysqli_rollback($con);  // if error, roll back transaction
                 echo -2;
-                mysqli_autocommit($con, TRUE);
+ //               mysqli_autocommit($con, TRUE);
                 mysqli_close($con);
                 return;
             }
@@ -159,14 +159,14 @@ if (!$con) {
               $query = "UPDATE `event_trans` SET event_marks='$score', event_grade='$grade' where event_id='$eid' and regn_number='$regId'";
               $result = mysqli_query($con, $query);
               if ($result === FALSE) {
-              mysqli_rollback($con);  // if error, roll back transaction
+              //mysqli_rollback($con);  // if error, roll back transaction
               echo -3;
               mysqli_close($con);
               return;
               }
              */
             mysqli_commit($con);
-            mysqli_autocommit($con, TRUE);
+ //           mysqli_autocommit($con, TRUE);
             echo "1";
         }
     } else {
